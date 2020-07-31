@@ -51,19 +51,19 @@ const breakpoints = createBreakpoints({
   }
 })
 
-const iswapTheme =  {
+const iswapTheme = {
   typography: {
     fontFamily: [
-      '"Work Sans Thin"',
-      'BlinkMacSystemFont',
+      '"-apple-system"',
+      '"BlinkMacSystemFont"',
       '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
+      '"Roboto"',
+      '"Oxygen"',
+      '"Ubuntu"',
+      '"Cantarell"',
+      '"Fira Sans"',
+      '"Droid Sans"',
+      '"Helvetica Neue,sans-serif"',
     ].join(','),
     h1: {
       fontSize: '48px',
@@ -175,7 +175,7 @@ const iswapTheme =  {
         // border: "none !important"
       }
     },
-    MuiSnackbar : {
+    MuiSnackbar: {
       root: {
         maxWidth: 'calc(100vw - 24px)'
       },
@@ -206,7 +206,7 @@ const iswapTheme =  {
     },
     MuiExpansionPanel: {
       root: {
-        border: '1px solid '+colors.borderBlue,
+        border: '1px solid ' + colors.borderBlue,
         borderRadius: '50px',
         margin: '8px 0px',
         '&:before': { //underline color when textfield is inactive
@@ -245,7 +245,7 @@ const iswapTheme =  {
       root: {
         borderRadius: '50px',
         textTransform: 'none',
-        minWidth:  '100px',
+        minWidth: '100px',
         border: 'none',
         '& > span > h4': {
           color: '#555',
@@ -274,7 +274,7 @@ const iswapTheme =  {
     },
     MuiToggleButtonGroup: {
       root: {
-        border: '1px solid '+colors.borderBlue,
+        border: '1px solid ' + colors.borderBlue,
         borderRadius: '50px',
       },
       groupedSizeSmall: {

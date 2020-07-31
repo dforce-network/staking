@@ -2,15 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Typography,
-  Card
+  Typography
 } from '@material-ui/core';
-import { withNamespaces } from 'react-i18next';
-// import svgTitle1 from '../../assets/img1.svg'
-// import svgTitle2 from '../../assets/img2.svg'
-// import svgCenter1 from '../../assets/logo2.svg'
-// import svgCenter2 from '../../assets/logo2.svg'
-import UnlockModal from '../unlock/unlockModal.jsx'
+import { FormattedMessage } from 'react-intl';
+import Header from '../header';
+import Footer from '../footer';
 import Store from "../../stores";
 import { colors } from '../../theme'
 
@@ -19,14 +15,13 @@ const styles = theme => ({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '922px',
-    // width: '100%',
+    maxWidth: '874px',
     justifyContent: 'flex-start',
     alignItems: 'center',
     margin: '0 auto 50px',
     [theme.breakpoints.down('md')]: {
       width: '100%',
-      padding: '0 12px 35px'
+      padding: '0 0 35px'
     }
   },
   intro: {
@@ -61,7 +56,7 @@ const styles = theme => ({
     width: '100%',
     maxWidth: '450px',
     [theme.breakpoints.up('md')]: {
-      width: '450',
+      width: '450px',
     }
   },
   actionButton: {
@@ -115,8 +110,7 @@ const styles = theme => ({
   rewardPools: {
     width: '100%',
     display: 'flex',
-    justifyContent: 'center',
-    paddingTop: '20px',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap'
   },
   rewardPoolContainer: {
@@ -124,14 +118,18 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '432px',
-    padding: '30px 0',
+    width: '280px',
+    padding: '30px 0 20px',
     borderRadius: '6px',
     boxShadow: '0px 0px 35px 0px rgba(94,85,126,0.15)',
     background: colors.white,
-    marginRight: '9px',
+    margin: '0 17px 16px 0',
+    '&:nth-child(4n)': {
+      marginRight: '0'
+    },
     [theme.breakpoints.down('md')]: {
-      margin: '0 0 12px 0',
+      width: 'calc(100% - 24px)',
+      margin: '0 12px 12px',
       padding: '15px 0 20px',
     }
   },
@@ -149,10 +147,11 @@ const styles = theme => ({
     fontSize: '36px',
     minWidth: '100%',
     textAlign: 'left',
-    margin: '42px auto 36px 30px',
+    margin: '0 auto 36px',
     [theme.breakpoints.down('md')]: {
       fontSize: '18px',
-      margin: '40px auto 25px'
+      margin: '0 12px 25px',
+      minWidth: 'calc(100% - 25px)'
     }
   },
   poolName: {
@@ -160,11 +159,12 @@ const styles = theme => ({
     fontSize: '22px',
     fontWeight: 'bold',
     color: 'rgba(67,73,118,1)',
-    lineHeight: '25px'
+    lineHeight: '19px',
+    marginBottom: '8px'
   },
   tokensList: {
     color: '#A4A7BE',
-    marginBottom: '30px',
+    marginBottom: '28px',
     [theme.breakpoints.down('md')]: {
       marginBottom: '15px',
     }
@@ -191,16 +191,17 @@ const styles = theme => ({
     }
   },
   poolWebsite: {
-    height: '19px',
+    height: '16px',
     fontSize: '16px',
     fontWeight: '400',
     color: 'rgba(164,167,190,1)',
-    lineHeight: '19px'
+    lineHeight: '16px',
+    textDecoration: 'underline'
   },
   svgCenter: {
     width: '150px',
     height: '80px',
-    margin: '30px auto 34px',
+    margin: '20px auto 20px',
     [theme.breakpoints.down('md')]: {
       margin: '20px auto 15px'
     }
@@ -214,7 +215,7 @@ const store = Store.store
 class RewardPools extends Component {
 
   constructor(props) {
-    super()
+    super(props)
 
     const account = store.getStore('account')
     const rewardPools = store.getStore('rewardPools')
@@ -228,20 +229,6 @@ class RewardPools extends Component {
     // dispatcher.dispatch({ type: GET_BALANCES, content: {} })
   }
 
-  // componentWillMount() {
-  //   emitter.on(CONFIGURE_RETURNED, this.configureReturned);
-  //   emitter.on(GET_BALANCES_RETURNED, this.balancesReturned);
-  // }
-
-  // componentWillUnmount() {
-  //   emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
-  //   emitter.removeListener(GET_BALANCES_RETURNED, this.balancesReturned);
-  // };
-
-  // balancesReturned = () => {
-  //   const rewardPools = store.getStore('rewardPools')
-  //   this.setState({ rewardPools: rewardPools })
-  // }
 
   configureReturned = () => {
     this.setState({ loading: false })
@@ -256,10 +243,6 @@ class RewardPools extends Component {
       modalOpen,
     } = this.state
 
-    // var address = null;
-    // if (account.address) {
-    //   address = account.address.substring(0, 6) + '...' + account.address.substring(account.address.length - 4, account.address.length)
-    // }
 
     return (
       <div className={classes.root}>
@@ -271,12 +254,14 @@ class RewardPools extends Component {
             <div style={{ background: '#DC6BE5', opacity: '1', borderRadius: '10px', width: '10px', height: '10px', marginRight: '3px', marginTop: '3px', marginLeft: '6px' }}></div>
           </Card>
         </div> */}
+        <Header show={false} cur_language={this.props.cur_language} setLanguage={this.props.setLanguage} linkTo={'https://dforce.network/'} />
         <div className={classes.rewardPools}>
-          <Typography variant={'h3'} className={classes.title} noWrap>Which pool would you like to stake?</Typography>
+          <Typography variant={'h3'} className={classes.title} noWrap><FormattedMessage id='pool_title' /></Typography>
           {
             this.renderRewards()
           }
         </div>
+        <Footer cur_language={this.props.cur_language} setLanguage={this.props.setLanguage} />
         {/* {modalOpen && this.renderModal()} */}
       </div>
     )
@@ -300,16 +285,19 @@ class RewardPools extends Component {
     // }
 
     return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
-      <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div>
+      {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
       <Typography variant='h3' className={classes.poolName}>{rewardPool.id}</Typography>
       <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
       <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
       <Typography varian='h4' className={classes.tokensList} align='center'>
-        Stake<b className={classes.B}>{tokensList}</b>to earn<b className={classes.B}>DF</b>
+        <FormattedMessage id='tips_stake' />
+        <b className={classes.B}>{tokensList}</b>
+        <FormattedMessage id='tips_earn' />
+        <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
         {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
       </Typography>
-      <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}>Open</div>
+      <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><FormattedMessage id='open' /></div>
     </div>)
   }
 
@@ -319,24 +307,9 @@ class RewardPools extends Component {
       pathname: '/stake',
       state: { currentPool: rewardPool },
     }
-    // this.props.history.push('/stake')
     this.props.history.push(path)
 
   }
-
-  // renderModal = () => {
-  //   return (
-  //     <UnlockModal closeModal={this.closeModal} modalOpen={this.state.modalOpen} />
-  //   )
-  // }
-
-  // overlayClicked = () => {
-  //   this.setState({ modalOpen: true })
-  // }
-
-  // closeModal = () => {
-  //   this.setState({ modalOpen: false })
-  // }
 
 }
 

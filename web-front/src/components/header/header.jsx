@@ -1,243 +1,355 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import {
-  Tabs,
-  Tab,
-  Typography
-} from '@material-ui/core';
-import { withRouter } from "react-router-dom";
-import { colors } from '../../theme'
+import React from 'react';
+import '../../App.scss';
+import './header.scss';
+import 'antd/dist/antd.css';
+import logo_xswap from '../../assets/header/logo-dforce.svg';
+import close from '../../assets/header/close.svg';
+import close_new from '../../assets/header/close-new.svg';
+// add i18n.
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import en_US from '../../language/en_US';
+import zh_CN from '../../language/zh_CN';
+import arrow_u from '../../assets/header/up.svg';
 
-const styles = theme => ({
-  root: {
-    verticalAlign: 'top',
-    width: '100%',
-    display: 'flex',
-  },
-  earn: {
-    flex: '1',
-    height: '75px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    backgroundColor: colors.pink,
-    '&:hover': {
-      backgroundColor: "#f9fafb",
-      '& .title': {
-        color: colors.pink
-      },
-      '& .titleActive': {
-        color: colors.pink,
-        borderBottom: '4px solid '+colors.pink,
-        padding: '10px 0px'
-      },
-      '& .icon': {
-        color: colors.pink
-      }
-    },
-    '& .title': {
-      color: colors.white
-    },
-    '& .titleActive': {
-      color: colors.white,
-      borderBottom: '4px solid white',
-      padding: '10px 0px'
-    },
-    '& .icon': {
-      color: colors.white
-    },
-  },
-  zap: {
-    flex: '1',
-    height: '75px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    backgroundColor: colors.lightBlue,
-    '&:hover': {
-      backgroundColor: "#f9fafb",
-      '& .title': {
-        color: colors.lightBlue,
-      },
-      '& .titleActive': {
-        color: colors.lightBlue,
-        borderBottom: '4px solid '+colors.lightBlue,
-        padding: '10px 0px'
-      },
-      '& .icon': {
-        color: colors.lightBlue
-      }
-    },
-    '& .title': {
-      color: colors.white
-    },
-    '& .titleActive': {
-      color: colors.white,
-      borderBottom: '4px solid white',
-      padding: '10px 0px'
-    },
-    '& .icon': {
-      color: colors.white
-    },
-  },
-  apr: {
-    flex: '1',
-    height: '75px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    backgroundColor: colors.lightBlack,
-    '&:hover': {
-      backgroundColor: "#f9fafb",
-      '& .title': {
-        color: colors.lightBlack
-      },
-      '& .titleActive': {
-        color: colors.lightBlack,
-        borderBottom: '4px solid '+colors.lightBlack,
-        padding: '10px 0px'
-      },
-      '& .icon': {
-        color: colors.lightBlack
-      }
-    },
-    '& .title': {
-      color: colors.white
-    },
-    '& .titleActive': {
-      color: colors.white,
-      borderBottom: '4px solid white',
-      padding: '10px 0px'
-    },
-    '& .icon': {
-      color: colors.white
+import arrow_d from '../../assets/header/arrow_d.svg';
+import img_is_open from '../../assets/header/img_is_open.svg';
+import { Modal } from 'antd';
+
+
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log(props)
+        this.state = {
+            // cur_language: props.language === 'zh-CN' ? '中文' : 'English',
+            show_left_more_token: false,
+            showonly: false,
+            meun1: true,
+            meun2: true,
+            meun3: true,
+            is_open: true
+        }
     }
-  },
-  cover: {
-    flex: '1',
-    height: '75px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    backgroundColor: colors.compoundGreen,
-    '&:hover': {
-      backgroundColor: "#f9fafb",
-      '& .title': {
-        color: colors.compoundGreen
-      },
-      '& .titleActive': {
-        color: colors.compoundGreen,
-        borderBottom: '4px solid '+colors.compoundGreen,
-        padding: '10px 0px'
-      },
-      '& .icon': {
-        color: colors.compoundGreen
-      }
-    },
-    '& .title': {
-      color: colors.white
-    },
-    '& .titleActive': {
-      color: colors.white,
-      borderBottom: '4px solid white',
-      padding: '10px 0px'
-    },
-    '& .icon': {
-      color: colors.white
+    clear_open = (e) => {
+        if (this.state.show_left_more_token) {
+            this.setState({
+                show_left_more_token: false
+            })
+        }
+        if (this.state.show_right_more_token) {
+            this.setState({
+                show_right_more_token: false
+            })
+        }
     }
-  },
-  pool: {
-    flex: '1',
-    height: '75px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    backgroundColor: colors.tomato,
-    '&:hover': {
-      backgroundColor: "#f9fafb",
-      '& .title': {
-        color: colors.tomato
-      },
-      '& .titleActive': {
-        color: colors.tomato,
-        borderBottom: '4px solid '+colors.tomato,
-        padding: '10px 0px'
-      },
-      '& .icon': {
-        color: colors.tomato
-      }
-    },
-    '& .title': {
-      color: colors.white
-    },
-    '& .titleActive': {
-      color: colors.white,
-      borderBottom: '4px solid white',
-      padding: '10px 0px'
-    },
-    '& .icon': {
-      color: colors.white
+    render() {
+        return (
+            <IntlProvider locale={'en'} messages={this.props.cur_language === '中文' ? zh_CN : en_US} >
+                <Modal
+                    keyboard={false}
+                    maskClosable={false}
+                    visible={!this.state.is_open}
+                    centered={true}
+                    footer={false}
+                    closable={false}
+                >
+                    <div className='popup-is-open'>
+                        <img src={img_is_open} alt='' />
+                        <div className='popup-is-open-text'>
+                            Oracle System Maintain, Come back Soon...
+            </div>
+                        <div className='popup-is-open-text'>
+                            Oracle系统维护，敬请期待...
+            </div>
+                    </div>
+                </Modal>
+
+                <div className={'header'}>
+                    <a href={this.props.linkTo} className={'header__logo'}>
+                        <img src={logo_xswap} alt="logo" />
+                    </a>
+                    <div className={'header__menu'}>
+                        {/* <Dropdown
+                            overlay={
+                                <Menu className={'header__overlay'}>
+                                    <Menu.Item>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://usdx.dforce.network/" className={'header__overlay_item'}>
+                                            <span>USDx</span>
+                                            <label>
+                                                <FormattedMessage id='Portal' />
+                                            </label>
+                                        </a>
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://markets.dforce.network/" className={'header__overlay_item'}>
+                                            <span>
+                                                <FormattedMessage id='Yield_Markets' />
+                                            </span>
+                                            <label>
+                                                <FormattedMessage id='Yield_Markets_detail' />
+                                            </label>
+                                        </a>
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://goldx.dforce.network/" className={'header__overlay_item'}>
+                                            <span>
+                                                <FormattedMessage id='goldx' />
+                                            </span>
+                                            <label>
+                                                <FormattedMessage id='goldx_detail' />
+                                            </label>
+                                        </a>
+                                    </Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <span className={'header__menu_item'}>
+                                <label><FormattedMessage id='dForce_Stablecoin' /></label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                        </Dropdown> */}
+                        <div className={"dropDown"}>
+                            <span className={'header__menu_item'}>
+                                <label><FormattedMessage id='dForce_Stablecoin' /></label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                            <div className={'header__overlay'}>
+                                <div className={"menuItem"}>
+                                    <a target="_blank" rel="noopener noreferrer" href="https://usdx.dforce.network/" className={'header__overlay_item'}>
+                                        <span>USDx</span>
+                                        <label>
+                                            <FormattedMessage id='Portal' />
+                                        </label>
+                                    </a>
+                                </div>
+                                <div className={"menuItem"}>
+                                    <a target="_blank" rel="noopener noreferrer" href="https://markets.dforce.network/" className={'header__overlay_item'}>
+                                        <span>
+                                            <FormattedMessage id='Yield_Markets' />
+                                        </span>
+                                        <label>
+                                            <FormattedMessage id='Yield_Markets_detail' />
+                                        </label>
+                                    </a>
+                                </div>
+
+                                <div className={"menuItem"}>
+                                    <a target="_blank" rel="noopener noreferrer" href="https://goldx.dforce.network/" className={'header__overlay_item'}>
+                                        <span>
+                                            <FormattedMessage id='goldx' />
+                                        </span>
+                                        <label>
+                                            <FormattedMessage id='goldx_detail' />
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={"dropDown"}>
+                            <span className={'header__menu_item'}>
+                                <label>
+                                    <FormattedMessage id='Exchange_Market' />
+                                </label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                            <div className={'header__overlay'}>
+                                <div className={"menuItem"}>
+                                    <a rel="noopener noreferrer" href="https://trade.dforce.network/" className={'header__overlay_item'}>
+                                        <span>dForce Trade</span>
+                                        <label>
+                                            <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={"dropDown"}>
+                            <span className={'header__menu_item'}>
+                                <label>
+                                    <FormattedMessage id='Governance' />
+                                </label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                            <div className={'header__overlay'}>
+                                <div className={"menuItem"}>
+                                    <a rel="noopener noreferrer" href="https://airdrop.dforce.network/" className={'header__overlay_item'}>
+                                        <span>Airdrop</span>
+                                        <label>
+                                            <FormattedMessage id='DF_token_distribute_system' />
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <Dropdown
+                            overlay={
+                                <Menu className={'header__overlay'}>
+                                    <Menu.Item>
+                                        <a rel="noopener noreferrer" href="https://trade.dforce.network/" className={'header__overlay_item'}>
+                                            <span>dForce Trade</span>
+                                            <label>
+                                                <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
+                                            </label>
+                                        </a>
+                                    </Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <span className={'header__menu_item'}>
+                                <label>
+                                    <FormattedMessage id='Exchange_Market' />
+                                </label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                        </Dropdown> */}
+
+
+                        {/* <Dropdown
+                            overlay={
+                                <Menu className={'header__overlay'}>
+                                    <Menu.Item>
+                                        <a rel="noopener noreferrer" href="https://airdrop.dforce.network/" className={'header__overlay_item'}>
+                                            <span>Airdrop</span>
+                                            <label>
+                                                <FormattedMessage id='DF_token_distribute_system' />
+                                            </label>
+                                        </a>
+                                    </Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <span className={'header__menu_item'}>
+                                <label>
+                                    <FormattedMessage id='Governance' />
+                                </label>
+                                <img src={arrow_d} alt="down" />
+                            </span>
+                        </Dropdown> */}
+
+                        {
+                            this.props.address && this.props.show &&
+                            <a
+                                className={'header__menu_wallet'}
+                            >
+                                <div onClick={() => this.props.overlayClicked && this.props.overlayClicked()}>
+                                    <i style={{ backgroundColor: this.state.net_type !== 'rinkeby' ? '#29B6AF' : '#e2bc73' }}></i>
+                                    {this.props.address}
+                                </div>
+                            </a>
+                        }
+                        {
+                            !this.props.address && this.props.show &&
+                            <a className={'header__menu_wallet'} onClick={() => this.props.overlayClicked && this.props.overlayClicked()}>
+                                <FormattedMessage id='connect' />
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                {/* mobile tips */}
+                <div className={this.state.showonly ? 'mobile-only' : 'disn'}>
+                    <div className='wrap-mob'>
+                        <div className='only-left'>
+                            <a href="https://dforce.network/" className={'header__logo'}>
+                                <img src={logo_xswap} alt="logo" />
+                            </a>
+                        </div>
+                        <div className='only-right'>
+                            <img src={close_new} alt='' onClick={() => { this.setState({ showonly: false }) }} />
+                        </div>
+                        <div className='clear'></div>
+                    </div>
+                    <div className='only-kong'></div>
+
+                    <h1 onClick={() => { this.setState({ meun1: !this.state.meun1 }) }}>
+                        <FormattedMessage id='dForce_Stablecoin' />
+                        <span>
+                            <img src={this.state.meun1 ? arrow_u : arrow_d} />
+                        </span>
+                    </h1>
+                    <div className={this.state.meun1 ? 'meun1' : 'only1px'}>
+                        <div className='m-item'>
+                            <a href='https://usdx.dforce.network/' target='_blank' rel="noopener noreferrer">
+                                <span className='title'>USDx</span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='Portal' />
+                            </span>
+                        </div>
+                        <div className='m-item'>
+                            <a href='https://markets.dforce.network/' target='_blank' rel="noopener noreferrer">
+                                <span className='title'>
+                                    <FormattedMessage id='Yield_Markets' />
+                                </span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='Yield_Markets_detail' />
+                            </span>
+                        </div>
+                        <div className='m-item'>
+                            <a href='https://goldx.dforce.network/' target='_blank' rel="noopener noreferrer">
+                                <span className='title'>
+                                    <FormattedMessage id='goldx' />
+                                </span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='goldx_detail' />
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <h1 onClick={() => { this.setState({ meun3: !this.state.meun3 }) }}>
+                        <FormattedMessage id='Exchange_Market' />
+                        <span>
+                            <img src={this.state.meun3 ? arrow_u : arrow_d} />
+                        </span>
+                    </h1>
+                    <div className={this.state.meun3 ? 'meun1' : 'only1px'}>
+                        <div className='m-item'>
+                            <a href='https://trade.dforce.network/' rel="noopener noreferrer">
+                                <span className='title'>dForce Trade</span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <h1 onClick={() => { this.setState({ meun2: !this.state.meun2 }) }}>
+                        <FormattedMessage id='Governance' />
+                        <span>
+                            <img src={this.state.meun2 ? arrow_u : arrow_d} />
+                        </span>
+                    </h1>
+                    <div className={this.state.meun2 ? 'meun1' : 'only1px'}>
+                        <div className='m-item'>
+                            <a href='https://airdrop.dforce.network/' rel="noopener noreferrer">
+                                <span className='title'>Airdrop</span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='DF_token_distribute_system' />
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div className="App" onClick={(e) => { this.clear_open(e) }}>
+
+                    <div className='wrap-mob'>
+                        <div className='only-left'>
+                            <a href="https://dforce.network/" className={'header__logo'}>
+                                <img src={logo_xswap} alt="logo" />
+                            </a>
+                        </div>
+                        <div className='only-right'>
+                            <img src={close} alt='' onClick={() => { this.setState({ showonly: true }) }} />
+                        </div>
+                        <div className='clear'></div>
+                    </div></div>
+            </IntlProvider >
+        )
     }
-  },
-});
-
-function Header(props) {
-  const {
-    classes,
-    setHeaderValue,
-    headerValue,
-    location
-  } = props;
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    setHeaderValue(newValue)
-  };
-
-  const nav = (screen) => {
-    props.history.push('/'+screen)
-  }
-
-  return(<div></div>)
-
-  return (
-    <div className={ classes.root }>
-      <div className={ `${classes.earn}` } onClick={ () => { nav('earn') } }>
-        <Typography variant={'h3'} className={ headerValue===0?`titleActive`:`title` }>Earn</Typography>
-      </div>
-      <div className={ `${classes.zap}` } onClick={ () => { nav('zap') } }>
-        <Typography variant={'h3'} className={ headerValue===1?`titleActive`:`title` }>Zap</Typography>
-      </div>
-      <div className={ `${classes.apr}` } onClick={ () => { nav('apr') } }>
-        <Typography variant={'h3'} className={ headerValue===2?`titleActive`:`title` }>APR</Typography>
-      </div>
-      <div className={ `${classes.cover}` } onClick={ () => { nav('cover') } }>
-        <Typography variant={'h3'} className={ headerValue===3?`titleActive`:`title` }>Cover</Typography>
-      </div>
-      <div className={ `${classes.pool}` } onClick={ () => { nav('pool') } }>
-        <Typography variant={'h3'} className={ headerValue===4?`titleActive`:`title` }>Pool</Typography>
-      </div>
-    </div>
-  )
 }
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
-
-export default withRouter(withStyles(styles)(Header));

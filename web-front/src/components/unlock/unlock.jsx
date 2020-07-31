@@ -110,27 +110,27 @@ class Unlock extends Component {
   };
 
   connectionConnected = () => {
-    if(this.props.closeModal != null) {
+    if (this.props.closeModal != null) {
       this.props.closeModal()
     }
   }
 
   connectionDisconnected = () => {
-    if(this.props.closeModal != null) {
+    if (this.props.closeModal != null) {
       this.props.closeModal()
     }
   }
 
   metamaskUnlocked = () => {
     this.setState({ metamaskLoading: false })
-    if(this.props.closeModal != null) {
+    if (this.props.closeModal != null) {
       this.props.closeModal()
     }
   }
 
   ledgerUnlocked = () => {
     this.setState({ ledgerLoading: false })
-    if(this.props.closeModal != null) {
+    if (this.props.closeModal != null) {
       this.props.closeModal()
     }
   }
@@ -147,11 +147,11 @@ class Unlock extends Component {
     const { classes, closeModal, t } = this.props;
 
     return (
-      <div className={ classes.root }>
-        <div className={ classes.closeIcon } onClick={ closeModal }><CloseIcon /></div>
-        <div className={ classes.contentContainer }>
+      <div className={classes.root}>
+        <div className={classes.closeIcon} onClick={closeModal}><CloseIcon /></div>
+        <div className={classes.contentContainer}>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <MyComponent closeModal={ closeModal} t={t} />
+            <MyComponent closeModal={closeModal} t={t} />
           </Web3ReactProvider>
         </div>
       </div>
@@ -173,13 +173,13 @@ function onConnectionClicked(currentConnector, name, setActivatingConnector, act
 }
 
 function onDeactivateClicked(deactivate, connector) {
-  if(deactivate) {
+  if (deactivate) {
     deactivate()
   }
-  if(connector && connector.close) {
+  if (connector && connector.close) {
     connector.close()
   }
-  store.setStore({ account: { }, web3context: null })
+  store.setStore({ account: {}, web3context: null })
   emitter.emit(CONNECTION_DISCONNECTED)
 }
 
@@ -237,9 +237,9 @@ function MyComponent(props) {
       {Object.keys(connectorsByName).map(name => {
         const currentConnector = connectorsByName[name];
         const activating = currentConnector === activatingConnector;
-        const connected = (currentConnector === connector||currentConnector === localConnector);
+        const connected = (currentConnector === connector || currentConnector === localConnector);
         const disabled =
-           !!activatingConnector || !!error;
+          !!activatingConnector || !!error;
 
         var url;
         var display = name;
@@ -271,34 +271,34 @@ function MyComponent(props) {
         }
 
         return (
-          <div key={name} style={{ padding: '12px 0px', display: 'flex', justifyContent: 'space-between'  }}>
-            <Button style={ {
-                padding: '16px',
-                backgroundColor: 'white',
-                borderRadius: '1rem',
-                border: '1px solid #E1E1E1',
-                fontWeight: 500,
-                display: 'flex',
-                justifyContent: 'space-between',
-                minWidth: '250px'
-              } }
+          <div key={name} style={{ padding: '12px 0px', display: 'flex', justifyContent: 'space-between' }}>
+            <Button style={{
+              padding: '16px',
+              backgroundColor: 'white',
+              borderRadius: '1rem',
+              border: '1px solid #E1E1E1',
+              fontWeight: 500,
+              display: 'flex',
+              justifyContent: 'space-between',
+              minWidth: '250px'
+            }}
               variant='outlined'
               color='primary'
               onClick={() => {
                 onConnectionClicked(currentConnector, name, setActivatingConnector, activate)
               }}
-              disabled={ disabled }>
-              <Typography style={ {
-                  margin: '0px 12px',
-                  color: 'rgb(1, 1, 1)',
-                  fontWeight: 500,
-                  fontSize: '1rem',
-                } }
-                variant={ 'h3'}>
-                { display }
+              disabled={disabled}>
+              <Typography style={{
+                margin: '0px 12px',
+                color: 'rgb(1, 1, 1)',
+                fontWeight: 500,
+                fontSize: '1rem',
+              }}
+                variant={'h3'}>
+                {display}
               </Typography>
 
-              { (!activating && !connected) && <img style={
+              {(!activating && !connected) && <img style={
                 {
                   position: 'absolute',
                   right: '20px',
@@ -306,34 +306,34 @@ function MyComponent(props) {
                   width: '30px',
                   height: '30px'
                 }
-              } src={url} alt=""/> }
-              { activating && <CircularProgress size={ 15 } style={{marginRight: '10px'}} /> }
-              { (!activating && connected) && <div style={{ background: '#4caf50', borderRadius: '10px', width: '10px', height: '10px', marginRight: '10px' }}></div> }
+              } src={url} alt="" />}
+              {activating && <CircularProgress size={15} style={{ marginRight: '10px' }} />}
+              {(!activating && connected) && <div style={{ background: '#4caf50', borderRadius: '10px', width: '10px', height: '10px', marginRight: '10px' }}></div>}
             </Button>
           </div>
         )
-      }) }
+      })}
 
-      <div style={{ width: '252px', margin: '12px 0px'  }}>
-        <Button style={ {
-            padding: '12px',
-            backgroundColor: 'white',
-            borderRadius: '20px',
-            border: '1px solid #E1E1E1',
-            fontWeight: 500,
-            minWidth: '250px'
-          } }
+      <div style={{ width: '252px', margin: '12px 0px' }}>
+        <Button style={{
+          padding: '12px',
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          border: '1px solid #E1E1E1',
+          fontWeight: 500,
+          minWidth: '250px'
+        }}
           variant='outlined'
           color='primary'
           onClick={() => { onDeactivateClicked(deactivate, connector); }}>
-          <Typography style={ {
-              marginLeft: '12px',
-              fontWeight: '700',
-              color: '#DC6BE5'
-            } }
-            variant={ 'h5'}
+          <Typography style={{
+            marginLeft: '12px',
+            fontWeight: '700',
+            color: '#DC6BE5'
+          }}
+            variant={'h5'}
             color='primary'>
-            { t('Unlock.Deactivate') }
+            {t('Unlock.Deactivate')}
           </Typography>
         </Button>
       </div>

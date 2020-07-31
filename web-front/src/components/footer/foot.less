@@ -1,0 +1,254 @@
+// > 768
+@media screen and (min-width: 768px) {
+
+  // foot
+  .foot {
+    border-top: 1px solid rgba(229, 230, 242, 0.7);
+    padding-top: 26px;
+    width: 882px;
+    // background-color: red;
+    margin: 0 auto;
+    padding-bottom: 4px;
+    margin-top: 50px;
+
+    .foot-item {
+      float: left;
+      width: 200px;
+      // background-color: palegoldenrod;
+
+      .foot-item-title {
+        height: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(109, 107, 133, 1);
+      }
+
+      .foot-item-content {
+        // width: 380px;
+        height: 22px;
+        font-size: 13px;
+        font-weight: 400;
+        color: rgba(134, 133, 147, 1);
+        // background-color: red;
+
+        a {
+          // display: inline-block;
+          text-decoration: none;
+          transition: 0.3s;
+          // height: 40px;
+          font-size: 13px;
+          font-weight: 400;
+          color: rgba(134, 133, 147, 1);
+          // color: red;
+
+          &:hover {
+            color: #29BB92;
+            color: #675cff;
+          }
+
+          position: relative;
+        }
+
+        .weixin-img {
+          display: none;
+          position: absolute;
+          width: 80px !important;
+          left: -25px;
+          bottom: 40px;
+        }
+
+        .weixin-img-wrap {
+          position: relative;
+
+          img {
+            width: 23px;
+          }
+        }
+
+        .weixin-img-wrap:hover {
+          .weixin-img {
+            display: block;
+          }
+        }
+      }
+
+      .footer-right-fixed:hover {
+        .fixed2 {
+          display: block;
+        }
+      }
+
+      .footer-right-fixed {
+        padding-top: 12px;
+        position: relative;
+        cursor: pointer;
+        // background-color: red;
+        width: 80px;
+        font-size: 14px;
+
+
+        .fixed1 {
+          float: left;
+        }
+
+        .fixed2 {
+          display: none;
+          position: absolute;
+          bottom: 5px;
+          background: #FFF;
+          width: 90px;
+          box-shadow: 0px 0px 35px 0px rgba(94, 85, 126, 0.15);
+          /* border-radius: 6px; */
+          left: -20px;
+
+          ul {
+            margin-bottom: 0;
+
+            li {
+              text-align: center;
+              line-height: 36px;
+              font-size: 12px;
+
+              &:hover {
+                background: #F0EEFF;
+                cursor: pointer;
+              }
+            }
+
+            li:nth-child(1) {
+              border-bottom: 1px solid #DDDDE8;
+            }
+          }
+        }
+
+        .fixed-img {
+          float: left;
+          margin-left: 10px;
+
+          img {
+            width: 10px;
+          }
+        }
+
+        ul,
+        li {
+          list-style: none;
+        }
+      }
+
+    }
+
+    .padding-left20 {
+      padding-left: 20px;
+    }
+
+    .foot-item:nth-child(2n) {
+      width: 309px;
+      // background-color: red;
+    }
+
+    .icom-a {
+      a {
+        margin-right: 6px;
+
+        img {
+          width: 23px;
+        }
+      }
+    }
+  }
+}
+
+
+//
+@media screen and (max-width: 767px) {
+
+  // foot
+  .foot {
+    // padding-top: 50px;
+    // width: 1200px;
+    // background-color: red;
+    width: 94%;
+    margin: 0 auto;
+    padding-bottom: 4px;
+    border-top: 1px solid rgba(229, 230, 242, 0.7);
+    // border-top: 1px solid rgba(229, 0, 0, 1);
+    margin-top: 12px;
+
+    .foot-item {
+      // float: left;
+      // width: 270px;
+      // background-color: palegoldenrod;
+      width: 100%;
+      float: left;
+
+      .foot-item-title {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #6d6b85;
+        height: 30px;
+      }
+
+      .foot-item-content {
+        font-size: 12px;
+        color: #868593;
+        height: 26px;
+
+        a {
+          text-decoration: none;
+          font-size: 12px;
+          color: #868593;
+          transition: 0.3s;
+          position: relative;
+
+          &:hover {
+            color: #29BB92;
+            color: #675cff;
+          }
+
+          img {
+            width: 20px;
+          }
+        }
+
+        .weixin-img {
+          display: none;
+          position: absolute;
+          width: 80px !important;
+          left: 0px;
+          bottom: 24px;
+        }
+
+        .weixin-img-wrap {
+          position: relative;
+
+          img {
+            width: 20px;
+          }
+        }
+
+        .weixin-img-wrap:hover {
+          .weixin-img {
+            display: block;
+          }
+        }
+      }
+
+      .footer-right-fixed {
+        display: none;
+      }
+
+    }
+
+    .foot-item:nth-child(3n) {
+      width: 100%;
+      // background-color: red;
+    }
+
+    .icom-a {
+      a {
+        margin-right: 15px;
+      }
+    }
+  }
+}

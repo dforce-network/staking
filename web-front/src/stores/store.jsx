@@ -161,12 +161,14 @@ class Store {
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'pools.balancer.exchange',
           link: 'https://kovan.etherscan.io/address/0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-          icon: require('../assets/img1.svg'),
+          // icon: require('../assets/img1.svg'),
           logo: require('../assets/logo1.svg'),
           tokens: [
             {
               id: 'bpt',
               address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              // balancer Pool contract address
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'BPT',
               abi: config.erc20ABI,
               decimals: 18,
@@ -180,6 +182,31 @@ class Store {
             }
           ]
         },
+        {
+          id: 'balancer1',
+          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'pools.balancer.exchange',
+          link: 'https://kovan.etherscan.io/address/0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'BPT',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.balancerRewardsAddress1, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI1,
+              rewardsSymbol: 'DF',
+              decimals: 18,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        }
         // {
         //   id: 'Governance',
         //   name: 'Governance',
@@ -201,7 +228,7 @@ class Store {
         //       rewardsAvailable: 0
         //     }
         //   ]
-        // }
+        // },
         // {
         //   id: 'Fee Rewards',
         //   name: 'Fee Rewards',
@@ -285,7 +312,6 @@ class Store {
   }
 
   getStore(index) {
-    debugger
     return (this.store[index]);
   };
 
@@ -296,6 +322,7 @@ class Store {
   };
 
   configure = async () => {
+    if (store.getStore('web3context') === null) { return false }
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const currentBlock = await web3.eth.getBlockNumber()
 
@@ -309,7 +336,6 @@ class Store {
   getBalancesPerpetual = async () => {
     const pools = store.getStore('rewardPools')
     const account = store.getStore('account')
-
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
     const currentBlock = await web3.eth.getBlockNumber()
@@ -483,8 +509,6 @@ class Store {
       earned = parseFloat(earned) / 10 ** asset.decimals
       callback(null, parseFloat(earned))
     } catch (ex) {
-      debugger
-      console.log(ex)
       return callback(ex)
     }
   }
@@ -567,7 +591,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_BALANCES, content: {} })
         }
@@ -622,7 +645,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_BALANCES, content: {} })
         }
@@ -672,7 +694,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_BALANCES, content: {} })
         }
@@ -722,7 +743,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_BALANCES, content: {} })
         }
@@ -771,7 +791,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_BALANCES, content: {} })
         }
@@ -871,7 +890,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_PROPOSALS, content: {} })
         }
@@ -921,7 +939,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_PROPOSALS, content: {} })
         }
@@ -1029,7 +1046,6 @@ class Store {
         callback(null, hash)
       })
       .on('confirmation', function (confirmationNumber, receipt) {
-        console.log(confirmationNumber, receipt);
         if (confirmationNumber == 2) {
           dispatcher.dispatch({ type: GET_CLAIMABLE_ASSET, content: {} })
         }

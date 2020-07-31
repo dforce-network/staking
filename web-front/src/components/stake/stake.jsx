@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
-import './stake.css'
 import {
   Typography,
   Button,
-  Card,
   TextField,
   InputAdornment
 } from '@material-ui/core';
-import { withNamespaces } from 'react-i18next';
-
+import moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 
+import Header from '../header';
+import Footer from '../footer';
 import UnlockModal from '../unlock/unlockModal'
 import Loader from '../loader'
 import Snackbar from '../snackbar'
@@ -53,7 +53,10 @@ const styles = theme => ({
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    margin: '40px auto 0'
+    margin: '0 auto',
+    [theme.breakpoints.down('md')]: {
+      overflow: 'hidden'
+    }
   },
   intro: {
     width: '100%',
@@ -123,12 +126,12 @@ const styles = theme => ({
   },
   title: {
     fontSize: '36px',
-    margin: '62px auto 29px',
+    margin: '0 auto 29px',
     color: '#434976',
     [theme.breakpoints.down('md')]: {
       width: 'calc(100vw - 75px)',
       textAlign: 'center',
-      margin: '30px auto 5px',
+      margin: '0 auto 5px',
       fontSize: '28px',
       lineHeight: '33px'
     }
@@ -140,13 +143,13 @@ const styles = theme => ({
     textAlign: 'center',
     marginBottom: '39px',
     marginTop: '0',
-    color: '#434976',
+    color: '#A4A7BE',
     [theme.breakpoints.down('md')]: {
       width: 'calc(100vw - 75px)',
       textAlign: 'center',
       margin: '0 auto 20px',
       fontSize: '16px',
-      color: '#434976',
+      color: '#A4A7BE',
       fontWeight: '400',
       lineHeight: '20px'
     }
@@ -205,8 +208,7 @@ const styles = theme => ({
     alignItems: 'center',
     flexWrap: 'wrap',
     [theme.breakpoints.down('md')]: {
-      padding: '0 12px',
-      marginBottom: '40px'
+      padding: '0 12px'
     }
   },
   actionContainer: {
@@ -247,6 +249,31 @@ const styles = theme => ({
     color: '#BA59FF',
     borderRadius: '4px',
     border: '1px solid #BA59FF!important'
+  },
+  actionButton_Lock: {
+    color: '#DADADA',
+    backgroundColor: '#F4F4F4',
+    fontWeight: '700',
+    border: '1px solid #E5E6F2!important',
+    height: '50px',
+    lineHeight: '50px',
+    fontSize: '18px',
+    borderRadius: '4px',
+    pointerEvents: 'none',
+    marginRight: '30px',
+    border: '1px solid #E5E6F2!important'
+  },
+  disabledActionButton: {
+    color: '#DADADA',
+    backgroundColor: '#F4F4F4',
+    fontWeight: '700',
+    border: '1px solid #E5E6F2!important',
+    height: '50px',
+    lineHeight: '50px',
+    fontSize: '18px',
+    borderRadius: '4px',
+    pointerEvents: 'none',
+    marginRight: '30px'
   },
   buttonText: {
     fontWeight: '700',
@@ -404,8 +431,121 @@ const styles = theme => ({
       width: '50px',
       height: '44px',
       lineHeight: '44px',
-      right: '75px',
+      right: '85px',
+      textAlign: 'center',
       fontSize: '14px',
+    }
+  },
+  unstake_lock: {
+    margin: '0 auto 40px',
+    height: '54px',
+    lineHeight: '54px',
+    fontSize: '16px',
+    position: 'relative',
+    marginBottom: '0',
+    [theme.breakpoints.down('md')]: {
+      margin: '48px auto 15px',
+      fontSize: '13px',
+      height: '44px',
+      lineHeight: '44px',
+    }
+  },
+  lockModal: {
+    lineHeight: '20px',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    color: '#fff',
+    position: 'absolute',
+    right: '0',
+    top: '-33px',
+    padding: '3px 5px',
+    fontSize: '12px',
+    borderRadius: '2px',
+    [theme.breakpoints.down('md')]: {
+      top: '-55px',
+    }
+  },
+  sj: {
+    width: '0',
+    height: '0',
+    zIndex: '1000',
+    borderBottom: '6px solid transparent',
+    borderRight: '6px solid transparent',
+    borderTop: '6px solid rgba(0,0,0,0.5)',
+    borderLeft: '6px solid transparent',
+    position: 'absolute',
+    bottom: '-12px',
+    right: '85px',
+    content: ' ',
+    [theme.breakpoints.down('md')]: {
+      right: '42.5px',
+    }
+  },
+  stakeInput_lock: {
+    display: 'block',
+    float: 'left',
+    width: '400px',
+    height: '54px',
+    borderRadius: '4px 0px 0px 4px',
+    border: '1px solid #E5E6F2',
+    padding: '0 52px 0 14px',
+    fontSize: '16px',
+    fontWeight: '400',
+    backgroundColor: '#F4F4F4',
+    pointerEvents: 'none',
+    '&::-webkit-input-placeholder': {
+      color: '#DADADA'
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '220px',
+      height: '44px',
+      lineHeight: '44px',
+      padding: '0 50px 0 10px',
+      fontSize: '13px',
+      pointerEvents: 'none',
+    }
+  },
+  stakeSpan_lock: {
+    display: 'inline-block',
+    width: '170px',
+    height: '54px',
+    background: '#BA59FF',
+    borderRadius: '0px 4px 4px 0px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
+    cursor: 'pointer',
+    pointerEvents: 'none',
+    backgroundColor: '#C6C6C9',
+    [theme.breakpoints.down('md')]: {
+      width: '85px',
+      height: '44px',
+      lineHeight: '44px',
+      fontSize: '13px',
+      pointerEvents: 'none',
+    }
+  },
+  max_lock: {
+    position: 'absolute',
+    top: '0',
+    right: '170px',
+    lineHeight: '54px',
+    width: '52px',
+    margin: '0',
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#434976',
+    cursor: 'pointer',
+    pointerEvents: 'none',
+    color: '#DADADA',
+    [theme.breakpoints.down('md')]: {
+      width: '50px',
+      height: '44px',
+      lineHeight: '44px',
+      right: '85px',
+      textAlign: 'center',
+      fontSize: '14px',
+      pointerEvents: 'none',
     }
   }
 })
@@ -419,7 +559,6 @@ class Stake extends Component {
   constructor(props) {
     super(props)
     const account = store.getStore('account')
-    console.log(store.getStore('account'))
     // const pool = store.getStore('currentPool')
     const pool = this.props.location.state.currentPool
     // console.log("pool" + pool)
@@ -435,7 +574,8 @@ class Stake extends Component {
       value: 'options',
       voteLockValid: false,
       balanceValid: false,
-      voteLock: null
+      voteLock: null,
+      unstakeLock: false,
     }
     // if (pool && ['Fee Rewards', 'Governance'].includes(pool.id)) {
     //   dispatcher.dispatch({ type: GET_YCRV_REQUIREMENTS, content: {} })
@@ -466,20 +606,50 @@ class Stake extends Component {
             console.log(e)
           })
       } else {
-
       }
     });
   }
   componentDidMount() {
-
-    const { account } = this.state
-    if (!!Object.getOwnPropertyNames(account)) {
-      this.setState(() => (
-        {
-          modalOpen: true
+    // metamask networkChange
+    if (window.ethereum && window.ethereum.on) {
+      window.ethereum.autoRefreshOnNetworkChange = false;
+      window.ethereum.on('chainChanged', (_chainId) => {
+        if (window.sessionStorage.getItem("chainId") !== _chainId) {
+          window.sessionStorage.setItem("chainId", _chainId)
+          window.location.reload()
         }
-      ))
+      });
+
+      // metamask disConnect
+      window.ethereum.on('disconnect', () => {
+        console.log("disConnect")
+      });
+      // accountChange
+      window.ethereum.on('accountsChanged', (accounts) => {
+        const account = { address: accounts[0] }
+        store.setStore('account', account)
+        this.setState(() => (
+          {
+            account
+          }
+        ))
+        dispatcher.dispatch({ type: CONFIGURE, content: {} })
+        if (window.sessionStorage.getItem("accounts") !== accounts[0] + '') {
+          window.sessionStorage.setItem("accounts", accounts[0])
+          window.location.reload()
+        }
+      });
     }
+    setTimeout(() => {
+      const { account } = this.state
+      if (!Object.getOwnPropertyNames(account).length) {
+        this.setState(() => (
+          {
+            modalOpen: true
+          }
+        ))
+      }
+    }, 1000)
   }
   componentWillUnmount() {
     emitter.removeListener(CONNECTION_CONNECTED, this.connectionConnected);
@@ -508,10 +678,17 @@ class Stake extends Component {
   connectionConnected = () => {
     this.setState({ account: store.getStore('account') })
     dispatcher.dispatch({ type: CONFIGURE, content: {} })
+    this.setState(() => (
+      {
+        modalOpen: false
+      }
+    ))
   };
 
   connectionDisconnected = () => {
+    console.log(store.getStore('account'))
     this.setState({ account: store.getStore('account') })
+    dispatcher.dispatch({ type: CONFIGURE, content: {} })
   }
 
   balancesReturned = () => {
@@ -580,29 +757,30 @@ class Stake extends Component {
     }
     return (
       <div className={classes.root}>
+        <Header show={true} address={address} overlayClicked={this.overlayClicked} cur_language={this.props.cur_language} linkTo={'/'} />
         {modalOpen && this.renderModal()}
         {/* <Typography variant={'h5'} className={classes.disaclaimer}>This project is in beta. Use at your own risk.</Typography> */}
-        <div className={classes.intro}>
+        {/* <div className={classes.intro}>
           <Card className={classes.addressContainer} onClick={this.overlayClicked}>
             <Typography variant={'h3'} className={classes.walletTitle} noWrap>Wallet</Typography>
             <Typography variant={'h4'} className={classes.walletAddress} noWrap>{address}</Typography>
             <div style={{ background: '#DC6BE5', opacity: '1', borderRadius: '10px', width: '10px', height: '10px', marginRight: '3px', marginTop: '3px', marginLeft: '6px' }}></div>
           </Card>
-        </div>
-        <h1 className={classes.title}>Stake Balancer liquidity token to earn DF</h1>
-        <h2 className={classes.subTitle}>Here you can stake your BPT tokens, claim DF rewards, or exit completely.</h2>
+        </div> */}
+        <h1 className={classes.title}><FormattedMessage id='Staking_title' /></h1>
+        <h2 className={classes.subTitle}><FormattedMessage id='Staking_subTitle' /></h2>
         <div className={classes.overview}>
           <div className={classes.overviewField}>
-            <Typography variant={'h3'} className={classes.overviewTitle}>Your Balance</Typography>
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2) : "0"}  {pool.tokens[0].symbol}</Typography>
+            <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Your_Balance' /></Typography>
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"}  {pool.tokens[0].symbol}</Typography>
           </div>
           <div className={classes.overviewField}>
-            <Typography variant={'h3'} className={classes.overviewTitle}>Currently Staked</Typography>
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : "0"}</Typography>
+            <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Currently_Staked' /></Typography>
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"}</Typography>
           </div>
           <div className={[classes.lastField]}>
-            <Typography variant={'h3'} className={classes.overviewTitle}>Rewards Available</Typography>
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2) : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
+            <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Available_to_Claim' /></Typography>
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
           </div>
         </div>
         {pool.id === 'Fee Rewards' &&
@@ -617,72 +795,44 @@ class Stake extends Component {
           </div>
         }
         {this.stakeBox()}
-        {/* {this.renderStake()}
-        {this.renderUnstake()} */}
         {value === 'options' && this.renderOptions()}
-        {/* {value === 'stake' && this.renderStake()} */}
         {value === 'claim' && this.renderClaim()}
-        {/* {value === 'unstake' && this.renderUnstake()} */}
         {value === 'exit' && this.renderExit()}
-
         {snackbarMessage && this.renderSnackbar()}
         {loading && <Loader />}
+        <Footer cur_language={this.props.cur_language} setLanguage={this.props.setLanguage} />
       </div>
     )
   }
 
   renderOptions = () => {
     const { classes } = this.props;
-    const { loading, pool, voteLockValid, balanceValid, voteLock } = this.state
+    const { loading, pool, voteLockValid, balanceValid, voteLock, unstakeLock } = this.state
 
     return (
       <div className={classes.actions}>
-        {/* <div className={classes.actionContainer}>
-          <Button
-            fullWidth
-            className={classes.primaryButton}
-            variant="outlined"
-            color="primary"
-            disabled={(pool.id === 'Fee Rewards' ? (loading || !voteLockValid || !balanceValid) : loading)}
-            onClick={() => { this.navigateInternal('stake') }}
-          >
-            <Typography className={classes.stakeButtonText} variant={'h4'}>Stake Tokens</Typography>
-          </Button>
-        </div> */}
         <div className={classes.actionContainer}>
           <Button
             fullWidth
-            className={classes.actionButton}
+            className={!loading ? classes.actionButton : classes.disabledActionButton}
             variant="outlined"
             color="primary"
-            disabled={loading}
+            // disabled={loading}
             onClick={() => { this.onClaim() }}
           >
-            <Typography className={classes.buttonText} variant={'h4'}>Claim DF</Typography>
+            <div className={classes.buttonText}><FormattedMessage id='Claim_DF' /></div>
           </Button>
         </div>
-        {/* <div className={classes.actionContainer}>
-          <Button
-            fullWidth
-            className={classes.actionButton}
-            variant="outlined"
-            color="primary"
-            disabled={(pool.id === 'Governance' ? (loading || voteLockValid) : loading)}
-            onClick={() => { this.navigateInternal('unstake') }}
-          >
-            <Typography className={classes.buttonText} variant={'h4'}>Unstake Tokens</Typography>
-          </Button>
-        </div> */}
         <div className={classes.actionContainer}>
           <Button
             fullWidth
-            className={classes.actionButton}
+            className={!(!loading && !unstakeLock) ? classes.disabledActionButton : classes.actionButton}
             variant="outlined"
             color="primary"
-            disabled={(pool.id === 'Governance' ? (loading || voteLockValid) : loading)}
+            // disabled={loading}
             onClick={() => { this.onExit() }}
           >
-            <Typography className={classes.buttonText} variant={'h4'}>Exit: Claim and Unstake</Typography>
+            <div className={classes.buttonText}><FormattedMessage id='Exit_Claim_and_Unstake' /></div>
           </Button>
         </div>
         {(pool.id === 'Governance' && voteLockValid) && <Typography variant={'h4'} className={classes.voteLockMessage}>Unstaking tokens only allowed once all your pending votes have closed at Block: {voteLock}</Typography>}
@@ -696,7 +846,7 @@ class Stake extends Component {
 
   stakeBox = () => {
     const { classes } = this.props;
-    const { loading, pool } = this.state
+    const { loading, pool, unstakeLock } = this.state
     const asset = pool.tokens[0]
     const amount = this.state[asset.id + '_stake']
     const amountError = this.state[asset.id + '_stake_error']
@@ -712,74 +862,40 @@ class Stake extends Component {
             error={amountError}
             id={asset.id + '_stake'}
             onChange={e => this.onChange(e)} />
-          <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'stake')}>MAX</p>
-          <span className={classes.stakeSpan} onClick={() => { this.onStake() }}>STAKE</span>
+          <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
+          <span className={classes.stakeSpan} onClick={() => { this.onStake() }}><FormattedMessage id='STAKE' /></span>
         </div>
-        <div className={classes.unstake}>
-          <input
-            className={classes.stakeInput}
-            placeholder="Amount"
-            value={unAmount}
-            error={unAmountError}
-            id={asset.id + '_unstake'}
-            onChange={e => this.onChange(e)} />
-          <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'unstake')}>MAX</p>
-          <span className={classes.stakeSpan} onClick={() => { this.onUnstake() }}>UNSTAKE</span>
-        </div>
+        {
+          unstakeLock ?
+            <div className={classes.unstake_lock}>
+              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(1596171854898).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+              <input
+                className={classes.stakeInput_lock}
+                placeholder="Amount"
+                value={unAmount}
+                error={unAmountError}
+                id={asset.id + '_unstake'}
+              />
+              <p className={classes.max_lock}><FormattedMessage id='MAX' /></p>
+              <span className={classes.stakeSpan_lock}><FormattedMessage id='UNSTAKE' /></span>
+            </div>
+            : <div className={classes.unstake}>
+              <input
+                className={classes.stakeInput}
+                placeholder="Amount"
+                value={unAmount}
+                error={unAmountError}
+                id={asset.id + '_unstake'}
+                onChange={e => this.onChange(e)} />
+              <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'unstake')}><FormattedMessage id='MAX' /></p>
+              <span className={classes.stakeSpan} onClick={() => { this.onUnstake() }}><FormattedMessage id='UNSTAKE' /></span>
+            </div>
+
+        }
+
       </div>
     )
   }
-
-  // renderStake = () => {
-  //   const { classes } = this.props;
-  //   const { loading, pool } = this.state
-
-  //   const asset = pool.tokens[0]
-
-  //   return (
-  //     <div className={classes.actions}>
-  //       {/* <Typography className={classes.stakeTitle} variant={'h3'}>Stake your tokens</Typography> */}
-  //       {this.renderAssetInput(asset, 'stake')}
-  //       <div className={classes.stakeButtons}>
-  //         <Button
-  //           className={classes.stakeButton}
-  //           variant="outlined"
-  //           color="secondary"
-  //           disabled={loading}
-  //           onClick={() => { this.onStake() }}
-  //         >
-  //           <Typography variant={'h4'}>STACK</Typography>
-  //         </Button>
-  //       </div>
-
-  //     </div>
-  //   )
-  // }
-
-  // renderUnstake = () => {
-  //   const { classes } = this.props;
-  //   const { loading, pool, voteLockValid } = this.state
-
-  //   const asset = pool.tokens[0]
-
-  //   return (
-  //     <div className={classes.actions}>
-  //       {/* <Typography className={classes.stakeTitle} variant={'h3'}>Unstake your tokens</Typography> */}
-  //       {this.renderAssetInput(asset, 'unstake')}
-  //       <div className={classes.stakeButtons}>
-  //         <Button
-  //           className={classes.stakeButton}
-  //           variant="outlined"
-  //           color="secondary"
-  //           disabled={(pool.id === 'Governance' ? (loading || voteLockValid) : loading)}
-  //           onClick={() => { this.onUnstake() }}
-  //         >
-  //           <Typography variant={'h4'}>UNSTACK</Typography>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   )
-  // }
 
   overlayClicked = () => {
     this.setState({ modalOpen: true })
@@ -845,7 +961,6 @@ class Stake extends Component {
     } else if (type === 'unstake') {
       maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : '0'
     }
-    console.log(maxValue)
     this.setState(
       {
         [assetId + '_' + type]: maxValue
@@ -908,11 +1023,38 @@ class Stake extends Component {
     return <Snackbar type={snackbarType} message={snackbarMessage} open={true} />
   };
 
-  onChange = (event) => {
-    let val = []
-    val[event.target.id] = event.target.value
+  onChange = (e) => {
+    // 
+    const val = this.validChange(e)
     this.setState(val)
-    console.log(this.state)
+  }
+
+  validChange = (e) => {
+    const changeType = e.target.id.split('_')[1]
+    const { pool } = this.state
+
+    let maxValue
+
+    if (changeType === 'stake') {
+      maxValue = pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2) : "0";
+    } else if (changeType === 'unstake') {
+      maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : "0";
+    }
+
+    let value = e.target.value
+    value = value.replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符
+    value = value.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的
+    value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d).*$/, '$1$2.$3');//只能输入六个小数
+    if (Number(value) > Number(maxValue)) {
+      value = maxValue
+    }
+    if (value.indexOf(".") < 0 && value != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+      value = parseFloat(value);
+    }
+    let val = []
+    val[e.target.id] = value.toString()
+    return val;
   }
 
   setAmount = (id, type, balance) => {
