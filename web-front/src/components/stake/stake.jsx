@@ -11,13 +11,13 @@ import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-
+import Web3 from 'web3';
 import Header from '../header';
 import Footer from '../footer';
 import UnlockModal from '../unlock/unlockModal'
 import Loader from '../loader'
 import Snackbar from '../snackbar'
-
+import config from '../../config/config'
 import Store from "../../stores";
 import { colors } from '../../theme'
 
@@ -244,7 +244,9 @@ const styles = theme => ({
       marginRight: '30px'
     },
     height: '50px',
-    lineHeight: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: '18px',
     color: '#BA59FF',
     borderRadius: '4px',
@@ -256,7 +258,9 @@ const styles = theme => ({
     fontWeight: '700',
     border: '1px solid #E5E6F2!important',
     height: '50px',
-    lineHeight: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: '18px',
     borderRadius: '4px',
     pointerEvents: 'none',
@@ -269,7 +273,9 @@ const styles = theme => ({
     fontWeight: '700',
     border: '1px solid #E5E6F2!important',
     height: '50px',
-    lineHeight: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: '18px',
     borderRadius: '4px',
     pointerEvents: 'none',
@@ -576,6 +582,7 @@ class Stake extends Component {
       balanceValid: false,
       voteLock: null,
       unstakeLock: false,
+      timeStamp: 1596171854898
     }
     // if (pool && ['Fee Rewards', 'Governance'].includes(pool.id)) {
     //   dispatcher.dispatch({ type: GET_YCRV_REQUIREMENTS, content: {} })
@@ -640,7 +647,7 @@ class Stake extends Component {
         }
       });
     }
-    setTimeout(() => {
+    setTimeout(async () => {
       const { account } = this.state
       if (!Object.getOwnPropertyNames(account).length) {
         this.setState(() => (
@@ -648,6 +655,13 @@ class Stake extends Component {
             modalOpen: true
           }
         ))
+      }
+      if (store.getStore('web3context') !== null) {
+        const asset = this.state.pool
+        const web3 = new Web3(store.getStore('web3context').library.provider);
+        const LockContract = new web3.eth.Contract(asset.tokens[0].rewardsABI, asset.tokens[0].rewardsAddress)
+        console.log(LockContract)
+        // const Locked = await LockContract.methods.lockedDetails().call();
       }
     }, 1000)
   }
@@ -868,7 +882,7 @@ class Stake extends Component {
         {
           unstakeLock ?
             <div className={classes.unstake_lock}>
-              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(1596171854898).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
               <input
                 className={classes.stakeInput_lock}
                 placeholder="Amount"

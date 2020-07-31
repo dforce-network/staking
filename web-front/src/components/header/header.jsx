@@ -69,46 +69,6 @@ export default class App extends React.Component {
                         <img src={logo_xswap} alt="logo" />
                     </a>
                     <div className={'header__menu'}>
-                        {/* <Dropdown
-                            overlay={
-                                <Menu className={'header__overlay'}>
-                                    <Menu.Item>
-                                        <a target="_blank" rel="noopener noreferrer" href="https://usdx.dforce.network/" className={'header__overlay_item'}>
-                                            <span>USDx</span>
-                                            <label>
-                                                <FormattedMessage id='Portal' />
-                                            </label>
-                                        </a>
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        <a target="_blank" rel="noopener noreferrer" href="https://markets.dforce.network/" className={'header__overlay_item'}>
-                                            <span>
-                                                <FormattedMessage id='Yield_Markets' />
-                                            </span>
-                                            <label>
-                                                <FormattedMessage id='Yield_Markets_detail' />
-                                            </label>
-                                        </a>
-                                    </Menu.Item>
-
-                                    <Menu.Item>
-                                        <a target="_blank" rel="noopener noreferrer" href="https://goldx.dforce.network/" className={'header__overlay_item'}>
-                                            <span>
-                                                <FormattedMessage id='goldx' />
-                                            </span>
-                                            <label>
-                                                <FormattedMessage id='goldx_detail' />
-                                            </label>
-                                        </a>
-                                    </Menu.Item>
-                                </Menu>
-                            }
-                        >
-                            <span className={'header__menu_item'}>
-                                <label><FormattedMessage id='dForce_Stablecoin' /></label>
-                                <img src={arrow_d} alt="down" />
-                            </span>
-                        </Dropdown> */}
                         <div className={"dropDown"}>
                             <span className={'header__menu_item'}>
                                 <label><FormattedMessage id='dForce_Stablecoin' /></label>
@@ -182,51 +142,6 @@ export default class App extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {/* <Dropdown
-                            overlay={
-                                <Menu className={'header__overlay'}>
-                                    <Menu.Item>
-                                        <a rel="noopener noreferrer" href="https://trade.dforce.network/" className={'header__overlay_item'}>
-                                            <span>dForce Trade</span>
-                                            <label>
-                                                <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
-                                            </label>
-                                        </a>
-                                    </Menu.Item>
-                                </Menu>
-                            }
-                        >
-                            <span className={'header__menu_item'}>
-                                <label>
-                                    <FormattedMessage id='Exchange_Market' />
-                                </label>
-                                <img src={arrow_d} alt="down" />
-                            </span>
-                        </Dropdown> */}
-
-
-                        {/* <Dropdown
-                            overlay={
-                                <Menu className={'header__overlay'}>
-                                    <Menu.Item>
-                                        <a rel="noopener noreferrer" href="https://airdrop.dforce.network/" className={'header__overlay_item'}>
-                                            <span>Airdrop</span>
-                                            <label>
-                                                <FormattedMessage id='DF_token_distribute_system' />
-                                            </label>
-                                        </a>
-                                    </Menu.Item>
-                                </Menu>
-                            }
-                        >
-                            <span className={'header__menu_item'}>
-                                <label>
-                                    <FormattedMessage id='Governance' />
-                                </label>
-                                <img src={arrow_d} alt="down" />
-                            </span>
-                        </Dropdown> */}
-
                         {
                             this.props.address && this.props.show &&
                             <a

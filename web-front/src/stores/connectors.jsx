@@ -10,7 +10,6 @@ import { PortisConnector } from "@web3-react/portis-connector";
 import { SquarelinkConnector } from "@web3-react/squarelink-connector";
 import { TorusConnector } from "@web3-react/torus-connector";
 import { AuthereumConnector } from "@web3-react/authereum-connector";
-
 const POLLING_INTERVAL = 12000;
 // const RPC_URLS = {
 //   1: "https://mainnet.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150",
@@ -21,10 +20,8 @@ const RPC_URLS = {
   3: "https://kovan.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150",
   4: "https://rinkeby.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150"
 };
-
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]
-  // supportedChainIds: [3]
 });
 
 // export const network = new NetworkConnector({
@@ -34,7 +31,7 @@ export const injected = new InjectedConnector({
 // });
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 3: RPC_URLS[3] },
+  rpc: { 1: RPC_URLS[1] },
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
   pollingInterval: POLLING_INTERVAL
