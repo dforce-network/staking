@@ -175,6 +175,7 @@ class Store {
               rewardsAddress: config.balancerRewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI1,
               rewardsSymbol: 'DF',
+              rewardsDecimal: 12,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
@@ -199,6 +200,7 @@ class Store {
               rewardsAddress: config.balancerRewardsAddress1, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI1,
               rewardsSymbol: 'DF',
+              rewardsDecimal: 12,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
@@ -223,6 +225,7 @@ class Store {
               rewardsAddress: config.balancerRewardsAddress2, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI1,
               rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
@@ -233,7 +236,7 @@ class Store {
           id: 'Uniswap GOLDx/USDx Pool',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/swap?inputCurrency=0xc2996ce68439c05299baa646eb1824b719705580&outputCurrency=0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
+          link: 'https://app.uniswap.org/#/add/0xc2996ce68439c05299baa646eb1824b719705580/0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
           // icon: require('../assets/img2.svg'),
           logo: require('../assets/logo2.svg'),
           tokens: [
@@ -247,6 +250,7 @@ class Store {
               rewardsAddress: config.balancerRewardsAddress3, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI1,
               rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
@@ -257,7 +261,7 @@ class Store {
           id: 'Uniswap DF/USDx Pool',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/swap?inputCurrency=0x2c196af9540420e9f0716bfd8c9bf5fc9c3e227d&outputCurrency=0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
+          link: 'https://app.uniswap.org/#/add/0x2c196af9540420e9f0716bfd8c9bf5fc9c3e227d/0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
           // icon: require('../assets/img2.svg'),
           logo: require('../assets/logo2.svg'),
           tokens: [
@@ -271,7 +275,7 @@ class Store {
               rewardsAddress: config.balancerRewardsAddress4, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI1,
               rewardsSymbol: 'DF',
-              decimals: 18,
+              rewardsDecimal: 0,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
