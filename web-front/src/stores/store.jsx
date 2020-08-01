@@ -157,12 +157,12 @@ class Store {
         //   ]
         // },
         {
-          id: 'Uniswap DF/USDx Pool',
+          id: 'dUSDT',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'pools.Uniswap.exchange',
-          link: 'https://kovan.etherscan.io/address/0x4c153111272cB826A80627c4A51c48ccB7d3153B',
+          website: 'markets.dforce.network',
+          link: 'https://markets.dforce.network/',
           // icon: require('../assets/img1.svg'),
-          logo: require('../assets/logo1.svg'),
+          logo: require('../assets/dUSDT.svg'),
           tokens: [
             {
               id: 'bpt',
@@ -182,12 +182,12 @@ class Store {
           ]
         },
         {
-          id: 'Uniswap GOLDx/USDx Pool',
+          id: 'dUSDC',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'pools.Uniswap.exchange',
-          link: 'https://kovan.etherscan.io/address/0xc801DF89680D00ABEd5599e9EE6b35ecb54d49Fc',
+          website: 'markets.dforce.network',
+          link: 'https://markets.dforce.network/',
           // icon: require('../assets/img2.svg'),
-          logo: require('../assets/logo2.svg'),
+          logo: require('../assets/dUSDC.svg'),
           tokens: [
             {
               id: 'bpt',
@@ -204,17 +204,14 @@ class Store {
               rewardsAvailable: 0
             }
           ]
-        }
-
-
-        ,
+        },
         {
-          id: 'dUSDT',
+          id: 'dDAI',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network',
           // icon: require('../assets/img2.svg'),
-          logo: require('../assets/dUSDT.svg'),
+          logo: require('../assets/dDAI.svg'),
           tokens: [
             {
               id: 'bpt',
@@ -233,12 +230,12 @@ class Store {
           ]
         },
         {
-          id: 'dUSDC',
-          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'markets.dforce.network',
-          link: 'https://markets.dforce.network',
+          id: 'Uniswap GOLDx/USDx Pool',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/swap?inputCurrency=0xc2996ce68439c05299baa646eb1824b719705580&outputCurrency=0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
           // icon: require('../assets/img2.svg'),
-          logo: require('../assets/dUSDC.svg'),
+          logo: require('../assets/logo2.svg'),
           tokens: [
             {
               id: 'bpt',
@@ -257,12 +254,12 @@ class Store {
           ]
         },
         {
-          id: 'dDAI',
-          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'markets.dforce.network',
-          link: 'https://markets.dforce.network',
+          id: 'Uniswap DF/USDx Pool',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/swap?inputCurrency=0x2c196af9540420e9f0716bfd8c9bf5fc9c3e227d&outputCurrency=0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
           // icon: require('../assets/img2.svg'),
-          logo: require('../assets/dDAI.svg'),
+          logo: require('../assets/logo2.svg'),
           tokens: [
             {
               id: 'bpt',
