@@ -582,7 +582,7 @@ class Stake extends Component {
       balanceValid: false,
       voteLock: null,
       unstakeLock: false,
-      timeStamp: 1596171854898
+      timeStamp: 0
     }
     // if (pool && ['Fee Rewards', 'Governance'].includes(pool.id)) {
     //   dispatcher.dispatch({ type: GET_YCRV_REQUIREMENTS, content: {} })
@@ -660,8 +660,19 @@ class Stake extends Component {
         const asset = this.state.pool
         const web3 = new Web3(store.getStore('web3context').library.provider);
         const LockContract = new web3.eth.Contract(asset.tokens[0].rewardsABI, asset.tokens[0].rewardsAddress)
-        console.log(LockContract)
-        // const Locked = await LockContract.methods.lockedDetails().call();
+        console.log(asset.tokens[0])
+        // return;
+        const Locked = await LockContract.methods.lockedDetails().call();
+        // console.log(Locked)
+        if (Locked[0]) {
+          console.log(Locked)
+          this.setState({
+            unstakeLock: true,
+            timeStamp: Locked[1],
+          })
+        } else {
+          console.log(Locked)
+        }
       }
     }, 1000)
   }
@@ -882,7 +893,7 @@ class Stake extends Component {
         {
           unstakeLock ?
             <div className={classes.unstake_lock}>
-              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
               <input
                 className={classes.stakeInput_lock}
                 placeholder="Amount"

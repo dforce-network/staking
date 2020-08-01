@@ -185,18 +185,18 @@ class Home extends Component {
     const { classes, t, location } = this.props;
 
     return (
-      <div className={ classes.root }>
-        <Card className={ `${classes.card} ${classes.earn}` } onClick={ () => { this.nav(location.pathname+'staking') } }>
-          <DetailsIcon className={ `${classes.icon} icon` } />
-          <Typography variant={'h3'} className={ `${classes.title} title` }>Stake</Typography>
+      <div className={classes.root}>
+        <Card className={`${classes.card} ${classes.earn}`} onClick={() => { this.nav(location.pathname + 'staking') }}>
+          <DetailsIcon className={`${classes.icon} icon`} />
+          <Typography variant={'h3'} className={`${classes.title} title`}>Stake</Typography>
         </Card>
         {/*<Card className={ `${classes.card} ${classes.zap}` } onClick={ () => { this.nav(location.pathname+'propose') } }>
           <WbIncandescentIcon className={ `${classes.icon} icon` } />
           <Typography variant={'h3'} className={ `${classes.title} title` }>Propose</Typography>
         </Card>*/}
-        <Card className={ `${classes.card} ${classes.zap}` } onClick={ () => { this.nav(location.pathname+'vote') } }>
-          <HowToVoteIcon className={ `${classes.icon} icon` } />
-          <Typography variant={'h3'} className={ `${classes.title} title` }>Vote</Typography>
+        <Card className={`${classes.card} ${classes.zap}`} onClick={() => { this.nav(location.pathname + 'vote') }}>
+          <HowToVoteIcon className={`${classes.icon} icon`} />
+          <Typography variant={'h3'} className={`${classes.title} title`}>Vote</Typography>
         </Card>
         {/*<Card className={ `${classes.card} ${classes.pool}` } onClick={ () => { this.nav(location.pathname+'claim') }}>
           <AttachMoneyIcon className={ `${classes.icon} icon` } />
