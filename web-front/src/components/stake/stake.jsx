@@ -521,15 +521,7 @@ const styles = theme => ({
     textAlign: 'center',
     color: '#fff',
     cursor: 'pointer',
-    pointerEvents: 'none',
     backgroundColor: '#C6C6C9',
-    [theme.breakpoints.down('md')]: {
-      width: '85px',
-      height: '44px',
-      lineHeight: '44px',
-      fontSize: '13px',
-      pointerEvents: 'none',
-    }
   },
   max_lock: {
     position: 'absolute',
@@ -582,6 +574,7 @@ class Stake extends Component {
       balanceValid: false,
       voteLock: null,
       unstakeLock: false,
+      mouseEnter: false,
       timeStamp: 0
     }
     // if (pool && ['Fee Rewards', 'Governance'].includes(pool.id)) {
@@ -870,9 +863,16 @@ class Stake extends Component {
     this.setState({ value: val })
   }
 
+  onMouseOver = () => {
+    this.setState({ mouseEnter: true })
+  }
+  onMouseOut = () => {
+    this.setState({ mouseEnter: false })
+  }
+
   stakeBox = () => {
     const { classes } = this.props;
-    const { loading, pool, unstakeLock } = this.state
+    const { loading, pool, unstakeLock, mouseEnter } = this.state
     const asset = pool.tokens[0]
     const amount = this.state[asset.id + '_stake']
     const amountError = this.state[asset.id + '_stake_error']
@@ -880,6 +880,11 @@ class Stake extends Component {
     const unAmountError = this.state[asset.id + '_unstake_error']
     return (
       <div className={classes.stakeBox}>
+        {unstakeLock ?
+          <div className={classes.unstake_lock}>
+            <p>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</p>
+        </div> : ''
+        }
         <div className={classes.stake}>
           <input
             className={classes.stakeInput}
@@ -888,13 +893,13 @@ class Stake extends Component {
             error={amountError}
             id={asset.id + '_stake'}
             onChange={e => this.onChange(e)} />
-          <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
+          <p className={classes.max}  onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
           <span className={classes.stakeSpan} onClick={() => { this.onStake() }}><FormattedMessage id='STAKE' /></span>
         </div>
         {
           unstakeLock ?
             <div className={classes.unstake_lock}>
-              <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+              {mouseEnter ? <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>  : ''}
               <input
                 className={classes.stakeInput_lock}
                 placeholder="Amount"
@@ -903,7 +908,7 @@ class Stake extends Component {
                 id={asset.id + '_unstake'}
               />
               <p className={classes.max_lock}><FormattedMessage id='MAX' /></p>
-              <span className={classes.stakeSpan_lock}><FormattedMessage id='UNSTAKE' /></span>
+              <span className={classes.stakeSpan_lock} onMouseEnter={() => this.onMouseOver()} onMouseLeave={() => this.onMouseOut()}><FormattedMessage id='UNSTAKE' /></span>
             </div>
             : <div className={classes.unstake}>
               <input
@@ -916,7 +921,6 @@ class Stake extends Component {
               <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'unstake')}><FormattedMessage id='MAX' /></p>
               <span className={classes.stakeSpan} onClick={() => { this.onUnstake() }}><FormattedMessage id='UNSTAKE' /></span>
             </div>
-
         }
 
       </div>
@@ -1050,7 +1054,7 @@ class Stake extends Component {
   };
 
   onChange = (e) => {
-    // 
+    //
     const val = this.validChange(e)
     this.setState(val)
   }
