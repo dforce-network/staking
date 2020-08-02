@@ -236,7 +236,7 @@ class Store {
           id: 'Uniswap GOLDx/USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/add/0xc2996ce68439c05299baa646eb1824b719705580/0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
+          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
           // icon: require('../assets/img2.svg'),
           logo: require('../assets/logo2.svg'),
           tokens: [
@@ -261,7 +261,7 @@ class Store {
           id: 'Uniswap DF/USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/add/0x2c196af9540420e9f0716bfd8c9bf5fc9c3e227d/0x33284741d62914C97E7DEF7B4B21550138Bc7d5c',
+          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0',
           // icon: require('../assets/img2.svg'),
           logo: require('../assets/logo2.svg'),
           tokens: [

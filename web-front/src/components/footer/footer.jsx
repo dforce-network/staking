@@ -69,10 +69,10 @@ export default class App extends React.Component {
                     <div className='popup-is-open'>
                         <img src={img_is_open} alt='' />
                         <div className='popup-is-open-text'>
-                            Oracle System Maintain, Come back Soon...
+                            System Maintain, Come back Soon...
             </div>
                         <div className='popup-is-open-text'>
-                            Oracle系统维护，敬请期待...
+                            系统维护，敬请期待...
             </div>
                     </div>
                 </Modal>
@@ -85,7 +85,7 @@ export default class App extends React.Component {
                                 <FormattedMessage id='Resource' />
                             </div>
                             <div className="foot-item-content">
-                                <a href='https://github.com/dforce-network/xswap.git' target='_blank' rel="noopener noreferrer">
+                                <a href='https://github.com/dforce-network/staking' target='_blank' rel="noopener noreferrer">
                                     GitHub
                 </a>
                             </div>
@@ -93,9 +93,9 @@ export default class App extends React.Component {
                                 <a
                                     href={
                                         this.props.cur_language === '中文' ?
-                                            'https://docn.dforce.network/dforce-trade'
+                                            'https://github.com/dforce-network/staking'
                                             :
-                                            'https://docs.dforce.network/dforce-trading-protocol/dforce-trade'
+                                            'https://github.com/dforce-network/staking'
                                     }
                                     target='_blank'
                                     rel="noopener noreferrer"
