@@ -173,7 +173,7 @@ class Store {
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.balancerRewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI1,
+              rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 12,
               balance: 0,
@@ -198,7 +198,7 @@ class Store {
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.balancerRewardsAddress1, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI1,
+              rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 12,
               balance: 0,
@@ -223,7 +223,7 @@ class Store {
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.balancerRewardsAddress2, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI1,
+              rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
               balance: 0,
@@ -248,7 +248,7 @@ class Store {
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.balancerRewardsAddress3, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI1,
+              rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
               balance: 0,
@@ -273,7 +273,7 @@ class Store {
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.balancerRewardsAddress4, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI1,
+              rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
               balance: 0,
