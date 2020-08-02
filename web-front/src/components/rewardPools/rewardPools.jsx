@@ -297,7 +297,7 @@ class RewardPools extends Component {
         {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
       </Typography>
-      <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><FormattedMessage id='open' /></div>
+      <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b></div>
     </div>)
   }
 

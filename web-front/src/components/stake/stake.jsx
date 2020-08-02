@@ -743,6 +743,12 @@ class Stake extends Component {
     })
   };
 
+  formatNumber = (amount) => {
+    let roundAmount = amount.toFixed(4).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+    let index = roundAmount.indexOf('.')
+    return roundAmount.slice(0, index + 3)
+  }
+
   errorReturned = (error) => {
     const snackbarObj = { snackbarMessage: null, snackbarType: null }
     this.setState(snackbarObj)
@@ -794,7 +800,8 @@ class Stake extends Component {
           </div>
           <div className={classes.overviewField}>
             <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Currently_Staked' /></Typography>
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].symbol}</Typography>
+            {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].symbol}</Typography> */}
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? this.formatNumber(pool.tokens[0].stakedBalance) : "0"} {pool.tokens[0].symbol}</Typography>
           </div>
           <div className={[classes.lastField]}>
             <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Available_to_Claim' /></Typography>
@@ -985,15 +992,17 @@ class Stake extends Component {
 
   onMaxChange = (assetId, type) => {
     const { pool } = this.state
-    let maxValue
+    let maxValue, actualMaxValue
     if (type === 'stake') {
       maxValue = pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2) : '0'
+      actualMaxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
     } else if (type === 'unstake') {
       maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : '0'
+      actualMaxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
     }
     this.setState(
       {
-        [assetId + '_' + type]: maxValue
+        [assetId + '_' + type]: actualMaxValue
       }
     )
   }
