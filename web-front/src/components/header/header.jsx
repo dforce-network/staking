@@ -19,7 +19,6 @@ import { Modal } from 'antd';
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             // cur_language: props.language === 'zh-CN' ? '中文' : 'English',
             show_left_more_token: false,
@@ -255,7 +254,7 @@ export default class App extends React.Component {
 
                     <div className='wrap-mob'>
                         <div className='only-left'>
-                            <a href="https://dforce.network/" className={'header__logo'}>
+                            <a href={this.props.linkTo} className={'header__logo'}>
                                 <img src={logo_xswap} alt="logo" />
                             </a>
                         </div>

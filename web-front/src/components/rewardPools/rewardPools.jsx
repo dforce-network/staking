@@ -9,7 +9,7 @@ import Header from '../header';
 import Footer from '../footer';
 import Store from "../../stores";
 import { colors } from '../../theme'
-
+import dTokenPool from '../../assets/dTokenPool.svg'
 const styles = theme => ({
   root: {
     flex: 1,
@@ -190,13 +190,46 @@ const styles = theme => ({
       borderRadius: '2px'
     }
   },
+  dTokenBtnBox: {
+    width: '250px',
+    height: '50px',
+    lineHeight: '50px',
+    textAlign: 'center',
+    color: '#fff',
+    display: 'flex',
+    justifyContent: 'space-between;',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '280px',
+      height: '40px',
+      lineHeight: '40px',
+      fontSize: '16px',
+      borderRadius: '2px'
+    }
+  },
+  dTokenBtn: {
+    flex: '1',
+    textAlign: 'center',
+    color: '#fff',
+    background: '#BA59FF',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginRight: '5px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '16px',
+      borderRadius: '2px'
+    }
+  },
   poolWebsite: {
     height: '16px',
     fontSize: '16px',
     fontWeight: '400',
     color: 'rgba(164,167,190,1)',
     lineHeight: '16px',
-    textDecoration: 'underline'
+    textDecoration: 'underline',
+    '&:hover': {
+      color: '#BA59FF'
+    }
   },
   svgCenter: {
     width: '150px',
@@ -225,7 +258,6 @@ class RewardPools extends Component {
       loading: !(account && rewardPools),
       account: account
     }
-
     // dispatcher.dispatch({ type: GET_BALANCES, content: {} })
   }
 
@@ -269,8 +301,10 @@ class RewardPools extends Component {
 
   renderRewards = () => {
     const { rewardPools } = this.state
-
-    return rewardPools.map((rewardPool) => {
+    const dtoken = rewardPools.filter((item) => item.tokens[0].dToken)
+    const LP = rewardPools.filter((item) => !item.tokens[0].dToken)
+    const renderRewardPools = [...LP, dtoken]
+    return renderRewardPools.map((rewardPool) => {
       return this.renderRewardPool(rewardPool)
     })
   }
@@ -278,8 +312,64 @@ class RewardPools extends Component {
   renderRewardPool = (rewardPool) => {
 
     const { classes } = this.props
+    if (Array.isArray(rewardPool)) {
+      // let dtokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
+      let tokensList = rewardPool.map(item => (
+        item.tokens.map((rp) => { return rp.symbol }).join(', ')
+      )).join('/')
+      return (<div className={classes.rewardPoolContainer} key={"dToken"} >
+        {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
+        <Typography variant='h3' className={classes.poolName}>{tokensList}</Typography>
+        <Typography variant='h5'><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} target="_blank">{"https://markets.dforce.network/"}</a></Typography>
+        <div className={classes.svgCenter}><img src={dTokenPool} alt="" /></div>
+        <Typography varian='h4' className={classes.tokensList} align='center'>
+          <FormattedMessage id='tips_stake' />
+          <b className={classes.B}>{"dToken"}</b>
+          <FormattedMessage id='tips_earn' />
+          <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
+          {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
+        {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
+        </Typography>
+        {
+          <div className={classes.dTokenBtnBox}>
+            {
+              rewardPool.map(rp => (
+                <div className={classes.dTokenBtn} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.tokens[0].symbol}</b></div>
+              ))
+            }
+          </div>
+        }
+
+      </div>)
+    } else {
+      let tokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
+      // if (tokensList.length > 2) {
+      //   tokensList = (tokensList + ' ...')
+      // }
+
+      return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
+        {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
+        <Typography variant='h3' className={classes.poolName}>{rewardPool.id}</Typography>
+        <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
+        <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
+        <Typography varian='h4' className={classes.tokensList} align='center'>
+          <FormattedMessage id='tips_stake' />
+          <b className={classes.B}>{tokensList}</b>
+          <FormattedMessage id='tips_earn' />
+          <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
+          {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
+        {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
+        </Typography>
+        <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b></div>
+      </div>)
+    }
+  }
+  renderdTokenPool = (rewardPool) => {
+
+    const { classes } = this.props
 
     let tokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
+    let dtokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
     // if (tokensList.length > 2) {
     //   tokensList = (tokensList + ' ...')
     // }
@@ -304,7 +394,7 @@ class RewardPools extends Component {
   navigateStake = (rewardPool) => {
     store.setStore({ currentPool: rewardPool })
     const path = {
-      pathname: '/stake',
+      pathname: '/dapp',
       state: { currentPool: rewardPool },
     }
     this.props.history.push(path)

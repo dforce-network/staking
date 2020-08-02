@@ -42,6 +42,8 @@ const zh_CN = {
     STAKE: '质押',
     UNSTAKE: '提取质押',
     Claim_DF: '提取DF',
-    Exit_Claim_and_Unstake: '退出质押'
+    Exit_Claim_and_Unstake: '退出质押',
+    unstake_lock_title1: '只有在',
+    unstake_lock_title2: '之后才允许取消质押',
 }
 export default zh_CN;

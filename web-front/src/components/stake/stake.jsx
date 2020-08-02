@@ -456,6 +456,26 @@ const styles = theme => ({
       lineHeight: '44px',
     }
   },
+  unstakeLockTop: {
+    width: '570px',
+    margin: '0 auto 40px',
+    height: '54px',
+    lineHeight: '54px',
+    fontSize: '16px',
+    position: 'relative',
+    marginBottom: '0',
+    textAlign: 'left',
+    [theme.breakpoints.down('md')]: {
+      width: '305px',
+      margin: '0 auto 4px',
+      fontSize: '12px',
+      lineHeight: '20px',
+      height: "auto"
+    }
+  },
+  lockRed: {
+    color: '#FF4848'
+  },
   lockModal: {
     lineHeight: '20px',
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -522,6 +542,12 @@ const styles = theme => ({
     color: '#fff',
     cursor: 'pointer',
     backgroundColor: '#C6C6C9',
+    [theme.breakpoints.down('md')]: {
+      width: '85px',
+      height: '44px',
+      lineHeight: '44px',
+      fontSize: '13px',
+    }
   },
   max_lock: {
     position: 'absolute',
@@ -609,7 +635,7 @@ class Stake extends Component {
       }
     });
   }
-  componentDidMount() {
+  componentDidMount(prevProps) {
     // metamask networkChange
     if (window.ethereum && window.ethereum.on) {
       window.ethereum.autoRefreshOnNetworkChange = false;
@@ -653,12 +679,9 @@ class Stake extends Component {
         const asset = this.state.pool
         const web3 = new Web3(store.getStore('web3context').library.provider);
         const LockContract = new web3.eth.Contract(asset.tokens[0].rewardsABI, asset.tokens[0].rewardsAddress)
-        console.log(asset.tokens[0])
         // return;
         const Locked = await LockContract.methods.lockedDetails().call();
-        // console.log(Locked)
         if (Locked[0]) {
-          console.log(Locked)
           this.setState({
             unstakeLock: true,
             timeStamp: Locked[1],
@@ -704,7 +727,6 @@ class Stake extends Component {
   };
 
   connectionDisconnected = () => {
-    console.log(store.getStore('account'))
     this.setState({ account: store.getStore('account') })
     dispatcher.dispatch({ type: CONFIGURE, content: {} })
   }
@@ -781,7 +803,7 @@ class Stake extends Component {
     }
     return (
       <div className={classes.root}>
-        <Header show={true} address={address} overlayClicked={this.overlayClicked} cur_language={this.props.cur_language} linkTo={'/'} />
+        <Header show={true} address={address} overlayClicked={this.overlayClicked} cur_language={this.props.cur_language} linkTo={"/"} />
         {modalOpen && this.renderModal()}
         {/* <Typography variant={'h5'} className={classes.disaclaimer}>This project is in beta. Use at your own risk.</Typography> */}
         {/* <div className={classes.intro}>
@@ -796,7 +818,7 @@ class Stake extends Component {
         <div className={classes.overview}>
           <div className={classes.overviewField}>
             <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Your_Balance' /></Typography>
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"}  {pool.tokens[0].symbol}</Typography>
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].balance ? this.formatNumber(pool.tokens[0].balance) : "0"}  {pool.tokens[0].symbol}</Typography>
           </div>
           <div className={classes.overviewField}>
             <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Currently_Staked' /></Typography>
@@ -806,7 +828,7 @@ class Stake extends Component {
           <div className={[classes.lastField]}>
             <Typography variant={'h3'} className={classes.overviewTitle}><FormattedMessage id='Available_to_Claim' /></Typography>
             {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography> */}
-            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? (pool.tokens[0].rewardsAvailable/(10 ** (pool.tokens[0].rewardsDecimal))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
+            <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? (pool.tokens[0].rewardsAvailable / (10 ** (pool.tokens[0].rewardsDecimal))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
           </div>
         </div>
         {pool.id === 'Fee Rewards' &&
@@ -878,7 +900,7 @@ class Stake extends Component {
   }
 
   stakeBox = () => {
-    const { classes } = this.props;
+    const { classes, cur_language } = this.props;
     const { loading, pool, unstakeLock, mouseEnter } = this.state
     const asset = pool.tokens[0]
     const amount = this.state[asset.id + '_stake']
@@ -888,9 +910,14 @@ class Stake extends Component {
     return (
       <div className={classes.stakeBox}>
         {unstakeLock ?
-          <div className={classes.unstake_lock}>
-            <p>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</p>
-        </div> : ''
+          cur_language === "中文" ?
+            <div className={classes.unstakeLockTop}>
+              <FormattedMessage id='unstake_lock_title1' />:&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title2' />
+            </div> :
+            <div className={classes.unstakeLockTop}>
+              <FormattedMessage id='unstake_lock_title1' />:&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
+            </div>
+          : ''
         }
         <div className={classes.stake}>
           <input
@@ -900,13 +927,17 @@ class Stake extends Component {
             error={amountError}
             id={asset.id + '_stake'}
             onChange={e => this.onChange(e)} />
-          <p className={classes.max}  onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
+          <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
           <span className={classes.stakeSpan} onClick={() => { this.onStake() }}><FormattedMessage id='STAKE' /></span>
         </div>
         {
           unstakeLock ?
             <div className={classes.unstake_lock}>
-              {mouseEnter ? <div className={classes.lockModal}>Not immediately after the stake, the unstake time:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>  : ''}
+              {mouseEnter ?
+                cur_language === "中文" ?
+                  <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title2' /></div>
+                  : <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+                : ''}
               <input
                 className={classes.stakeInput_lock}
                 placeholder="Amount"
@@ -948,13 +979,13 @@ class Stake extends Component {
     const tokens = pool.tokens
     const selectedToken = tokens[0]
     const amount = this.state[selectedToken.id + '_stake']
-
     // if(amount > selectedToken.balance) {
     //   return false
     // }
-
-    this.setState({ loading: true })
-    dispatcher.dispatch({ type: STAKE, content: { asset: selectedToken, amount: amount } })
+    if (amount !== '0' && amount != 'undefined') {
+      this.setState({ loading: true })
+      dispatcher.dispatch({ type: STAKE, content: { asset: selectedToken, amount: amount } })
+    }
   }
 
   onClaim = () => {
@@ -971,14 +1002,15 @@ class Stake extends Component {
     const { pool } = this.state
     const tokens = pool.tokens
     const selectedToken = tokens[0]
-    const amount = this.state[selectedToken.id + '_unstake']
+    const amount = this.state[selectedToken.id + '_unstake'] + ''
     //
     // if(amount > selectedToken.balance) {
     //   return false
     // }
-
-    this.setState({ loading: true })
-    dispatcher.dispatch({ type: WITHDRAW, content: { asset: selectedToken, amount: amount } })
+    if (amount !== '0' && amount != 'undefined') {
+      this.setState({ loading: true })
+      amount && dispatcher.dispatch({ type: WITHDRAW, content: { asset: selectedToken, amount: amount } })
+    }
   }
 
   onExit = () => {
@@ -994,15 +1026,15 @@ class Stake extends Component {
     const { pool } = this.state
     let maxValue, actualMaxValue
     if (type === 'stake') {
-      maxValue = pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2) : '0'
-      actualMaxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
+      maxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
+      // actualMaxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
     } else if (type === 'unstake') {
-      maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : '0'
-      actualMaxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
+      maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
+      // actualMaxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
     }
     this.setState(
       {
-        [assetId + '_' + type]: actualMaxValue
+        [assetId + '_' + type]: maxValue
       }
     )
   }
@@ -1075,9 +1107,9 @@ class Stake extends Component {
     let maxValue
 
     if (changeType === 'stake') {
-      maxValue = pool.tokens[0].balance ? pool.tokens[0].balance.toFixed(2) : "0";
+      maxValue = pool.tokens[0].balance ? this.formatNumber(pool.tokens[0].balance) : "0";
     } else if (changeType === 'unstake') {
-      maxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2) : "0";
+      maxValue = pool.tokens[0].stakedBalance ? this.formatNumber(pool.tokens[0].stakedBalance) : "0";
     }
 
     let value = e.target.value

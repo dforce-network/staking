@@ -12,7 +12,7 @@ import { IntlProvider } from 'react-intl';
 import en_US from './language/en_US';
 import zh_CN from './language/zh_CN';
 import interestTheme from './theme';
-
+import ScrollToTop from './components/ScrollToTop'
 import Stake from './components/stake';
 import RewardsPools from './components/rewardPools';
 
@@ -37,14 +37,16 @@ class App extends Component {
         <MuiThemeProvider theme={createMuiTheme(interestTheme)}>
           <CssBaseline />
           <IpfsRouter>
-            <Switch>
-              <Route exact path="/">
-                <RewardsPools cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
-              </Route>
-              <Route exact path="/stake">
-                <Stake cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
-              </Route>
-            </Switch>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path="/">
+                  <RewardsPools cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
+                </Route>
+                <Route exact path="/dapp">
+                  <Stake cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
+                </Route>
+              </Switch>
+            </ScrollToTop>
           </IpfsRouter>
         </MuiThemeProvider>
       </IntlProvider>
