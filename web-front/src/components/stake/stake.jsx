@@ -912,10 +912,10 @@ class Stake extends Component {
         {unstakeLock ?
           cur_language === "中文" ?
             <div className={classes.unstakeLockTop}>
-              <FormattedMessage id='unstake_lock_title1' />:&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title2' />
+              <FormattedMessage id='unstake_lock_title1' />&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title2' />
             </div> :
             <div className={classes.unstakeLockTop}>
-              <FormattedMessage id='unstake_lock_title1' />:&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
+              <FormattedMessage id='unstake_lock_title1' />&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
             </div>
           : ''
         }
@@ -935,8 +935,8 @@ class Stake extends Component {
             <div className={classes.unstake_lock}>
               {mouseEnter ?
                 cur_language === "中文" ?
-                  <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title2' /></div>
-                  : <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />:&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+                  <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title2' /></div>
+                  : <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
                 : ''}
               <input
                 className={classes.stakeInput_lock}

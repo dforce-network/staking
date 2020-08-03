@@ -43,6 +43,6 @@ const en_US = {
     UNSTAKE: 'UNSTAKE',
     Claim_DF: 'Claim DF',
     Exit_Claim_and_Unstake: 'Exit: Claim and Unstake',
-    unstake_lock_title1: 'Unstake will be NOT available until'
+    unstake_lock_title1: 'Unstake will be NOT available until:'
 }
 export default en_US;
