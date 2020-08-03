@@ -89,7 +89,7 @@ export default class App extends React.Component {
                                     GitHub
                 </a>
                             </div>
-                            <div className="foot-item-content">
+                            {/* <div className="foot-item-content">
                                 <a
                                     href={
                                         this.props.cur_language === '中文' ?
@@ -102,7 +102,7 @@ export default class App extends React.Component {
                                 >
                                     FAQ
                 </a>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="foot-item">

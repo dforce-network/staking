@@ -550,11 +550,15 @@ function env() {
           "type": "function"
         }
       ],
+      // UniswapDF_LP_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
+      // DF_LP_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
+      // UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
+      // GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
       UniswapDF_LP_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
-      DF_LP_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
+      DF_LP_RewardsAddress: '0x2eA131E73f62403aF33399EC64A102D6ef189666',
 
       UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
-      GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
+      GOLDx_LP_RewardsAddress: '0x7f2c17CFc1D72897e543659C8398dc05a53bE454',
 
       dUSDT_dToken_Address: '0x4c153111272cB826A80627c4A51c48ccB7d3153B',
       dUSDT_RewardsAddress: '0x47FA31Ad523d0f79a658f2bA13f894dC65C619F3',
@@ -1103,10 +1107,10 @@ function env() {
         }
       ],
       UniswapDF_LP_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
-      DF_LP_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
+      DF_LP_RewardsAddress: '0x2eA131E73f62403aF33399EC64A102D6ef189666',
 
       UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
-      GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
+      GOLDx_LP_RewardsAddress: '0x7f2c17CFc1D72897e543659C8398dc05a53bE454',
 
       dUSDT_dToken_Address: '0x4c153111272cB826A80627c4A51c48ccB7d3153B',
       dUSDT_RewardsAddress: '0x47FA31Ad523d0f79a658f2bA13f894dC65C619F3',

@@ -31,7 +31,6 @@ import {
   GET_REWARDS_RETURNED,
   EXIT,
   EXIT_RETURNED,
-  GET_YCRV_REQUIREMENTS,
   GET_YCRV_REQUIREMENTS_RETURNED,
   GET_BALANCES_RETURNED,
   CONNECTION_CONNECTED,
@@ -353,9 +352,10 @@ const styles = theme => ({
     borderRadius: '6px',
     margin: '19px auto 40px',
     padding: '40px 0',
+    position: 'relative',
     [theme.breakpoints.down('md')]: {
       width: 'calc(100vw - 24px)',
-      padding: '20px 0',
+      padding: '20px 0 0',
       margin: '12px auto 15px',
     }
   },
@@ -366,7 +366,7 @@ const styles = theme => ({
     fontSize: '16px',
     position: 'relative',
     [theme.breakpoints.down('md')]: {
-      margin: '0 auto 15px',
+      margin: '0 auto 40px',
       fontSize: '13px',
       height: '44px',
       lineHeight: '44px',
@@ -380,7 +380,7 @@ const styles = theme => ({
     position: 'relative',
     marginBottom: '0',
     [theme.breakpoints.down('md')]: {
-      margin: '0 auto 15px',
+      margin: '0 auto 20px',
       fontSize: '13px',
       height: '44px',
       lineHeight: '44px',
@@ -450,7 +450,7 @@ const styles = theme => ({
     position: 'relative',
     marginBottom: '0',
     [theme.breakpoints.down('md')]: {
-      margin: '48px auto 15px',
+      margin: '0 auto 20px',
       fontSize: '13px',
       height: '44px',
       lineHeight: '44px',
@@ -458,19 +458,21 @@ const styles = theme => ({
   },
   unstakeLockTop: {
     width: '570px',
-    margin: '0 auto 40px',
-    height: '54px',
-    lineHeight: '54px',
+    margin: '0 auto',
+    height: '40px',
+    lineHeight: '40px',
     fontSize: '16px',
-    position: 'relative',
-    marginBottom: '0',
+    position: 'absolute',
+    left: '50%',
+    top: '0',
+    transform: 'translateX(-50%)',
     textAlign: 'left',
     [theme.breakpoints.down('md')]: {
       width: '305px',
       margin: '0 auto 4px',
       fontSize: '12px',
       lineHeight: '20px',
-      height: "auto"
+      height: "20px"
     }
   },
   lockRed: {
@@ -487,7 +489,7 @@ const styles = theme => ({
     fontSize: '12px',
     borderRadius: '2px',
     [theme.breakpoints.down('md')]: {
-      top: '-55px',
+      top: '-33px',
     }
   },
   sj: {
@@ -681,7 +683,9 @@ class Stake extends Component {
         const LockContract = new web3.eth.Contract(asset.tokens[0].rewardsABI, asset.tokens[0].rewardsAddress)
         // return;
         const Locked = await LockContract.methods.lockedDetails().call();
+
         if (Locked[0]) {
+          console.log(Locked)
           this.setState({
             unstakeLock: true,
             timeStamp: Locked[1],
@@ -978,11 +982,11 @@ class Stake extends Component {
     const { pool } = this.state
     const tokens = pool.tokens
     const selectedToken = tokens[0]
-    const amount = this.state[selectedToken.id + '_stake']
+    const amount = this.state[selectedToken.id + '_stake']+''
     // if(amount > selectedToken.balance) {
     //   return false
     // }
-    if (amount !== '0' && amount != 'undefined') {
+    if (amount !== '0' && amount !== 'undefined') {
       this.setState({ loading: true })
       dispatcher.dispatch({ type: STAKE, content: { asset: selectedToken, amount: amount } })
     }

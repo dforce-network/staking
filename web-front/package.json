@@ -1,6 +1,6 @@
 {
   "homepage": "./",
-  "name": "ygov-finance",
+  "name": "dforce-staking",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
