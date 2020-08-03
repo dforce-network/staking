@@ -112,32 +112,32 @@ class Store {
         claimableBalance: 0
       },
       rewardPools: [
-        // {
-        //   id: 'Uniswap GOLDx/USDx',
-        //   name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-        //   website: 'Uniswap Exchange',
-        //   link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
-        //   // icon: require('../assets/img2.svg'),
-        //   logo: require('../assets/logo2.svg'),
-        //   tokens: [
-        //     {
-        //       id: 'bpt',
-        //       address: config.UniswapGOLDx_LP_Token,
-        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-        //       symbol: 'UNI-V2',
-        //       type:'GOLDx',
-        //       abi: config.erc20ABI,
-        //       decimals: 18,
-        //       rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-        //       rewardsABI: config.balancerRewardsABI,
-        //       rewardsSymbol: 'DF',
-        //       rewardsDecimal: 0,
-        //       balance: 0,
-        //       stakedBalance: 0,
-        //       rewardsAvailable: 0
-        //     }
-        //   ]
-        // },
+        {
+          id: 'Uniswap GOLDx/USDx',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapGOLDx_LP_Token,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'UNI-V2',
+              type:'GOLDx',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
         {
           id: 'Uniswap DF/USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
@@ -190,59 +190,59 @@ class Store {
               rewardsAvailable: 0
             }
           ]
+        },
+        {
+          id: 'dUSDC',
+          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'markets.dforce.network',
+          link: 'https://markets.dforce.network/',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/dUSDC.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.dUSDC_dToken_Address,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'dUSDC',
+              dToken: true,
+              abi: config.erc20ABI,
+              decimals: 6,
+              rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 12,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
+        {
+          id: 'dDAI',
+          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'markets.dforce.network',
+          link: 'https://markets.dforce.network',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/dDAI.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.dDAI_dToken_Address,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'dDAI',
+              dToken: true,
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
         }
-        // {
-        //   id: 'dUSDC',
-        //   name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-        //   website: 'markets.dforce.network',
-        //   link: 'https://markets.dforce.network/',
-        //   // icon: require('../assets/img2.svg'),
-        //   logo: require('../assets/dUSDC.svg'),
-        //   tokens: [
-        //     {
-        //       id: 'bpt',
-        //       address: config.dUSDC_dToken_Address,
-        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-        //       symbol: 'dUSDC',
-        //       dToken: true,
-        //       abi: config.erc20ABI,
-        //       decimals: 6,
-        //       rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-        //       rewardsABI: config.balancerRewardsABI,
-        //       rewardsSymbol: 'DF',
-        //       rewardsDecimal: 12,
-        //       balance: 0,
-        //       stakedBalance: 0,
-        //       rewardsAvailable: 0
-        //     }
-        //   ]
-        // },
-        // {
-        //   id: 'dDAI',
-        //   name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-        //   website: 'markets.dforce.network',
-        //   link: 'https://markets.dforce.network',
-        //   // icon: require('../assets/img2.svg'),
-        //   logo: require('../assets/dDAI.svg'),
-        //   tokens: [
-        //     {
-        //       id: 'bpt',
-        //       address: config.dDAI_dToken_Address,
-        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-        //       symbol: 'dDAI',
-        //       dToken: true,
-        //       abi: config.erc20ABI,
-        //       decimals: 18,
-        //       rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-        //       rewardsABI: config.balancerRewardsABI,
-        //       rewardsSymbol: 'DF',
-        //       rewardsDecimal: 0,
-        //       balance: 0,
-        //       stakedBalance: 0,
-        //       rewardsAvailable: 0
-        //     }
-        //   ]
-        // }
       ]
     }
 

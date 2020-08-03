@@ -1,7 +1,7 @@
 function env() {
   if (process.env.NODE_ENV === "development") {
     return {
-      //       dUSDT： 6
+      //dUSDT： 6
       // dUSDT staking：  (锁定时间1天)
 
       // dUSDC: 6
@@ -568,17 +568,8 @@ function env() {
       UniswapDF_LP_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
       DF_LP_RewardsAddress: '0xdf9A07b7285BbF5EBe06AFDa092e02b899c90c92',
 
-      // UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
-      // GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
-
       dUSDT_dToken_Address: '0x868277d475E0e475E38EC5CdA2d9C83B5E1D9fc8',
       dUSDT_RewardsAddress: '0xAab1869cAa01e70b59A0E68A22b00076794B49f6',
-
-      // dUSDC_dToken_Address: '0xc801DF89680D00ABEd5599e9EE6b35ecb54d49Fc',
-      // dUSDC_RewardsAddress: '0xA67839b9bd488926840b750cAdB06ae388363204',
-
-      // dDAI_dToken_Address: '0x19205bfdaf1bc9fc8705ea9a73f560572fb8f455',
-      // dDAI_RewardsAddress: '0x73541562c5472Edb60333473E54662c964eFa4E2',
 
       erc20ABI: [{ "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "showMeTheMoney", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "_from", "type": "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "remaining", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }]
     }
@@ -1118,27 +1109,21 @@ function env() {
           "type": "function"
         }
       ],
-      
+
       UniswapDF_LP_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
-      DF_LP_RewardsAddress: '0xdf9A07b7285BbF5EBe06AFDa092e02b899c90c92',
+      DF_LP_RewardsAddress: '0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1',
+
+      UniswapGOLDx_LP_Token: '0xEf6317E783B22b2a2FC073e68260450236c20779',
+      GOLDx_LP_RewardsAddress: '0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc',
 
       dUSDT_dToken_Address: '0x868277d475E0e475E38EC5CdA2d9C83B5E1D9fc8',
-      dUSDT_RewardsAddress: '0xAab1869cAa01e70b59A0E68A22b00076794B49f6',
+      dUSDT_RewardsAddress: '0x324EebDAa45829c6A8eE903aFBc7B61AF48538df',
 
-      // UniswapDF_LP_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
-      // DF_LP_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
+      dUSDC_dToken_Address: '0x16c9cF62d8daC4a38FB50Ae5fa5d51E9170F3179',
+      dUSDC_RewardsAddress: '0xB71dEFDd6240c45746EC58314a01dd6D833fD3b5',
 
-      // UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
-      // GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
-
-      // dUSDT_dToken_Address: '0x4c153111272cB826A80627c4A51c48ccB7d3153B',
-      // dUSDT_RewardsAddress: '0x47FA31Ad523d0f79a658f2bA13f894dC65C619F3',
-
-      // dUSDC_dToken_Address: '0xc801DF89680D00ABEd5599e9EE6b35ecb54d49Fc',
-      // dUSDC_RewardsAddress: '0xA67839b9bd488926840b750cAdB06ae388363204',
-
-      // dDAI_dToken_Address: '0x19205bfdaf1bc9fc8705ea9a73f560572fb8f455',
-      // dDAI_RewardsAddress: '0x73541562c5472Edb60333473E54662c964eFa4E2',
+      dDAI_dToken_Address: '0x02285AcaafEB533e03A7306C55EC031297df9224',
+      dDAI_RewardsAddress: '0xD2fA07cD6Cd4A5A96aa86BacfA6E50bB3aaDBA8B',
 
       erc20ABI: [{ "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "showMeTheMoney", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "success", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "_from", "type": "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "remaining", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }]
     }
