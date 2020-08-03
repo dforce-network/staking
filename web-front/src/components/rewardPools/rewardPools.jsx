@@ -303,7 +303,7 @@ class RewardPools extends Component {
     const { rewardPools } = this.state
     const dtoken = rewardPools.filter((item) => item.tokens[0].dToken)
     const LP = rewardPools.filter((item) => !item.tokens[0].dToken)
-    const renderRewardPools = [...LP, dtoken]
+    const renderRewardPools = [ dtoken,...LP]
     return renderRewardPools.map((rewardPool) => {
       return this.renderRewardPool(rewardPool)
     })
@@ -323,10 +323,10 @@ class RewardPools extends Component {
         <Typography variant='h5'><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} target="_blank">{"https://markets.dforce.network/"}</a></Typography>
         <div className={classes.svgCenter}><img src={dTokenPool} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
-          <FormattedMessage id='tips_stake' />
-          <b className={classes.B}>{"dToken"}</b>
-          <FormattedMessage id='tips_earn' />
-          <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
+          {/* <FormattedMessage id='tips_stake' /> */}
+          <b className={classes.B}><FormattedMessage id='dToken'/></b>
+          {/* <FormattedMessage id='tips_earn' /> */}
+          {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
           {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
         </Typography>
@@ -353,10 +353,11 @@ class RewardPools extends Component {
         <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
         <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
-          <FormattedMessage id='tips_stake' />
-          <b className={classes.B}>{tokensList}</b>
-          <FormattedMessage id='tips_earn' />
-          <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
+          {/* <FormattedMessage id='tips_stake' /> */}
+          {/* <b className={classes.B}><FormattedMessage id='dToken' /></b> */}
+          <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].type}`} /></b>
+          {/* <FormattedMessage id='tips_earn' /> */}
+          {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
           {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
         </Typography>
@@ -380,9 +381,9 @@ class RewardPools extends Component {
       <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
       <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
       <Typography varian='h4' className={classes.tokensList} align='center'>
-        <FormattedMessage id='tips_stake' />
+        {/* <FormattedMessage id='tips_stake' />
         <b className={classes.B}>{tokensList}</b>
-        <FormattedMessage id='tips_earn' />
+        <FormattedMessage id='tips_earn' /> */}
         <b className={classes.B}><FormattedMessage id='tips_DF' /></b>
         {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}

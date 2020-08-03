@@ -113,43 +113,25 @@ class Store {
       },
       rewardPools: [
         // {
-        //   id: 'yearn',
-        //   name: 'yearn.finance',
-        //   website: 'curve.fi/y',
-        //   link: 'https://curve.fi/y',
-        //   tokens: [
-        //     {
-        //       id: 'ycurvefi',
-        //       address: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
-        //       symbol: 'curve.fi',
-        //       abi: config.erc20ABI,
-        //       decimals: 18,
-        //       rewardsAddress: config.yCurveFiRewardsAddress,
-        //       rewardsABI: config.yCurveFiRewardsABI,
-        //       rewardsSymbol: 'YFI',
-        //       decimals: 18,
-        //       balance: 0,
-        //       stakedBalance: 0,
-        //       rewardsAvailable: 0
-        //     }
-        //   ]
-        // },
-        // {
-        //   id: 'balancer',
-        //   name: 'Balancer Pool',
-        //   website: 'pools.balancer.exchange',
-        //   link: 'https://pools.balancer.exchange/#/pool/0x60626db611a9957C1ae4Ac5b7eDE69e24A3B76c5',
+        //   id: 'Uniswap GOLDx/USDx',
+        //   name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+        //   website: 'Uniswap Exchange',
+        //   link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
+        //   // icon: require('../assets/img2.svg'),
+        //   logo: require('../assets/logo2.svg'),
         //   tokens: [
         //     {
         //       id: 'bpt',
-        //       address: '0x60626db611a9957C1ae4Ac5b7eDE69e24A3B76c5',
-        //       symbol: 'BPT',
+        //       address: config.UniswapGOLDx_LP_Token,
+        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+        //       symbol: 'UNI-V2',
+        //       type:'GOLDx',
         //       abi: config.erc20ABI,
         //       decimals: 18,
-        //       rewardsAddress: config.balancerRewardsAddress,
+        //       rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
         //       rewardsABI: config.balancerRewardsABI,
-        //       rewardsSymbol: 'YFI',
-        //       decimals: 18,
+        //       rewardsSymbol: 'DF',
+        //       rewardsDecimal: 0,
         //       balance: 0,
         //       stakedBalance: 0,
         //       rewardsAvailable: 0
@@ -168,35 +150,11 @@ class Store {
               id: 'bpt',
               address: config.UniswapDF_LP_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'LP',
+              symbol: 'UNI-V2',
+              type:'DF',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.DF_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI,
-              rewardsSymbol: 'DF',
-              rewardsDecimal: 0,
-              balance: 0,
-              stakedBalance: 0,
-              rewardsAvailable: 0
-            }
-          ]
-        },
-        {
-          id: 'Uniswap GOLDx/USDx',
-          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
-          // icon: require('../assets/img2.svg'),
-          logo: require('../assets/logo2.svg'),
-          tokens: [
-            {
-              id: 'bpt',
-              address: config.UniswapGOLDx_LP_Token,
-              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'LP',
-              abi: config.erc20ABI,
-              decimals: 18,
-              rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
@@ -232,75 +190,27 @@ class Store {
               rewardsAvailable: 0
             }
           ]
-        },
-        {
-          id: 'dUSDC',
-          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'markets.dforce.network',
-          link: 'https://markets.dforce.network/',
-          // icon: require('../assets/img2.svg'),
-          logo: require('../assets/dUSDC.svg'),
-          tokens: [
-            {
-              id: 'bpt',
-              address: config.dUSDC_dToken_Address,
-              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'dUSDC',
-              dToken: true,
-              abi: config.erc20ABI,
-              decimals: 6,
-              rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI,
-              rewardsSymbol: 'DF',
-              rewardsDecimal: 12,
-              balance: 0,
-              stakedBalance: 0,
-              rewardsAvailable: 0
-            }
-          ]
-        },
-        {
-          id: 'dDAI',
-          name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'markets.dforce.network',
-          link: 'https://markets.dforce.network',
-          // icon: require('../assets/img2.svg'),
-          logo: require('../assets/dDAI.svg'),
-          tokens: [
-            {
-              id: 'bpt',
-              address: config.dDAI_dToken_Address,
-              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'dDAI',
-              dToken: true,
-              abi: config.erc20ABI,
-              decimals: 18,
-              rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI,
-              rewardsSymbol: 'DF',
-              rewardsDecimal: 0,
-              balance: 0,
-              stakedBalance: 0,
-              rewardsAvailable: 0
-            }
-          ]
         }
         // {
-        //   id: 'Governance',
-        //   name: 'Governance',
-        //   website: 'pools.balancer.exchange',
-        //   link: 'https://pools.balancer.exchange/#/pool/0x95c4b6c7cff608c0ca048df8b81a484aa377172b',
+        //   id: 'dUSDC',
+        //   name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+        //   website: 'markets.dforce.network',
+        //   link: 'https://markets.dforce.network/',
+        //   // icon: require('../assets/img2.svg'),
+        //   logo: require('../assets/dUSDC.svg'),
         //   tokens: [
         //     {
         //       id: 'bpt',
-        //       address: '0x95c4b6c7cff608c0ca048df8b81a484aa377172b',
-        //       symbol: 'BPT',
-        //       abi: config.bpoolABI,
-        //       decimals: 18,
-        //       rewardsAddress: config.governanceAddress,
-        //       rewardsABI: config.governanceABI,
-        //       rewardsSymbol: 'YFI',
-        //       decimals: 18,
+        //       address: config.dUSDC_dToken_Address,
+        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+        //       symbol: 'dUSDC',
+        //       dToken: true,
+        //       abi: config.erc20ABI,
+        //       decimals: 6,
+        //       rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+        //       rewardsABI: config.balancerRewardsABI,
+        //       rewardsSymbol: 'DF',
+        //       rewardsDecimal: 12,
         //       balance: 0,
         //       stakedBalance: 0,
         //       rewardsAvailable: 0
@@ -308,23 +218,25 @@ class Store {
         //   ]
         // },
         // {
-        //   id: 'Fee Rewards',
-        //   name: 'Fee Rewards',
-        //   website: 'ygov.finance',
-        //   link: 'https://ygov.finance/',
-        //   icon: require('../assets/img2.svg'),
-        //   logo: require('../assets/logo2.svg'),
+        //   id: 'dDAI',
+        //   name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+        //   website: 'markets.dforce.network',
+        //   link: 'https://markets.dforce.network',
+        //   // icon: require('../assets/img2.svg'),
+        //   logo: require('../assets/dDAI.svg'),
         //   tokens: [
         //     {
-        //       id: 'yfi',
-        //       address: config.yfiAddress,
-        //       symbol: 'YFI',
-        //       abi: config.yfiABI,
+        //       id: 'bpt',
+        //       address: config.dDAI_dToken_Address,
+        //       // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+        //       symbol: 'dDAI',
+        //       dToken: true,
+        //       abi: config.erc20ABI,
         //       decimals: 18,
-        //       rewardsAddress: config.feeRewardsAddress,
-        //       rewardsABI: config.feeRewardsABI,
-        //       rewardsSymbol: '$',
-        //       decimals: 18,
+        //       rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+        //       rewardsABI: config.balancerRewardsABI,
+        //       rewardsSymbol: 'DF',
+        //       rewardsDecimal: 0,
         //       balance: 0,
         //       stakedBalance: 0,
         //       rewardsAvailable: 0
@@ -642,7 +554,6 @@ class Store {
       if (err) {
         return emitter.emit(ERROR, err);
       }
-
       this._callStake(asset, account, amount, (err, res) => {
         if (err) {
           return emitter.emit(ERROR, err);

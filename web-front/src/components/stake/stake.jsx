@@ -3,21 +3,16 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import {
   Typography,
-  Button,
-  TextField,
-  InputAdornment
+  Button
 } from '@material-ui/core';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
 import Web3 from 'web3';
 import Header from '../header';
 import Footer from '../footer';
 import UnlockModal from '../unlock/unlockModal'
 import Loader from '../loader'
 import Snackbar from '../snackbar'
-import config from '../../config/config'
 import Store from "../../stores";
 import { colors } from '../../theme'
 
@@ -296,10 +291,6 @@ const styles = theme => ({
   actionInput: {
     padding: '0px 0px 12px 0px',
     fontSize: '0.5rem'
-  },
-  inputAdornment: {
-    fontWeight: '600',
-    fontSize: '1.5rem'
   },
   assetIcon: {
     display: 'inline-block',
@@ -585,13 +576,7 @@ class Stake extends Component {
   constructor(props) {
     super(props)
     const account = store.getStore('account')
-    // const pool = store.getStore('currentPool')
     const pool = this.props.location.state.currentPool
-    // console.log("pool" + pool)
-    // console.log(store)
-    // if (!pool) {
-    //   props.history.push('/')
-    // }
     this.state = {
       pool: pool,
       loading: !account,
@@ -605,9 +590,6 @@ class Stake extends Component {
       mouseEnter: false,
       timeStamp: 0
     }
-    // if (pool && ['Fee Rewards', 'Governance'].includes(pool.id)) {
-    //   dispatcher.dispatch({ type: GET_YCRV_REQUIREMENTS, content: {} })
-    // }
   }
 
   componentWillMount() {
@@ -835,17 +817,6 @@ class Stake extends Component {
             <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? (pool.tokens[0].rewardsAvailable / (10 ** (pool.tokens[0].rewardsDecimal))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
           </div>
         </div>
-        {pool.id === 'Fee Rewards' &&
-          <div className={classes.actions}>
-            <Typography className={classes.stakeTitle} variant={'h3'}>yCRV reward requirements</Typography>
-            <div className={classes.requirement}>
-              <Typography variant={'h4'}>You must have voted in a proposal recently</Typography><Typography variant={'h4'} className={classes.check}>{voteLockValid ? <CheckIcon style={{ color: colors.green }} /> : <ClearIcon style={{ color: colors.red }} />}</Typography>
-            </div>
-            <div className={classes.requirement}>
-              <Typography variant={'h4'}>You must have at least 1000 BPT staked in the Governance pool</Typography><Typography variant={'h4'} className={classes.check}>{balanceValid ? <CheckIcon style={{ color: colors.green }} /> : <ClearIcon style={{ color: colors.red }} />}</Typography>
-            </div>
-          </div>
-        }
         {this.stakeBox()}
         {value === 'options' && this.renderOptions()}
         {value === 'claim' && this.renderClaim()}
@@ -916,7 +887,7 @@ class Stake extends Component {
         {unstakeLock ?
           cur_language === "中文" ?
             <div className={classes.unstakeLockTop}>
-              <FormattedMessage id='unstake_lock_title1' />&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title2' />
+              <span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title1' />
             </div> :
             <div className={classes.unstakeLockTop}>
               <FormattedMessage id='unstake_lock_title1' />&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
@@ -939,7 +910,7 @@ class Stake extends Component {
             <div className={classes.unstake_lock}>
               {mouseEnter ?
                 cur_language === "中文" ?
-                  <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title2' /></div>
+                  <div className={classes.lockModal}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title1' /></div>
                   : <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
                 : ''}
               <input
@@ -1011,7 +982,7 @@ class Stake extends Component {
     // if(amount > selectedToken.balance) {
     //   return false
     // }
-    if (amount !== '0' && amount != 'undefined') {
+    if (amount !== '0' && amount !== 'undefined') {
       this.setState({ loading: true })
       amount && dispatcher.dispatch({ type: WITHDRAW, content: { asset: selectedToken, amount: amount } })
     }
@@ -1043,52 +1014,6 @@ class Stake extends Component {
     )
   }
 
-  renderAssetInput = (asset, type) => {
-    const {
-      classes
-    } = this.props
-
-    const {
-      loading
-    } = this.state
-
-    const amount = this.state[asset.id + '_' + type]
-    const amountError = this.state[asset.id + '_' + type + '_error']
-
-    return (
-      <div className={classes.valContainer} key={asset.id + '_' + type}>
-        <div className={classes.balances}>
-          {type === 'stake' && <Typography variant='h4' onClick={() => { this.setAmount(asset.id, type, (asset ? asset.balance : 0)) }} className={classes.value} noWrap>{'Balance: ' + (asset && asset.balance ? (Math.floor(asset.balance * 10000) / 10000).toFixed(4) : '0.0000')} {asset ? asset.symbol : ''}</Typography>}
-          {type === 'unstake' && <Typography variant='h4' onClick={() => { this.setAmount(asset.id, type, (asset ? asset.stakedBalance : 0)) }} className={classes.value} noWrap>{'Balance: ' + (asset && asset.stakedBalance ? (Math.floor(asset.stakedBalance * 10000) / 10000).toFixed(4) : '0.0000')} {asset ? asset.symbol : ''}</Typography>}
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            disabled={loading}
-            className={classes.actionInput}
-            id={'' + asset.id + '_' + type}
-            value={amount}
-            error={amountError}
-            onChange={this.onChange}
-            placeholder="0.00"
-            variant="outlined"
-            InputProps={{
-              endAdornment: <InputAdornment position="end" className={classes.inputAdornment}><Typography variant='h3' className={''}>{asset.symbol}</Typography></InputAdornment>,
-              startAdornment: <InputAdornment position="end" className={classes.inputAdornment}>
-                <div className={classes.assetIcon}>
-                  <img
-                    alt=""
-                    src={require('../../assets/' + asset.symbol + '-logo.png')}
-                    height="30px"
-                  />
-                </div>
-              </InputAdornment>,
-            }}
-          />
-        </div>
-      </div>
-    )
-  }
 
   renderSnackbar = () => {
     var {
