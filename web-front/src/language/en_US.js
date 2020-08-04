@@ -35,8 +35,8 @@ const en_US = {
     DF_DF:'Singularity Pool',
     DF_GOLDx:'$GOLDx Rush Pool',
     open: 'Open',
-    Staking_title: 'Stake liquidity token to earn DF',
-    Staking_subTitle: 'Here you can stake your liquidity tokens, claim DF rewards, or exit completely.',
+    Staking_title: 'dForce (DF) Liquidity Mining',
+    Staking_subTitle: 'Participate in dForce liquidity mining by staking and earn DF rewards',
     Your_Balance: 'Your Balance',
     Currently_Staked: 'Currently Staked',
     Available_to_Claim: 'Available to Claim',
@@ -46,6 +46,6 @@ const en_US = {
     UNSTAKE: 'UNSTAKE',
     Claim_DF: 'Claim DF',
     Exit_Claim_and_Unstake: 'Exit: Claim and Unstake',
-    unstake_lock_title1: 'Unstake will be NOT available until:'
+    unstake_lock_title1: 'Lock-up period for pledged assets will end by:'
 }
 export default en_US;

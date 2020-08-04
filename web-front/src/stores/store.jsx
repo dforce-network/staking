@@ -467,13 +467,36 @@ class Store {
     }
   }
 
+  // toStringDecimals
+  toStringDecimals = (numStr, decimals, decimalPlace = decimals)=>{
+        numStr = numStr.toLocaleString().replace(/,/g, '');
+        decimals = decimals.toString();
+    
+        var str = Number(`1e+${decimals}`).toLocaleString().replace(/,/g, '').slice(1);
+    
+        var res = (numStr.length > decimals ?
+            numStr.slice(0, numStr.length - decimals) + '.' + numStr.slice(numStr.length - decimals) :
+            '0.' + str.slice(0, str.length - numStr.length) + numStr).replace(/(0+)$/g, "");
+    
+        // res = res.slice(-1) == '.' ? res + '00' : res;
+    
+        if (decimalPlace == 0)
+            return res.slice(0, res.indexOf('.'));
+    
+        var length = res.indexOf('.') + 1 + decimalPlace;
+        res = res.slice(0, length >= res.length ? res.length : length).replace(/(0+)$/g, "");
+        return res.slice(-1) == '.' ? res + '00' : res;
+    }
+
   _getERC20Balance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address)
 
     try {
       var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
-      balance = parseFloat(balance) / 10 ** asset.decimals
-      callback(null, parseFloat(balance))
+      // console.log(Number(this.toStringDecimals(balance, asset.decimals)),this.toStringDecimals(balance, asset.decimals),balance)
+      // balance = parseFloat(balance) / 10 ** asset.decimals
+      callback(null, this.toStringDecimals(balance, asset.decimals))
+      
     } catch (ex) {
       return callback(ex)
     }
@@ -484,8 +507,8 @@ class Store {
 
     try {
       var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
-      balance = parseFloat(balance) / 10 ** asset.decimals
-      callback(null, parseFloat(balance))
+      // balance = parseFloat(balance) / 10 ** asset.decimals
+      callback(null, this.toStringDecimals(balance, asset.decimals))
     } catch (ex) {
       return callback(ex)
     }
@@ -549,7 +572,6 @@ class Store {
   stake = (payload) => {
     const account = store.getStore('account')
     const { asset, amount } = payload.content
-
     this._checkApproval(asset, account, amount, asset.rewardsAddress, (err) => {
       if (err) {
         return emitter.emit(ERROR, err);
@@ -566,13 +588,26 @@ class Store {
 
   _callStake = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
-
     const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
-
+    
     var amountToSend = web3.utils.toWei(amount, "ether")
     if (asset.decimals != 18) {
-      amountToSend = (amount * 10 ** asset.decimals).toFixed(0);
+      amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
+      
     }
+    
+    // setTimeout(() => {
+    //   store.getStore('web3context').library
+    //           .getSigner(account)
+    //           .signMessage('签名')
+    //           .then((signature) => {
+    //             window.alert(`Success!\n\n${signature}`)
+    //             // setSigned(true)
+    //           })
+    //           .catch((error) => {
+    //             window.alert('Failure!' + (error && error.message ? `\n\n${error.message}` : ''))
+    //           })
+    //       }, 2000)
 
     yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
       .on('transactionHash', function (hash) {

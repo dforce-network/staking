@@ -12,13 +12,13 @@ import { TorusConnector } from "@web3-react/torus-connector";
 import { AuthereumConnector } from "@web3-react/authereum-connector";
 const POLLING_INTERVAL = 12000;
 // const RPC_URLS = {
-//   1: "https://mainnet.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150",
-//   4: "https://rinkeby.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150"
+//   1: "https://mainnet.infura.io/v3/3903dd30564147e5a22b76dc79815e2a",
+//   4: "https://rinkeby.infura.io/v3/3903dd30564147e5a22b76dc79815e2a"
 // };
 const RPC_URLS = {
-  1: "https://mainnet.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150",
-  3: "https://kovan.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150",
-  4: "https://rinkeby.infura.io/v3/bd80ce1ca1f94da48e151bb6868bb150"
+  1: "https://mainnet.infura.io/v3/3903dd30564147e5a22b76dc79815e2a",
+  3: "https://kovan.infura.io/v3/3903dd30564147e5a22b76dc79815e2a",
+  4: "https://rinkeby.infura.io/v3/3903dd30564147e5a22b76dc79815e2a"
 };
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]

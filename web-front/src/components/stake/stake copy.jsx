@@ -588,9 +588,9 @@ class Stake extends Component {
       voteLock: null,
       unstakeLock: false,
       mouseEnter: false,
-      timeStamp: 0,
-      clickMax:false
+      timeStamp: 0
     }
+    window.new_web3 = new Web3(Web3.givenProvider || null);
   }
 
   componentWillMount() {
@@ -753,9 +753,10 @@ class Stake extends Component {
   };
 
   formatNumber = (amount,decimals,decimalPlace=decimals) => {
-    let roundAmount = amount.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+    amount = parseFloat(amount/ 10 ** decimals)
+    let roundAmount = amount.toFixed(decimalPlace).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
     let index = roundAmount.indexOf('.')
-    return roundAmount.slice(0, index-1 + decimalPlace)
+    return roundAmount.slice(0, index + decimalPlace-1)
   }
 
   errorReturned = (error) => {
@@ -889,8 +890,7 @@ class Stake extends Component {
         {unstakeLock ?
           cur_language === "中文" ?
             <div className={classes.unstakeLockTop}>
-              <FormattedMessage id='unstake_lock_title1' />
-              <span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
+              <span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span><FormattedMessage id='unstake_lock_title1' />
             </div> :
             <div className={classes.unstakeLockTop}>
               <FormattedMessage id='unstake_lock_title1' />&nbsp;<span className={classes.lockRed}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}</span>
@@ -903,7 +903,8 @@ class Stake extends Component {
             placeholder="Amount"
             value={amount}
             error={amountError}
-            onChange={e => this.onChange(e,asset.id,'stake')} />
+            id={asset.id + '_stake'}
+            onChange={e => this.onChange(e)} />
           <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'stake')}><FormattedMessage id='MAX' /></p>
           <span className={classes.stakeSpan} onClick={() => { this.onStake() }}><FormattedMessage id='STAKE' /></span>
         </div>
@@ -912,14 +913,15 @@ class Stake extends Component {
             <div className={classes.unstake_lock}>
               {mouseEnter ?
                 cur_language === "中文" ?
-                  <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
+                  <div className={classes.lockModal}>{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div><FormattedMessage id='unstake_lock_title1' /></div>
                   : <div className={classes.lockModal}><FormattedMessage id='unstake_lock_title1' />&nbsp;{moment(this.state.timeStamp * 1000).format('HH:mm:ss YYYY/MM/DD')}<div className={classes.sj}></div></div>
                 : ''}
               <input
                 className={classes.stakeInput_lock}
                 placeholder="Amount"
-                // value={unAmount}
+                value={unAmount}
                 error={unAmountError}
+                id={asset.id + '_unstake'}
               />
               <p className={classes.max_lock}><FormattedMessage id='MAX' /></p>
               <span className={classes.stakeSpan_lock} onMouseEnter={() => this.onMouseOver()} onMouseLeave={() => this.onMouseOut()}><FormattedMessage id='UNSTAKE' /></span>
@@ -930,7 +932,8 @@ class Stake extends Component {
                 placeholder="Amount"
                 value={unAmount}
                 error={unAmountError}
-                onChange={e => this.onChange(e,asset.id,'unstake')} />
+                id={asset.id + '_unstake'}
+                onChange={e => this.onChange(e)} />
               <p className={classes.max} onClick={() => this.onMaxChange(asset.id, 'unstake')}><FormattedMessage id='MAX' /></p>
               <span className={classes.stakeSpan} onClick={() => { this.onUnstake() }}><FormattedMessage id='UNSTAKE' /></span>
             </div>
@@ -950,16 +953,11 @@ class Stake extends Component {
 
   onStake = () => {
     this.setState({ amountError: false })
-    const { pool,clickMax } = this.state
+    const { pool } = this.state
     const tokens = pool.tokens
     const selectedToken = tokens[0]
-    let amount
-    if(clickMax){
-      amount = this.state[selectedToken.id + '_max_stake']+''
-    }else{
-      amount = this.state[selectedToken.id + '_stake']+''
-    }
-    console.log(amount)
+    const amount = this.state[selectedToken.id + '_stake']+''
+    // const amount = pool.tokens[0].balance + ''
     // if(amount > selectedToken.balance) {
     //   return false
     // }
@@ -980,16 +978,11 @@ class Stake extends Component {
 
   onUnstake = () => {
     this.setState({ amountError: false })
-    const { pool,clickMax } = this.state
+    const { pool } = this.state
     const tokens = pool.tokens
     const selectedToken = tokens[0]
-    let amount
-    if(clickMax){
-      amount = this.state[selectedToken.id + '_max_unstake']+''
-    }else{
-      amount = this.state[selectedToken.id + '_unstake']+''
-    }
-    console.log(amount)
+    const amount = this.state[selectedToken.id + '_unstake'] + ''
+    // const amount =pool.tokens[0].stakedBalance +''
     //
     // if(amount > selectedToken.balance) {
     //   return false
@@ -1004,28 +997,25 @@ class Stake extends Component {
     const { pool } = this.state
     const tokens = pool.tokens
     const selectedToken = tokens[0]
-
     this.setState({ loading: true })
     dispatcher.dispatch({ type: EXIT, content: { asset: selectedToken } })
   }
 
   onMaxChange = (assetId, type) => {
     const { pool } = this.state
-    let maxValue,actualMaxValue
+    let maxValue, actualMaxValue
     if (type === 'stake') {
       maxValue = pool.tokens[0].balance ? this.formatNumber(pool.tokens[0].balance,pool.tokens[0].decimals,8) : '0'
-      actualMaxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
+      // actualMaxValue = pool.tokens[0].balance ? pool.tokens[0].balance : '0'
     } else if (type === 'unstake') {
-      maxValue = pool.tokens[0].stakedBalance ? this.formatNumber(pool.tokens[0].stakedBalance,pool.tokens[0].decimals,8) : '0'
-      actualMaxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
+      maxValue = pool.tokens[0].stakedBalance ? this.formatNumber(pool.tokens[0].balance,pool.tokens[0].decimals,8) : '0'
+      // actualMaxValue = pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance : '0'
     }
-    this.setState(()=>(
+    this.setState(
       {
-        clickMax:true,
-        [assetId + '_' + type]: maxValue,
-        [assetId + '_max_' + type]: actualMaxValue
+        [assetId + '_' + type]: maxValue
       }
-    ))
+    )
   }
 
 
@@ -1037,23 +1027,20 @@ class Stake extends Component {
     return <Snackbar type={snackbarType} message={snackbarMessage} open={true} />
   };
 
-  onChange = (e,assetId,type) => {
-    
-    this.validChange(e,assetId,type)
-    // this.setState(()=>(
-    //   {
-    //     [assetId + '_' + type]: val,
-    //     clickMax:false
-    //   }
-    // ))
+  onChange = (e) => {
+    const val = this.validChange(e)
+    this.setState(val)
   }
 
-  validChange = (e,assetId,type) => {
+  validChange = (e) => {
+    const changeType = e.target.id.split('_')[1]
     const { pool } = this.state
+
     let maxValue
-    if (type === 'stake') {
+
+    if (changeType === 'stake') {
       maxValue = pool.tokens[0].balance ? this.formatNumber(pool.tokens[0].balance,pool.tokens[0].decimals,8) : "0";
-    } else if (type === 'unstake') {
+    } else if (changeType === 'unstake') {
       maxValue = pool.tokens[0].stakedBalance ? this.formatNumber(pool.tokens[0].stakedBalance,pool.tokens[0].decimals,8) : "0";
     }
 
@@ -1063,19 +1050,14 @@ class Stake extends Component {
     value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
     value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d).*$/, '$1$2.$3');//只能输入六个小数
     if (Number(value) > Number(maxValue)) {
-      this.onMaxChange(assetId, type)
-      // value = maxValue
-      return false
+      value = maxValue
     }
     if (value.indexOf(".") < 0 && value != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
       value = parseFloat(value);
     }
-    this.setState(()=>(
-      {
-        [assetId + '_' + type]: value.toString(),
-        clickMax:false
-      }
-    ))
+    let val = []
+    val[e.target.id] = value.toString()
+    return val;
   }
 
   setAmount = (id, type, balance) => {

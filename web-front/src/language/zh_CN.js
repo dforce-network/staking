@@ -35,8 +35,8 @@ const zh_CN = {
     DF_DF:'奇点池',
     DF_GOLDx:'淘金池',
     open: '开始',
-    Staking_title: '质押流动性权益赚DF',
-    Staking_subTitle: '通过质押流动性权益，你可以提取质押，提取DF奖励，或退出质押',
+    Staking_title: 'dForce（DF）质押挖矿',
+    Staking_subTitle: '参与dForce流动性质押挖矿并获得DF激励',
     Your_Balance: '余额',
     Currently_Staked: '已质押量',
     Available_to_Claim: '可取数量',
@@ -47,6 +47,6 @@ const zh_CN = {
     Claim_DF: '提取DF',
     Exit_Claim_and_Unstake: '退出质押',
     // unstake_lock_title1: '只有在',
-    unstake_lock_title1: '之后才允许提取质押',
+    unstake_lock_title1: '抵押资产解锁期限为：',
 }
 export default zh_CN;
