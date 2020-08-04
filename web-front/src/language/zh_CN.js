@@ -40,6 +40,8 @@ const zh_CN = {
     Your_Balance: '余额',
     Currently_Staked: '已质押量',
     Available_to_Claim: '可取数量',
+    APY:'正在以年化',
+    APY2:'计息',
     Amount: '数量',
     MAX: '最大值',
     STAKE: '质押',

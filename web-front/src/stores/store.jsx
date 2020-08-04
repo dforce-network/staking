@@ -114,6 +114,7 @@ class Store {
       rewardPools: [
         {
           id: 'Uniswap GOLDx/USDx',
+          urlParam:'GOLDx-USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
           link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
@@ -140,6 +141,7 @@ class Store {
         },
         {
           id: 'Uniswap DF/USDx',
+          urlParam:'DF-USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
           link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0',
@@ -166,6 +168,7 @@ class Store {
         },
         {
           id: 'dUSDT',
+          urlParam:'dUSDT',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network/',
@@ -193,6 +196,7 @@ class Store {
         },
         {
           id: 'dUSDC',
+          urlParam:'dUSDC',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network/',
@@ -219,6 +223,7 @@ class Store {
         },
         {
           id: 'dDAI',
+          urlParam:'dDAI',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network',

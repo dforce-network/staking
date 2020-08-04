@@ -151,7 +151,8 @@ const styles = theme => ({
   overview: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '28px 30px',
+    flexWrap:'wrap',
+    padding: '20px 30px 17px',
     alignItems: 'center',
     width: '100%',
     background: colors.white,
@@ -159,7 +160,7 @@ const styles = theme => ({
     borderRadius: '6px',
     [theme.breakpoints.down('md')]: {
       width: 'calc(100vw - 25px)',
-      padding: '20px 0',
+      padding: '20px 0 12px',
     }
   },
   overviewField: {
@@ -194,6 +195,19 @@ const styles = theme => ({
       fontSize: '13px',
       fontWeight: '500'
     }
+  },
+  apy:{
+    width:'100%',
+    textAlign:'center',
+    fontSize:'12px',
+    marginTop:'5px',
+    color: '#A4A7BE',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '10px'
+    }
+  },
+  apyb:{
+    color:'#7B7F9F'
   },
   actions: {
     width: '100%',
@@ -576,7 +590,8 @@ class Stake extends Component {
   constructor(props) {
     super(props)
     const account = store.getStore('account')
-    const pool = this.props.location.state.currentPool
+    const currentPool = store.getStore('rewardPools').filter(pool=>pool.urlParam === this.substrUrl(window.location.href))
+    const pool = this.props.location.state ? this.props.location.state.currentPool :currentPool[0]
     this.state = {
       pool: pool,
       loading: !account,
@@ -693,6 +708,12 @@ class Stake extends Component {
     emitter.removeListener(GET_BALANCES_RETURNED, this.balancesReturned);
   };
 
+  substrUrl=url=>{
+    const index = url.lastIndexOf("\/");
+    const str = url.substring(index + 1,url.length);
+    return str
+  }
+
   getBalancesReturned = () => {
     window.setTimeout(() => {
       dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} })
@@ -771,7 +792,7 @@ class Stake extends Component {
 
   render() {
     
-    const { classes } = this.props;
+    const { classes,cur_language } = this.props;
     const {
       value,
       account,
@@ -818,6 +839,12 @@ class Stake extends Component {
             {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography> */}
             <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? (pool.tokens[0].rewardsAvailable / (10 ** (pool.tokens[0].rewardsDecimal))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography>
           </div>
+          {
+            cur_language === "中文" ?
+            <div className={classes.apy}><FormattedMessage id='APY' /><b className={classes.apyb}>5.12%</b><FormattedMessage id='APY2' /></div>
+            :<div className={classes.apy}><FormattedMessage id='APY' /><b className={classes.apyb}>5.12%</b></div>
+          }
+          
         </div>
         {this.stakeBox()}
         {value === 'options' && this.renderOptions()}

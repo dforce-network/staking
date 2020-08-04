@@ -394,8 +394,9 @@ class RewardPools extends Component {
 
   navigateStake = (rewardPool) => {
     store.setStore({ currentPool: rewardPool })
+    const currentPoolId = rewardPool.urlParam
     const path = {
-      pathname: '/dapp',
+      pathname: `/dapp/${currentPoolId}`,
       state: { currentPool: rewardPool },
     }
     this.props.history.push(path)

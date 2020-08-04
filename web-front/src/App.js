@@ -42,7 +42,7 @@ class App extends Component {
                 <Route exact path="/">
                   <RewardsPools cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
                 </Route>
-                <Route exact path="/dapp">
+                <Route path="/dapp">
                   <Stake cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
                 </Route>
               </Switch>
