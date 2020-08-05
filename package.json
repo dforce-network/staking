@@ -1,0 +1,14 @@
+{
+  "name": "dForce Staking",
+  "version": "1.0.0",
+  "description": "dForce (DF) Liquidity Mining",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0"
+  }
+}
