@@ -258,7 +258,7 @@ body .ant-collapse-icon-position-right>.ant-collapse-item>.ant-collapse-header .
     }
     .dropDown{
         &:hover{
-            .header__overlay {display: block;height: auto;}
+            .header__overlay {display: block;height: auto;overflow: hidden;}
         }
     }
     &__overlay {

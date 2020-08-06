@@ -3,7 +3,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import IpfsRouter from 'ipfs-react-router'
 
@@ -15,6 +16,8 @@ import interestTheme from './theme';
 import ScrollToTop from './components/ScrollToTop'
 import Stake from './components/stake';
 import RewardsPools from './components/rewardPools';
+import DashBoard from './components/dashboard';
+import Page404 from './components/Page404'
 
 class App extends Component {
   state = {
@@ -42,8 +45,17 @@ class App extends Component {
                 <Route exact path="/">
                   <RewardsPools cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
                 </Route>
+                <Route exact path="/dashboard">
+                  <DashBoard cur_language={this.state.cur_language} setLanguage={this.setLanguage}/>
+                </Route>
                 <Route path="/dapp">
                   <Stake cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
+                </Route>
+                {/* <Redirect exact from="/dapp" to="/dapp/dUSDT">
+
+                </Redirect> */}
+                <Route path="*">
+                  <Page404 />
                 </Route>
               </Switch>
             </ScrollToTop>

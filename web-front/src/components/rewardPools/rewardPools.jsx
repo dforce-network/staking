@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   Typography
 } from '@material-ui/core';
+import back from '../../assets/backdash.svg'
 import { FormattedMessage } from 'react-intl';
 import Header from '../header';
 import Footer from '../footer';
@@ -141,18 +142,58 @@ const styles = theme => ({
       marginBottom: '10px',
     }
   },
+  mainTitle:{
+    display:'flex',
+    justifyContent:'space-between',
+    alignItems:'center',
+    minWidth:'100%',
+    margin: '0 0 36px 0',
+    [theme.breakpoints.down('md')]: {
+      margin: '0 12px 25px',
+      flexDirection:'column',
+      alignItems:'flex-start'
+    }
+  },
   title: {
     // width: '100%',
     color: '#434976',
     fontSize: '36px',
-    minWidth: '100%',
+    minWidth: '70%',
     textAlign: 'left',
-    margin: '0 auto 36px',
     [theme.breakpoints.down('md')]: {
       fontSize: '18px',
-      margin: '0 12px 25px',
       minWidth: 'calc(100% - 25px)'
     }
+  },
+  back:{
+    width:'146px',
+    height:'44px',
+    background:'#F8F9FF',
+    border:'#BA59FF',
+    color:'#BA59FF',
+    border:'1px solid #BA59FF',
+    borderRadius:'4px',
+    // lineHeight:'1.2',
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      width:'190px',
+      height:'40px',
+      marginTop:'20px'
+    }
+  },
+  backText:{
+    fontSize:'16px',
+    fontWeight:'bold',
+    color:'#BA59FF',
+    marginRight:'10px'
+  },
+  backIcon:{
+    width:'8px',
+    height:'12px',
+    marginTop:'3px'
   },
   poolName: {
     height: '25px',
@@ -288,7 +329,13 @@ class RewardPools extends Component {
         </div> */}
         <Header show={false} cur_language={this.props.cur_language} setLanguage={this.props.setLanguage} linkTo={'https://dforce.network/'} />
         <div className={classes.rewardPools}>
-          <Typography variant={'h3'} className={classes.title} noWrap><FormattedMessage id='pool_title' /></Typography>
+          <div className={classes.mainTitle}>
+            <Typography variant={'h3'} className={classes.title} noWrap><FormattedMessage id='pool_title' /></Typography>
+            <div className={classes.back} onClick={()=>this.props.history.push('/dashboard')}>
+              <span className={classes.backText}>Dashboard</span>
+              <img className={classes.backIcon} src={back} alt=""/>
+            </div>
+          </div>
           {
             this.renderRewards()
           }
@@ -334,7 +381,7 @@ class RewardPools extends Component {
           <div className={classes.dTokenBtnBox}>
             {
               rewardPool.map(rp => (
-                <div className={classes.dTokenBtn} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.tokens[0].symbol}</b></div>
+                <div className={classes.dTokenBtn} key={rp.id} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.tokens[0].symbol}</b></div>
               ))
             }
           </div>
@@ -349,7 +396,7 @@ class RewardPools extends Component {
 
       return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
         {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
-        <Typography variant='h3' className={classes.poolName}>{rewardPool.id}</Typography>
+        <Typography variant='h3' className={classes.poolName}>Uniswap{rewardPool.id}</Typography>
         <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
         <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
@@ -396,8 +443,8 @@ class RewardPools extends Component {
     store.setStore({ currentPool: rewardPool })
     const currentPoolId = rewardPool.urlParam
     const path = {
-      pathname: `/dapp/${currentPoolId}`,
-      state: { currentPool: rewardPool },
+      pathname: `/dapp/${currentPoolId}`
+      // state: { currentPool: rewardPool },
     }
     this.props.history.push(path)
 

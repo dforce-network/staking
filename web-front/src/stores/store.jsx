@@ -113,60 +113,6 @@ class Store {
       },
       rewardPools: [
         {
-          id: 'Uniswap GOLDx/USDx',
-          urlParam:'GOLDx-USDx',
-          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
-          // icon: require('../assets/img2.svg'),
-          logo: require('../assets/logo2.svg'),
-          tokens: [
-            {
-              id: 'bpt',
-              address: config.UniswapGOLDx_LP_Token,
-              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'UNI-V2',
-              type:'GOLDx',
-              abi: config.erc20ABI,
-              decimals: 18,
-              rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI,
-              rewardsSymbol: 'DF',
-              rewardsDecimal: 0,
-              balance: 0,
-              stakedBalance: 0,
-              rewardsAvailable: 0
-            }
-          ]
-        },
-        {
-          id: 'Uniswap DF/USDx',
-          urlParam:'DF-USDx',
-          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
-          website: 'Uniswap Exchange',
-          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0',
-          // icon: require('../assets/img2.svg'),
-          logo: require('../assets/logo2.svg'),
-          tokens: [
-            {
-              id: 'bpt',
-              address: config.UniswapDF_LP_Token,
-              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
-              symbol: 'UNI-V2',
-              type:'DF',
-              abi: config.erc20ABI,
-              decimals: 18,
-              rewardsAddress: config.DF_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
-              rewardsABI: config.balancerRewardsABI,
-              rewardsSymbol: 'DF',
-              rewardsDecimal: 0,
-              balance: 0,
-              stakedBalance: 0,
-              rewardsAvailable: 0
-            }
-          ]
-        },
-        {
           id: 'dUSDT',
           urlParam:'dUSDT',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
@@ -214,7 +160,7 @@ class Store {
               rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
-              rewardsDecimal: 12,
+              rewardsDecimal: 18,
               balance: 0,
               stakedBalance: 0,
               rewardsAvailable: 0
@@ -239,6 +185,60 @@ class Store {
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
+        {
+          id: 'GOLDx/USDx',
+          urlParam:'GOLDx-USDx',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapGOLDx_LP_Token,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'UNI-V2',
+              type:'GOLDx',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
+        {
+          id: 'DF/USDx',
+          urlParam:'DF-USDx',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapDF_LP_Token,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'UNI-V2',
+              type:'DF',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.DF_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,

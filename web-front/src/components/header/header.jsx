@@ -185,7 +185,7 @@ export default class App extends React.Component {
                     <div className={this.state.meun1 ? 'meun1' : 'only1px'}>
                         <div className='m-item'>
                             <a href='https://usdx.dforce.network/' target='_blank' rel="noopener noreferrer">
-                                <span className='title'>USDx</span>
+                                <span className='title1'>USDx</span>
                             </a>
                             <span className='details'>
                                 <FormattedMessage id='Portal' />
@@ -193,7 +193,7 @@ export default class App extends React.Component {
                         </div>
                         <div className='m-item'>
                             <a href='https://markets.dforce.network/' target='_blank' rel="noopener noreferrer">
-                                <span className='title'>
+                                <span className='title1'>
                                     <FormattedMessage id='Yield_Markets' />
                                 </span>
                             </a>
@@ -203,7 +203,7 @@ export default class App extends React.Component {
                         </div>
                         <div className='m-item'>
                             <a href='https://goldx.dforce.network/' target='_blank' rel="noopener noreferrer">
-                                <span className='title'>
+                                <span className='title1'>
                                     <FormattedMessage id='goldx' />
                                 </span>
                             </a>
@@ -223,7 +223,7 @@ export default class App extends React.Component {
                     <div className={this.state.meun3 ? 'meun1' : 'only1px'}>
                         <div className='m-item'>
                             <a href='https://trade.dforce.network/' rel="noopener noreferrer">
-                                <span className='title'>dForce Trade</span>
+                                <span className='title1'>dForce Trade</span>
                             </a>
                             <span className='details'>
                                 <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
@@ -241,7 +241,7 @@ export default class App extends React.Component {
                     <div className={this.state.meun2 ? 'meun1' : 'only1px'}>
                         <div className='m-item'>
                             <a href='https://airdrop.dforce.network/' rel="noopener noreferrer">
-                                <span className='title'>Airdrop</span>
+                                <span className='title1'>Airdrop</span>
                             </a>
                             <span className='details'>
                                 <FormattedMessage id='DF_token_distribute_system' />
