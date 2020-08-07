@@ -345,7 +345,8 @@ class DashBoard extends Component {
                       <span>{pool.rp.id}</span>
                     </td>
                     <td>{this.formatNumber(pool.StakingSize)}</td>
-                    <td>{this.formatNumber(pool.TotalDFDistribution)==='...'?'...':Math.ceil(pool.TotalDFDistribution).toFixed(2)}</td>
+                    <td>{pool.TotalDFDistribution === '...'?'...':this.formatNumber(Math.ceil(pool.TotalDFDistribution).toFixed(2))}</td>
+                    {/* <td>{this.formatNumber(pool.TotalDFDistribution)==='...'?'...':Math.ceil(pool.TotalDFDistribution).toFixed(2)}</td> */}
                     <td>{this.formatNumber(pool.RemainingDF)}</td>
                     <td>{this.formatNumber(pool.rewardsAvailable)}</td>
                   </tr>

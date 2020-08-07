@@ -189,27 +189,27 @@ const styles = (theme) => ({
     flexDirection: "column",
     borderRight: "1px solid #F6F5F8",
     lineHeight: "1",
-    [theme.breakpoints.down("md")]: {
-      flex: "none",
-      width:'50%',
-      marginBottom:'15px',
-      '&:nth-child(3)':{
-        marginBottom:'0'
-      }
-    }
+    // [theme.breakpoints.down("md")]: {
+    //   flex: "none",
+    //   width:'50%',
+    //   marginBottom:'15px',
+    //   '&:nth-child(3)':{
+    //     marginBottom:'0'
+    //   }
+    // }
   },
   lastField: {
     display: "flex",
     alignItems: "center",
     flex: "1",
     flexDirection: "column",
-    borderRight: "1px solid #F6F5F8",
+    // borderRight: "1px solid #F6F5F8",
     borderRight: "0",
-    [theme.breakpoints.down("md")]: {
-      flex: "none",
-      width:'50%',
-      marginBottom:'0'
-    }
+    // [theme.breakpoints.down("md")]: {
+    //   flex: "none",
+    //   width:'50%',
+    //   marginBottom:'0'
+    // }
   },
   overviewTitle: {
     color: "#A4A7BE",
@@ -296,7 +296,6 @@ const styles = (theme) => ({
     color: "#DADADA",
     backgroundColor: "#F4F4F4",
     fontWeight: "700",
-    border: "1px solid #E5E6F2!important",
     height: "50px",
     display: "flex",
     justifyContent: "center",
@@ -597,7 +596,6 @@ const styles = (theme) => ({
     margin: "0",
     fontSize: "16px",
     fontWeight: "500",
-    color: "#434976",
     cursor: "pointer",
     pointerEvents: "none",
     color: "#DADADA",
@@ -642,10 +640,10 @@ class Stake extends Component {
           mouseEnter: false,
           timeStamp: 0,
           clickMax: false,
-          APY:0,
-          APYtimer:null,
-          ROI:0,
-          ROItimer:null
+          // APY:0,
+          // APYtimer:null,
+          // ROI:0,
+          // ROItimer:null
         };
   }
 
@@ -681,7 +679,6 @@ class Stake extends Component {
     });
   }
   componentDidMount(prevProps) {
-    console.log(this.state.pool)
     // metamask networkChange
     if (window.ethereum && window.ethereum.on) {
       window.ethereum.autoRefreshOnNetworkChange = false;
@@ -711,48 +708,48 @@ class Stake extends Component {
       });
     }
     // fetch  ROI
-    this.state.pool && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
-    .then(data => {
-      this.setState(() => ({
-        ROI: data[this.state.pool.tokens[0].ROI],
-      }),()=>{
-        const timer = setInterval(() => {
-          fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
-          .then(data=>{
-            this.setState(() => ({
-              ROI: data[this.state.pool.tokens[0].ROI],
-            }))
-          })
-          .catch(e => console.log("Oops, error", e))
-        }, 10000);
-        this.setState({
-          ROItimer:timer
-        })
-      })
-    })
-    .catch(e => console.log("Oops, error", e))
-    // fetch APY
-    this.state.pool.tokens[0].dToken && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
-    .then(data => {
-      this.setState(() => ({
-        APY: data[this.state.pool.id]['now_apy'],
-      }),()=>{
-        const timer = setInterval(() => {
-          fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
-        .then(data => {
-          this.setState(() => ({
-            APY: data[this.state.pool.id]['now_apy'],
-          }))
-        })
+    // this.state.pool && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+    // .then(data => {
+    //   this.setState(() => ({
+    //     ROI: data[this.state.pool.tokens[0].ROI],
+    //   }),()=>{
+    //     const timer = setInterval(() => {
+    //       fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+    //       .then(data=>{
+    //         this.setState(() => ({
+    //           ROI: data[this.state.pool.tokens[0].ROI],
+    //         }))
+    //       })
+    //       .catch(e => console.log("Oops, error", e))
+    //     }, 10000);
+    //     this.setState({
+    //       ROItimer:timer
+    //     })
+    //   })
+    // })
+    // .catch(e => console.log("Oops, error", e))
+    // // fetch APY
+    // this.state.pool.tokens[0].dToken && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+    // .then(data => {
+    //   this.setState(() => ({
+    //     APY: data[this.state.pool.id]['now_apy'],
+    //   }),()=>{
+    //     const timer = setInterval(() => {
+    //       fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+    //     .then(data => {
+    //       this.setState(() => ({
+    //         APY: data[this.state.pool.id]['now_apy'],
+    //       }))
+    //     })
         
-        .catch(e => console.log("Oops, error", e))
-        }, 10000);
-        this.setState({
-          APYtimer:timer
-        })
-      })
-    })
-    .catch(e => console.log("Oops, error", e))
+    //     .catch(e => console.log("Oops, error", e))
+    //     }, 10000);
+    //     this.setState({
+    //       APYtimer:timer
+    //     })
+    //   })
+    // })
+    // .catch(e => console.log("Oops, error", e))
     setTimeout(async () => {
       const { account } = this.state;
       if (
@@ -805,8 +802,6 @@ class Stake extends Component {
       this.yCrvRequirementsReturned
     );
     emitter.removeListener(GET_BALANCES_RETURNED, this.balancesReturned);
-    // clearInterval(this.state.APYtimer)
-    // clearInterval(this.state.ROItimer)
   }
 
   substrUrl = (url) => {
@@ -918,7 +913,7 @@ class Stake extends Component {
   };
 
   render() {
-    const { classes, cur_language } = this.props;
+    const { classes } = this.props;
     const {
       value,
       account,
@@ -926,10 +921,8 @@ class Stake extends Component {
       pool,
       loading,
       snackbarMessage,
-      APY,
-      ROI,
-      voteLockValid,
-      balanceValid,
+      // APY,
+      // ROI,
     } = this.state;
     var address = null;
     if (account.address) {
@@ -1006,7 +999,7 @@ class Stake extends Component {
               {pool.tokens[0].symbol}
             </Typography>
           </div>
-          <div className={[classes.overviewField]}>
+          <div className={[classes.lastField]}>
             <Typography variant={"h3"} className={classes.overviewTitle}>
               <FormattedMessage id="Available_to_Claim" />
             </Typography>
@@ -1024,22 +1017,21 @@ class Stake extends Component {
                 //     .toFixed(2)
                 //     .replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
                 this.formatNumber(pool.tokens[0].rewardsAvailable,pool.tokens[0].decimals,4)
-                : "0"}
+                : "0"}&nbsp;
               {pool.tokens[0].rewardsSymbol != "$"
                 ? pool.tokens[0].rewardsSymbol
                 : ""}
             </Typography>
           </div>
-          <div className={[classes.lastField]}>
+          {/* <div className={[classes.lastField]}>
             <Typography variant={"h3"} className={classes.overviewTitle}>
               <FormattedMessage id="ROI" />
             </Typography>
-            {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography> */}
             <Typography variant={"h2"} className={classes.overviewValue}>
               {ROI?this.formatAPYNumber(ROI*100)+'%':'...'}
             </Typography>
-          </div>
-          {pool.tokens[0].dToken ? cur_language === "中文" ? (
+          </div> */}
+          {/* {pool.tokens[0].dToken ? cur_language === "中文" ? (
             <div className={classes.apy}>
               <FormattedMessage id="APY" />
           <b className={classes.apyb}>{APY?APY+'%':'...'}</b>
@@ -1050,7 +1042,7 @@ class Stake extends Component {
               <FormattedMessage id="APY" />
           <b className={classes.apyb}>{APY?APY+'%':'...'}</b>
             </div>
-          ):''}
+          ):''} */}
         </div>
         {this.stakeBox()}
         {value === "options" && this.renderOptions()}

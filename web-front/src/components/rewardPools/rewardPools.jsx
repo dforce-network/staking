@@ -1,4 +1,4 @@
-import React, { Component,Fragment } from "react";
+import React, { Component} from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -169,7 +169,6 @@ const styles = theme => ({
   back:{
     width:'146px',
     height:'44px',
-    border:'#BA59FF',
     color:'#BA59FF',
     border:'1px solid #BA59FF',
     borderRadius:'4px',
@@ -324,11 +323,78 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       margin: '20px auto 15px'
     }
+  },
+  // poolAPY
+  poolApy:{
+    width:'874px',
+    height:'auto',
+    boxShadow:'0px 0px 35px 0px rgba(94,85,126,0.15)',
+    borderradius:'6px',
+    fontSize:'16px',
+    fontWeight:'500',
+    '& thead tr td':{
+      color:'#7E8199'
+    },
+    '& tr':{
+      // '& td':{
+      //   width:'25%'
+      // },
+      lineHeight:'54px',
+      '&:last-child':{
+        borderBottom:'0'
+      },
+      '& td:first-child':{
+        width:'18%',
+        paddingLeft:'24px'
+      },
+      '& td:last-child':{
+        color:'#FF4242',
+        paddingRight:'24px',
+      }
+    },
+    
+    [theme.breakpoints.down('md')]: {
+      width:'calc(100% - 24px)',
+      margin:'0 12px',
+      fontSize:'12px',
+      '& thead tr td':{
+        padding:'8px 0 8px 8px',
+        fontSize:'12px',
+        lineHeight:'18px',
+        whiteSpace:'nowrap'
+      },
+      '& tr':{
+        lineHeight:'35px!important',
+        '& td:first-child':{
+          width:'30%!important',
+          paddingLeft:'10px!important'
+        },
+      '& td:last-child':{
+        paddingRight:'10px!important',
+      }
+      }
+    }
+  },
+  noColor:{
+    color:'#7E8199!important'
+  },
+  subHead:{
+    color:'#434976',
+    fontWeight:'bold',
+    background:'rgba(208,209,221,0.2)',
+    '& td:last-child':{
+      color:'#434976!important'
+    }
+  },
+  DFrow:{
+    background:'rgba(208,209,221,0.2)',
+    borderBottom:'1px solid #E5E6F2',
+    '& td:first-child':{
+      color:'#434976',
+      fontWeight:'bold'
+    }
   }
 })
-
-const emitter = Store.emitter
-const dispatcher = Store.dispatcher
 const store = Store.store
 
 class RewardPools extends Component {
@@ -348,9 +414,15 @@ class RewardPools extends Component {
         "Glodx": 0,
         "dDAI": 0,
         "dUSDC": 0,
-        "dUSDT": 0
+        "dUSDT": 0,
         },
-      ROItimer:null
+      APY:{
+        "DF": 0,
+        "Glodx": 0,
+        "dDAI": 0,
+        "dUSDC": 0,
+        "dUSDT": 0,
+      }
     }
     // dispatcher.dispatch({ type: GET_BALANCES, content: {} })
   }
@@ -359,38 +431,54 @@ class RewardPools extends Component {
   configureReturned = () => {
     this.setState({ loading: false })
   }
-  // componentDidMount(){
-  //   this.state.rewardPools && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
-  //   .then(data => {
-  //     this.setState(() => ({
-  //       ROI: data,
-  //     }),()=>{
-  //       const timer = setInterval(()=>{
-  //         fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
-  //         .then(data=>{
-  //           this.setState(() => ({
-  //             ROI: data,
-  //           }))
-  //         })
-  //         .catch(e => console.log("Oops, error", e))
-  //       },10000)
-  //       this.setState({
-  //         ROItimer:timer
-  //       })
-  //     })
-  //   })
-  //   .catch(e => console.log("Oops, error", e))
-  // }
+  componentDidMount(){
+    // ROI
+    this.state.rewardPools && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        ROI: data,
+      }),()=>{
+        setInterval(()=>{
+          fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+          .then(data=>{
+            this.setState(() => ({
+              ROI: data,
+            }))
+          })
+          .catch(e => console.log("Oops, error", e))
+        },10000)
+      })
+    })
+    .catch(e => console.log("Oops, error", e))
+    // APY
+    this.state.rewardPools && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        APY: data,
+      }),()=>{
+        setInterval(() => {
+          fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+        .then(data => {
+          this.setState(() => ({
+            APY: data,
+          }))
+        })
+        .catch(e => console.log("Oops, error", e))
+        }, 10000);
+      })
+    })
+    .catch(e => console.log("Oops, error", e))
+  }
   render() {
     const { classes } = this.props;
     const {
-      // value,
-      // account,
-      // loading,
+      ROI,
+      APY,
+      rewardPools,
       modalOpen,
     } = this.state
-
-
+    const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].dToken)
+    const DFPools = rewardPools.filter(rp=>!rp.tokens[0].dToken)
     return (
       <div className={classes.root}>
         {/* <Typography variant={'h5'} className={classes.disaclaimer}>This project is in beta. Use at your own risk.</Typography>
@@ -414,6 +502,41 @@ class RewardPools extends Component {
             this.renderRewards()
           }
         </div>
+        <table className={classes.poolApy}>
+          <thead>
+            <tr>
+              <td align="left"><FormattedMessage id="Pool" /></td>
+              <td align="right"><FormattedMessage id="MiningAPY" /></td>
+              <td align="right"><FormattedMessage id="YieldingAPY" /></td>
+              <td className={classes.noColor} align="right"><FormattedMessage id="CompoundAPY" /></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className={classes.subHead}><td colSpan="4"><FormattedMessage id='dToken_APY'/></td></tr>
+            {
+              dTokenPools.map(rp => (
+                // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
+                <tr key={rp.id}>
+                  <td align="left">{rp.tokens[0].ROI}</td>
+                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
+                  <td align="right">{APY[rp.tokens[0].ROI] ? APY[rp.tokens[0].ROI]["now_apy"]+'%' : '...'}</td>
+                  <td align="right">{ROI[rp.tokens[0].ROI] && APY[rp.tokens[0].ROI] ? this.formatAPYNumber(this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100) +  parseFloat(APY[rp.tokens[0].ROI]["now_apy"])) +'%': '...'}</td>
+                </tr>
+              ))
+            }
+            {
+              DFPools.map(rp => (
+                // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
+                <tr className={classes.DFrow} key={rp.id}>
+                  <td align="left">{rp.tokens[0].ROI === 'Glodx'?<FormattedMessage id='GOLDx_APY'/>:<FormattedMessage id='DF_APY'/>}</td>
+                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
+                  <td align="right">0.00%</td>
+                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
         <Footer cur_language={this.props.cur_language} setLanguage={this.props.setLanguage} />
         {/* {modalOpen && this.renderModal()} */}
       </div>
@@ -434,14 +557,13 @@ class RewardPools extends Component {
     const {ROI} = this.state
     const { classes } = this.props
     if (Array.isArray(rewardPool)) {
-      // let dtokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
       let tokensList = rewardPool.map(item => (
         item.tokens.map((rp) => { return rp.symbol }).join(', ')
       )).join('/')
       return (<div className={classes.rewardPoolContainer} key={"dToken"} >
         {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
         <Typography variant='h3' className={classes.poolName}>{tokensList}</Typography>
-        <Typography variant='h5'><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} target="_blank">{"https://markets.dforce.network/"}</a></Typography>
+        <Typography variant='h5'><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} rel="noopener noreferrer" target="_blank">{"https://markets.dforce.network/"}</a></Typography>
         <div className={classes.svgCenter}><img src={dTokenPool} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
           {/* <FormattedMessage id='tips_stake' /> */}
