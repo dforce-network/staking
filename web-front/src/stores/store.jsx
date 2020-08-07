@@ -128,6 +128,7 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dUSDT',
               dToken: true,
+              ROI:'dUSDT',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDT_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -155,6 +156,7 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dUSDC',
               dToken: true,
+              ROI:'dUSDC',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -182,6 +184,7 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dDAI',
               dToken: true,
+              ROI:'dDAI',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -208,6 +211,7 @@ class Store {
               address: config.UniswapGOLDx_LP_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
+              ROI:'Glodx',
               type:'GOLDx',
               abi: config.erc20ABI,
               decimals: 18,
@@ -235,6 +239,7 @@ class Store {
               address: config.UniswapDF_LP_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
+              ROI:'DF',
               type:'DF',
               abi: config.erc20ABI,
               decimals: 18,
@@ -524,8 +529,9 @@ class Store {
 
     try {
       var earned = await erc20Contract.methods.earned(account.address).call({ from: account.address });
-      earned = parseFloat(earned) / 10 ** asset.decimals
-      callback(null, parseFloat(earned))
+      // earned = parseFloat(earned) / 10 ** asset.decimals
+      // callback(null, parseFloat(earned))
+      callback(null, this.toStringDecimals(earned, 18))
     } catch (ex) {
       return callback(ex)
     }

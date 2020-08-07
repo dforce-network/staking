@@ -40,6 +40,7 @@ const en_US = {
     Your_Balance: 'Your Balance',
     Currently_Staked: 'Currently Staked',
     Available_to_Claim: 'Available to Claim',
+    ROI:'ROI',
     APY:'Earning interest in APY ',
     Amount: 'Amount',
     MAX: 'MAX',

@@ -54,6 +54,9 @@ class App extends Component {
                 {/* <Redirect exact from="/dapp" to="/dapp/dUSDT">
 
                 </Redirect> */}
+                <Route path="/404">
+                  <Page404 />
+                </Route>
                 <Route path="*">
                   <Page404 />
                 </Route>

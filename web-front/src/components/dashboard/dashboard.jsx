@@ -173,7 +173,6 @@ class DashBoard extends Component {
             18,
             2
           ),
-          // TotalDFDistribution:bn(await pool.methods.rewardRate().call()).mul(bn(await pool.methods.DURATION().call())).div(bn(1e18)).toString(),
           RemainingDF:
             Number((await pool.methods.periodFinish().call())) >
             Math.floor(new Date().valueOf()/1000)
@@ -346,7 +345,7 @@ class DashBoard extends Component {
                       <span>{pool.rp.id}</span>
                     </td>
                     <td>{this.formatNumber(pool.StakingSize)}</td>
-                    <td>{this.formatNumber(pool.TotalDFDistribution)}</td>
+                    <td>{this.formatNumber(pool.TotalDFDistribution)==='...'?'...':Math.ceil(pool.TotalDFDistribution).toFixed(2)}</td>
                     <td>{this.formatNumber(pool.RemainingDF)}</td>
                     <td>{this.formatNumber(pool.rewardsAvailable)}</td>
                   </tr>

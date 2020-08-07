@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -149,6 +149,7 @@ const styles = theme => ({
     minWidth:'100%',
     margin: '0 0 36px 0',
     [theme.breakpoints.down('md')]: {
+      minWidth:'calc(100% - 24px)',
       margin: '0 12px 25px',
       flexDirection:'column',
       alignItems:'flex-start'
@@ -168,7 +169,6 @@ const styles = theme => ({
   back:{
     width:'146px',
     height:'44px',
-    background:'#F8F9FF',
     border:'#BA59FF',
     color:'#BA59FF',
     border:'1px solid #BA59FF',
@@ -205,9 +205,9 @@ const styles = theme => ({
   },
   tokensList: {
     color: '#A4A7BE',
-    marginBottom: '28px',
+    marginBottom: '10px',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '15px',
+      marginBottom: '8px',
     }
   },
   B: {
@@ -227,6 +227,32 @@ const styles = theme => ({
       width: '280px',
       height: '40px',
       lineHeight: '40px',
+      fontSize: '16px',
+      borderRadius: '2px'
+    }
+  },
+  dTokenDataBox: {
+    width: '250px',
+    height: '35px',
+    lineHeight: '35px',
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'space-between;',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '280px',
+      height: '25px',
+      lineHeight: '25px',
+      fontSize: '16px',
+      borderRadius: '2px'
+    }
+  },
+  dTokenData: {
+    flex: '1',
+    textAlign: 'center',
+    color: '#1CCD95',
+    marginRight: '5px',
+    [theme.breakpoints.down('md')]: {
       fontSize: '16px',
       borderRadius: '2px'
     }
@@ -256,9 +282,28 @@ const styles = theme => ({
     borderRadius: '4px',
     cursor: 'pointer',
     marginRight: '5px',
+    position:'relative',
+    height:'50px',
+    overflow:'hidden',
+    '&:hover':{
+      paddingTop:'50px'
+    },
     [theme.breakpoints.down('md')]: {
       fontSize: '16px',
-      borderRadius: '2px'
+      borderRadius: '2px',
+      height:'40px',
+      '&:hover':{
+        paddingTop:'40px'
+      },
+    }
+  },
+  open:{
+    display:'block',
+    width:'100%',
+    height:'100%',
+    marginTop:'-100px',
+    [theme.breakpoints.down('md')]: {
+      marginTop:'-80px',
     }
   },
   poolWebsite: {
@@ -297,7 +342,15 @@ class RewardPools extends Component {
     this.state = {
       rewardPools: rewardPools,
       loading: !(account && rewardPools),
-      account: account
+      account: account,
+      ROI:{
+        "DF": 0,
+        "Glodx": 0,
+        "dDAI": 0,
+        "dUSDC": 0,
+        "dUSDT": 0
+        },
+      ROItimer:null
     }
     // dispatcher.dispatch({ type: GET_BALANCES, content: {} })
   }
@@ -306,7 +359,28 @@ class RewardPools extends Component {
   configureReturned = () => {
     this.setState({ loading: false })
   }
-
+  // componentDidMount(){
+  //   this.state.rewardPools && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+  //   .then(data => {
+  //     this.setState(() => ({
+  //       ROI: data,
+  //     }),()=>{
+  //       const timer = setInterval(()=>{
+  //         fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+  //         .then(data=>{
+  //           this.setState(() => ({
+  //             ROI: data,
+  //           }))
+  //         })
+  //         .catch(e => console.log("Oops, error", e))
+  //       },10000)
+  //       this.setState({
+  //         ROItimer:timer
+  //       })
+  //     })
+  //   })
+  //   .catch(e => console.log("Oops, error", e))
+  // }
   render() {
     const { classes } = this.props;
     const {
@@ -357,7 +431,7 @@ class RewardPools extends Component {
   }
 
   renderRewardPool = (rewardPool) => {
-
+    const {ROI} = this.state
     const { classes } = this.props
     if (Array.isArray(rewardPool)) {
       // let dtokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
@@ -377,11 +451,24 @@ class RewardPools extends Component {
           {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
         </Typography>
+        {/* {
+          <div className={classes.dTokenDataBox}>
+            {
+              rewardPool.map(rp => (
+              <div className={classes.dTokenData} key={rp.id}>
+                <b>
+                  {ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}
+                </b>
+              </div>
+              ))
+            }
+          </div>
+        } */}
         {
           <div className={classes.dTokenBtnBox}>
             {
               rewardPool.map(rp => (
-                <div className={classes.dTokenBtn} key={rp.id} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.tokens[0].symbol}</b></div>
+                <div className={classes.dTokenBtn} key={rp.id} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.tokens[0].symbol}</b><b className={classes.open}><FormattedMessage id='open' /></b></div>
               ))
             }
           </div>
@@ -396,7 +483,7 @@ class RewardPools extends Component {
 
       return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
         {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
-        <Typography variant='h3' className={classes.poolName}>Uniswap{rewardPool.id}</Typography>
+        <Typography variant='h3' className={classes.poolName}>Uniswap&nbsp;{rewardPool.id}</Typography>
         <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
         <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
@@ -408,6 +495,15 @@ class RewardPools extends Component {
           {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
         {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
         </Typography>
+          {/* <div className={classes.dTokenDataBox}>
+            {
+              <div className={classes.dTokenData}>
+                <b>
+                {ROI[rewardPool.tokens[0].ROI] ? this.formatAPYNumber(ROI[rewardPool.tokens[0].ROI]*100)+'%' : '...'}
+                </b>
+              </div>
+            }
+          </div> */}
         <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b></div>
       </div>)
     }
@@ -439,6 +535,10 @@ class RewardPools extends Component {
     </div>)
   }
 
+  formatAPYNumber = (num,floatPlace=2)=>{
+    const m = Math.pow(10,floatPlace);
+    return Math.floor(num*m)/m;
+  }
   navigateStake = (rewardPool) => {
     store.setStore({ currentPool: rewardPool })
     const currentPoolId = rewardPool.urlParam

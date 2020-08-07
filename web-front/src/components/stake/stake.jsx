@@ -179,7 +179,7 @@ const styles = (theme) => ({
     borderRadius: "6px",
     [theme.breakpoints.down("md")]: {
       width: "calc(100vw - 25px)",
-      padding: "20px 0 12px",
+      padding: "12px 0 12px",
     },
   },
   overviewField: {
@@ -189,6 +189,14 @@ const styles = (theme) => ({
     flexDirection: "column",
     borderRight: "1px solid #F6F5F8",
     lineHeight: "1",
+    [theme.breakpoints.down("md")]: {
+      flex: "none",
+      width:'50%',
+      marginBottom:'15px',
+      '&:nth-child(3)':{
+        marginBottom:'0'
+      }
+    }
   },
   lastField: {
     display: "flex",
@@ -197,6 +205,11 @@ const styles = (theme) => ({
     flexDirection: "column",
     borderRight: "1px solid #F6F5F8",
     borderRight: "0",
+    [theme.breakpoints.down("md")]: {
+      flex: "none",
+      width:'50%',
+      marginBottom:'0'
+    }
   },
   overviewTitle: {
     color: "#A4A7BE",
@@ -615,25 +628,25 @@ class Stake extends Component {
           pool.urlParam.toLowerCase() ===
           this.substrUrl(window.location.href).toLowerCase()
       );
-      if(currentPool.length===0){
-        return
-      }
-    const pool = currentPool[0];
-    this.state = {
-      pool: pool,
-      loading: !account,
-      account: account,
-      modalOpen: false,
-      value: "options",
-      voteLockValid: false,
-      balanceValid: false,
-      voteLock: null,
-      unstakeLock: false,
-      mouseEnter: false,
-      timeStamp: 0,
-      clickMax: false,
-      APY:'0.00'
-    };
+        const pool = currentPool[0];
+        this.state = {
+          pool: pool,
+          loading: !account,
+          account: account,
+          modalOpen: false,
+          value: "options",
+          voteLockValid: false,
+          balanceValid: false,
+          voteLock: null,
+          unstakeLock: false,
+          mouseEnter: false,
+          timeStamp: 0,
+          clickMax: false,
+          APY:0,
+          APYtimer:null,
+          ROI:0,
+          ROItimer:null
+        };
   }
 
   componentWillMount() {
@@ -668,6 +681,7 @@ class Stake extends Component {
     });
   }
   componentDidMount(prevProps) {
+    console.log(this.state.pool)
     // metamask networkChange
     if (window.ethereum && window.ethereum.on) {
       window.ethereum.autoRefreshOnNetworkChange = false;
@@ -696,6 +710,49 @@ class Stake extends Component {
         }
       });
     }
+    // fetch  ROI
+    this.state.pool && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        ROI: data[this.state.pool.tokens[0].ROI],
+      }),()=>{
+        const timer = setInterval(() => {
+          fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+          .then(data=>{
+            this.setState(() => ({
+              ROI: data[this.state.pool.tokens[0].ROI],
+            }))
+          })
+          .catch(e => console.log("Oops, error", e))
+        }, 10000);
+        this.setState({
+          ROItimer:timer
+        })
+      })
+    })
+    .catch(e => console.log("Oops, error", e))
+    // fetch APY
+    this.state.pool.tokens[0].dToken && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        APY: data[this.state.pool.id]['now_apy'],
+      }),()=>{
+        const timer = setInterval(() => {
+          fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+        .then(data => {
+          this.setState(() => ({
+            APY: data[this.state.pool.id]['now_apy'],
+          }))
+        })
+        
+        .catch(e => console.log("Oops, error", e))
+        }, 10000);
+        this.setState({
+          APYtimer:timer
+        })
+      })
+    })
+    .catch(e => console.log("Oops, error", e))
     setTimeout(async () => {
       const { account } = this.state;
       if (
@@ -748,6 +805,8 @@ class Stake extends Component {
       this.yCrvRequirementsReturned
     );
     emitter.removeListener(GET_BALANCES_RETURNED, this.balancesReturned);
+    // clearInterval(this.state.APYtimer)
+    // clearInterval(this.state.ROItimer)
   }
 
   substrUrl = (url) => {
@@ -784,13 +843,6 @@ class Stake extends Component {
 
   connectionConnected = async() => {
     this.setState({ account: store.getStore("account") });
-    this.state.pool.tokens[0].dToken && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
-    .then(data => {
-      this.setState(() => ({
-        APY: data[this.state.pool.id]['now_apy'],
-      }))
-    })
-    .catch(e => console.log("Oops, error", e))
     dispatcher.dispatch({ type: CONFIGURE, content: {} });
     this.setState(() => ({
       modalOpen: false,
@@ -840,7 +892,12 @@ class Stake extends Component {
     });
   };
 
-  formatNumber = (amount, decimals, decimalPlace = decimals) => {
+  formatAPYNumber = (num,floatPlace=2)=>{
+    const m = Math.pow(10,floatPlace);
+    return Math.floor(num*m)/m;
+  }
+  // default 4 is palce 2
+  formatNumber = (amount,decimals,decimalPlace =decimals ) => {
     let roundAmount = amount.replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     let index = roundAmount.indexOf(".");
     return roundAmount.slice(0, index - 1 + decimalPlace);
@@ -870,6 +927,7 @@ class Stake extends Component {
       loading,
       snackbarMessage,
       APY,
+      ROI,
       voteLockValid,
       balanceValid,
     } = this.state;
@@ -948,7 +1006,7 @@ class Stake extends Component {
               {pool.tokens[0].symbol}
             </Typography>
           </div>
-          <div className={[classes.lastField]}>
+          <div className={[classes.overviewField]}>
             <Typography variant={"h3"} className={classes.overviewTitle}>
               <FormattedMessage id="Available_to_Claim" />
             </Typography>
@@ -956,30 +1014,41 @@ class Stake extends Component {
             <Typography variant={"h2"} className={classes.overviewValue}>
               {pool.tokens[0].rewardsSymbol == "$"
                 ? pool.tokens[0].rewardsSymbol
-                : ""}{" "}
+                : ""}
               {pool.tokens[0].rewardsAvailable
-                ? (
-                    pool.tokens[0].rewardsAvailable /
-                    10 ** pool.tokens[0].rewardsDecimal
-                  )
-                    .toFixed(2)
-                    .replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
-                : "0"}{" "}
+                ? 
+                // (
+                //     pool.tokens[0].rewardsAvailable /
+                //     10 ** pool.tokens[0].rewardsDecimal
+                //   )
+                //     .toFixed(2)
+                //     .replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
+                this.formatNumber(pool.tokens[0].rewardsAvailable,pool.tokens[0].decimals,4)
+                : "0"}
               {pool.tokens[0].rewardsSymbol != "$"
                 ? pool.tokens[0].rewardsSymbol
                 : ""}
             </Typography>
           </div>
+          <div className={[classes.lastField]}>
+            <Typography variant={"h3"} className={classes.overviewTitle}>
+              <FormattedMessage id="ROI" />
+            </Typography>
+            {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography> */}
+            <Typography variant={"h2"} className={classes.overviewValue}>
+              {ROI?this.formatAPYNumber(ROI*100)+'%':'...'}
+            </Typography>
+          </div>
           {pool.tokens[0].dToken ? cur_language === "中文" ? (
             <div className={classes.apy}>
               <FormattedMessage id="APY" />
-          <b className={classes.apyb}>{APY}%</b>
+          <b className={classes.apyb}>{APY?APY+'%':'...'}</b>
               <FormattedMessage id="APY2" />
             </div>
           ) : (
             <div className={classes.apy}>
               <FormattedMessage id="APY" />
-          <b className={classes.apyb}>{APY}%</b>
+          <b className={classes.apyb}>{APY?APY+'%':'...'}</b>
             </div>
           ):''}
         </div>
