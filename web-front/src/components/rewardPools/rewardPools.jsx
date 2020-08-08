@@ -348,7 +348,7 @@ const styles = theme => ({
         paddingLeft:'24px'
       },
       '& td:last-child':{
-        color:'#FF4242',
+        color:navigator.language=="zh"?'#FF4242':'#43CD48',
         paddingRight:'24px',
       }
     },
