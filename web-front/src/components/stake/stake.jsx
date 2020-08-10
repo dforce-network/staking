@@ -1166,26 +1166,27 @@ class Stake extends Component {
           )}
         {/* disabled DF/USDx */}
         {
-          pool.id === 'DF/USDx' ?
-            (<div className={classes.unstake_lock} style={{ marginBottom: '40px' }}>
-              <input
-                className={classes.stakeInput_lock}
-                placeholder="Amount"
-                value={amount}
-                error={amountError}
-              />
-              <p
-                className={classes.max_lock}
-              >
-                <FormattedMessage id="MAX" />
-              </p>
-              <span
-                className={classes.stakeSpan_lock}
-              >
-                <FormattedMessage id="STAKE" />
-              </span>
-            </div>)
-            : (
+          // pool.id === 'DF/USDx' ?
+          //   (<div className={classes.unstake_lock} style={{ marginBottom: '40px' }}>
+          //     <input
+          //       className={classes.stakeInput_lock}
+          //       placeholder="Amount"
+          //       value={amount}
+          //       error={amountError}
+          //     />
+          //     <p
+          //       className={classes.max_lock}
+          //     >
+          //       <FormattedMessage id="MAX" />
+          //     </p>
+          //     <span
+          //       className={classes.stakeSpan_lock}
+          //     >
+          //       <FormattedMessage id="STAKE" />
+          //     </span>
+          //   </div>)
+          //   : 
+            (
               <div className={classes.stake}>
                 <input
                   className={classes.stakeInput}
