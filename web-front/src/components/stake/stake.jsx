@@ -626,25 +626,25 @@ class Stake extends Component {
           pool.urlParam.toLowerCase() ===
           this.substrUrl(window.location.href).toLowerCase()
       );
-        const pool = currentPool[0];
-        this.state = {
-          pool: pool,
-          loading: !account,
-          account: account,
-          modalOpen: false,
-          value: "options",
-          voteLockValid: false,
-          balanceValid: false,
-          voteLock: null,
-          unstakeLock: false,
-          mouseEnter: false,
-          timeStamp: 0,
-          clickMax: false,
-          // APY:0,
-          // APYtimer:null,
-          // ROI:0,
-          // ROItimer:null
-        };
+    const pool = currentPool[0];
+    this.state = {
+      pool: pool,
+      loading: !account,
+      account: account,
+      modalOpen: false,
+      value: "options",
+      voteLockValid: false,
+      balanceValid: false,
+      voteLock: null,
+      unstakeLock: false,
+      mouseEnter: false,
+      timeStamp: 0,
+      clickMax: false,
+      // APY:0,
+      // APYtimer:null,
+      // ROI:0,
+      // ROItimer:null
+    };
   }
 
   componentWillMount() {
@@ -741,7 +741,7 @@ class Stake extends Component {
     //         APY: data[this.state.pool.id]['now_apy'],
     //       }))
     //     })
-        
+
     //     .catch(e => console.log("Oops, error", e))
     //     }, 10000);
     //     this.setState({
@@ -810,20 +810,20 @@ class Stake extends Component {
     // return str;
     let url1 = url
     const index = url1.lastIndexOf("/dapp/");
-    if(index===-1){
+    if (index === -1) {
       return 'dUSDT'
     }
     const str1 = url1.substring(index + 1, url1.length);
     const index1 = str1.indexOf("/");
     const str2 = str1.substring(index1 + 1, str1.length);
-    if(str2.includes('/')){
+    if (str2.includes('/')) {
       const index2 = str2.indexOf("/");
-      const str3 = str2.substring(0,index2);
+      const str3 = str2.substring(0, index2);
       return str3;
-    }else{
+    } else {
       return str2
     }
-    
+
   };
 
   getBalancesReturned = () => {
@@ -836,7 +836,7 @@ class Stake extends Component {
     dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} });
   };
 
-  connectionConnected = async() => {
+  connectionConnected = async () => {
     this.setState({ account: store.getStore("account") });
     dispatcher.dispatch({ type: CONFIGURE, content: {} });
     this.setState(() => ({
@@ -887,12 +887,12 @@ class Stake extends Component {
     });
   };
 
-  formatAPYNumber = (num,floatPlace=2)=>{
-    const m = Math.pow(10,floatPlace);
-    return Math.floor(num*m)/m;
+  formatAPYNumber = (num, floatPlace = 2) => {
+    const m = Math.pow(10, floatPlace);
+    return Math.floor(num * m) / m;
   }
   // default 4 is palce 2
-  formatNumber = (amount,decimals,decimalPlace =decimals ) => {
+  formatNumber = (amount, decimals, decimalPlace = decimals) => {
     let roundAmount = amount.replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     let index = roundAmount.indexOf(".");
     return roundAmount.slice(0, index - 1 + decimalPlace);
@@ -955,7 +955,7 @@ class Stake extends Component {
             <div style={{ background: '#DC6BE5', opacity: '1', borderRadius: '10px', width: '10px', height: '10px', marginRight: '3px', marginTop: '3px', marginLeft: '6px' }}></div>
           </Card>
         </div> */}
-        <div className={classes.backWarp} onClick={()=>this.props.history.push('/')}>
+        <div className={classes.backWarp} onClick={() => this.props.history.push('/')}>
           <div className={classes.back}>
             <img className={classes.backImg} src={backHome} alt="" />
             <span className={classes.backText}>Home</span>
@@ -975,10 +975,10 @@ class Stake extends Component {
             <Typography variant={"h2"} className={classes.overviewValue}>
               {pool.tokens[0].balance
                 ? this.formatNumber(
-                    pool.tokens[0].balance,
-                    pool.tokens[0].decimals,
-                    4
-                  )
+                  pool.tokens[0].balance,
+                  pool.tokens[0].decimals,
+                  4
+                )
                 : "0"}{" "}
               {pool.tokens[0].symbol}
             </Typography>
@@ -991,10 +991,10 @@ class Stake extends Component {
             <Typography variant={"h2"} className={classes.overviewValue}>
               {pool.tokens[0].stakedBalance
                 ? this.formatNumber(
-                    pool.tokens[0].stakedBalance,
-                    pool.tokens[0].decimals,
-                    4
-                  )
+                  pool.tokens[0].stakedBalance,
+                  pool.tokens[0].decimals,
+                  4
+                )
                 : "0"}{" "}
               {pool.tokens[0].symbol}
             </Typography>
@@ -1009,14 +1009,14 @@ class Stake extends Component {
                 ? pool.tokens[0].rewardsSymbol
                 : ""}
               {pool.tokens[0].rewardsAvailable
-                ? 
+                ?
                 // (
                 //     pool.tokens[0].rewardsAvailable /
                 //     10 ** pool.tokens[0].rewardsDecimal
                 //   )
                 //     .toFixed(2)
                 //     .replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
-                this.formatNumber(pool.tokens[0].rewardsAvailable,pool.tokens[0].decimals,4)
+                this.formatNumber(pool.tokens[0].rewardsAvailable, pool.tokens[0].decimals, 4)
                 : "0"}&nbsp;
               {pool.tokens[0].rewardsSymbol != "$"
                 ? pool.tokens[0].rewardsSymbol
@@ -1151,42 +1151,66 @@ class Stake extends Component {
               </span>
             </div>
           ) : (
-            <div className={classes.unstakeLockTop}>
-              <FormattedMessage id="unstake_lock_title1" />
+              <div className={classes.unstakeLockTop}>
+                <FormattedMessage id="unstake_lock_title1" />
               &nbsp;
-              <span className={classes.lockRed}>
-                {moment(this.state.timeStamp * 1000).format(
-                  "HH:mm:ss YYYY/MM/DD"
-                )}
-              </span>
-            </div>
-          )
+                <span className={classes.lockRed}>
+                  {moment(this.state.timeStamp * 1000).format(
+                    "HH:mm:ss YYYY/MM/DD"
+                  )}
+                </span>
+              </div>
+            )
         ) : (
-          ""
-        )}
-        <div className={classes.stake}>
-          <input
-            className={classes.stakeInput}
-            placeholder="Amount"
-            value={amount}
-            error={amountError}
-            onChange={(e) => this.onChange(e, asset.id, "stake")}
-          />
-          <p
-            className={classes.max}
-            onClick={() => this.onMaxChange(asset.id, "stake")}
-          >
-            <FormattedMessage id="MAX" />
-          </p>
-          <span
-            className={classes.stakeSpan}
-            onClick={() => {
-              this.onStake();
-            }}
-          >
-            <FormattedMessage id="STAKE" />
-          </span>
-        </div>
+            ""
+          )}
+        {/* disabled DF/USDx */}
+        {
+          pool.id === 'DF/USDx' ?
+            (<div className={classes.unstake_lock} style={{ marginBottom: '40px' }}>
+              <input
+                className={classes.stakeInput_lock}
+                placeholder="Amount"
+                value={amount}
+                error={amountError}
+              />
+              <p
+                className={classes.max_lock}
+              >
+                <FormattedMessage id="MAX" />
+              </p>
+              <span
+                className={classes.stakeSpan_lock}
+              >
+                <FormattedMessage id="STAKE" />
+              </span>
+            </div>)
+            : (
+              <div className={classes.stake}>
+                <input
+                  className={classes.stakeInput}
+                  placeholder="Amount"
+                  value={amount}
+                  error={amountError}
+                  onChange={(e) => this.onChange(e, asset.id, "stake")}
+                />
+                <p
+                  className={classes.max}
+                  onClick={() => this.onMaxChange(asset.id, "stake")}
+                >
+                  <FormattedMessage id="MAX" />
+                </p>
+                <span
+                  className={classes.stakeSpan}
+                  onClick={() => {
+                    this.onStake();
+                  }}
+                >
+                  <FormattedMessage id="STAKE" />
+                </span>
+              </div>
+            )
+        }
         {unstakeLock ? (
           <div className={classes.unstake_lock}>
             {mouseEnter ? (
@@ -1199,18 +1223,18 @@ class Stake extends Component {
                   <div className={classes.sj}></div>
                 </div>
               ) : (
-                <div className={classes.lockModal}>
-                  <FormattedMessage id="unstake_lock_title1" />
+                  <div className={classes.lockModal}>
+                    <FormattedMessage id="unstake_lock_title1" />
                   &nbsp;
-                  {moment(this.state.timeStamp * 1000).format(
-                    "HH:mm:ss YYYY/MM/DD"
-                  )}
-                  <div className={classes.sj}></div>
-                </div>
-              )
+                    {moment(this.state.timeStamp * 1000).format(
+                      "HH:mm:ss YYYY/MM/DD"
+                    )}
+                    <div className={classes.sj}></div>
+                  </div>
+                )
             ) : (
-              ""
-            )}
+                ""
+              )}
             <input
               className={classes.stakeInput_lock}
               placeholder="Amount"
@@ -1229,30 +1253,30 @@ class Stake extends Component {
             </span>
           </div>
         ) : (
-          <div className={classes.unstake}>
-            <input
-              className={classes.stakeInput}
-              placeholder="Amount"
-              value={unAmount}
-              error={unAmountError}
-              onChange={(e) => this.onChange(e, asset.id, "unstake")}
-            />
-            <p
-              className={classes.max}
-              onClick={() => this.onMaxChange(asset.id, "unstake")}
-            >
-              <FormattedMessage id="MAX" />
-            </p>
-            <span
-              className={classes.stakeSpan}
-              onClick={() => {
-                this.onUnstake();
-              }}
-            >
-              <FormattedMessage id="UNSTAKE" />
-            </span>
-          </div>
-        )}
+            <div className={classes.unstake}>
+              <input
+                className={classes.stakeInput}
+                placeholder="Amount"
+                value={unAmount}
+                error={unAmountError}
+                onChange={(e) => this.onChange(e, asset.id, "unstake")}
+              />
+              <p
+                className={classes.max}
+                onClick={() => this.onMaxChange(asset.id, "unstake")}
+              >
+                <FormattedMessage id="MAX" />
+              </p>
+              <span
+                className={classes.stakeSpan}
+                onClick={() => {
+                  this.onUnstake();
+                }}
+              >
+                <FormattedMessage id="UNSTAKE" />
+              </span>
+            </div>
+          )}
       </div>
     );
   };
@@ -1345,10 +1369,10 @@ class Stake extends Component {
     } else if (type === "unstake") {
       maxValue = pool.tokens[0].stakedBalance
         ? this.formatNumber(
-            pool.tokens[0].stakedBalance,
-            pool.tokens[0].decimals,
-            8
-          )
+          pool.tokens[0].stakedBalance,
+          pool.tokens[0].decimals,
+          8
+        )
         : "0";
       actualMaxValue = pool.tokens[0].stakedBalance
         ? pool.tokens[0].stakedBalance
@@ -1388,10 +1412,10 @@ class Stake extends Component {
     } else if (type === "unstake") {
       maxValue = pool.tokens[0].stakedBalance
         ? this.formatNumber(
-            pool.tokens[0].stakedBalance,
-            pool.tokens[0].decimals,
-            8
-          )
+          pool.tokens[0].stakedBalance,
+          pool.tokens[0].decimals,
+          8
+        )
         : "0";
     }
 
