@@ -495,8 +495,12 @@ function env() {
             "type": "function"
         }
     ],
-      // UniswapDF_LP_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
-      // DF_LP_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
+      // kovan
+      // UniswapDF_ETH_Token: '0x308777dDEC61F5000D8394626d55dbB0312fe874',
+      // DF_ETH_RewardsAddress: '0x232818620877fd9232e9ADe0c91EF5518EB11788',
+
+      // UniswapDF_USDx_Token: '0x9B9Ee394FaD9C3e30C2c3e33FD1ca21f91B8cD58',
+      // DF_USDx_RewardsAddress: '0xE0992063BB4E5228dCa1CdBDc2f50DDd110F5204',
 
       // UniswapGOLDx_LP_Token: '0x18F0F615ac27752bDcdA38ea34cD43f4d736E612',
       // GOLDx_LP_RewardsAddress: '0x25e03D1F31590E330b8537ceFb98a79458E14FA6',
@@ -509,9 +513,13 @@ function env() {
 
       // dDAI_dToken_Address: '0x19205bfdaf1bc9fc8705ea9a73f560572fb8f455',
       // dDAI_RewardsAddress: '0x73541562c5472Edb60333473E54662c964eFa4E2',
+
+      // main
+      UniswapDF_ETH_Token: '0x232818620877fd9232e9ADe0c91EF5518EB11788',
+      DF_ETH_RewardsAddress: '0x308777dDEC61F5000D8394626d55dbB0312fe874',
       
-      UniswapDF_LP_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
-      DF_LP_RewardsAddress: '0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1',
+      UniswapDF_USDx_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
+      DF_USDx_RewardsAddress: '0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1',
 
       UniswapGOLDx_LP_Token: '0xEf6317E783B22b2a2FC073e68260450236c20779',
       GOLDx_LP_RewardsAddress: '0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc',
@@ -1044,8 +1052,11 @@ function env() {
         }
       ],
 
-      UniswapDF_LP_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
-      DF_LP_RewardsAddress: '0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1',
+      UniswapDF_ETH_Token: '0x232818620877fd9232e9ADe0c91EF5518EB11788',
+      DF_ETH_RewardsAddress: '0x308777dDEC61F5000D8394626d55dbB0312fe874',
+
+      UniswapDF_USDx_Token: '0xFe7308D6Ba8A64a189074f3c83a6cC56Fc13B3aF',
+      DF_USDx_RewardsAddress: '0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1',
 
       UniswapGOLDx_LP_Token: '0xEf6317E783B22b2a2FC073e68260450236c20779',
       GOLDx_LP_RewardsAddress: '0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc',

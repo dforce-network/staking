@@ -1164,7 +1164,30 @@ class Stake extends Component {
         ) : (
           ""
         )}
-        <div className={classes.stake}>
+        {/* disabled DF/USDx */}
+        {
+        //   pool.id === 'DF/USDx'?
+        //   (<div className={classes.unstake_lock} style={{marginBottom:'40px'}}>
+        //   <input
+        //     className={classes.stakeInput_lock}
+        //     placeholder="Amount"
+        //     value={amount}
+        //     error={amountError}
+        //   />
+        //   <p
+        //     className={classes.max_lock}
+        //   >
+        //     <FormattedMessage id="MAX" />
+        //   </p>
+        //   <span
+        //     className={classes.stakeSpan_lock}
+        //   >
+        //     <FormattedMessage id="STAKE" />
+        //   </span>
+        // </div>)
+        // :
+        (
+          <div className={classes.stake}>
           <input
             className={classes.stakeInput}
             placeholder="Amount"
@@ -1187,6 +1210,8 @@ class Stake extends Component {
             <FormattedMessage id="STAKE" />
           </span>
         </div>
+        )
+        }
         {unstakeLock ? (
           <div className={classes.unstake_lock}>
             {mouseEnter ? (

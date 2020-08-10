@@ -58,7 +58,6 @@ const Emitter = require('events').EventEmitter;
 
 const dispatcher = new Dispatcher();
 const emitter = new Emitter();
-
 class Store {
   constructor() {
 
@@ -129,6 +128,7 @@ class Store {
               symbol: 'dUSDT',
               dToken: true,
               ROI:'dUSDT',
+              type:'dToken',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDT_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -157,6 +157,7 @@ class Store {
               symbol: 'dUSDC',
               dToken: true,
               ROI:'dUSDC',
+              type:'dToken',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -185,6 +186,7 @@ class Store {
               symbol: 'dDAI',
               dToken: true,
               ROI:'dDAI',
+              type:'dToken',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -236,14 +238,41 @@ class Store {
           tokens: [
             {
               id: 'bpt',
-              address: config.UniswapDF_LP_Token,
+              address: config.UniswapDF_USDx_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
               ROI:'DF',
               type:'DF',
               abi: config.erc20ABI,
               decimals: 18,
-              rewardsAddress: config.DF_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsAddress: config.DF_USDx_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
+        {
+          id: 'DF/ETH',
+          urlParam:'DF-ETH',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/add/0x431ad2ff6a9C365805eBaD47Ee021148d6f7DBe0/ETH',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapDF_ETH_Token,
+              symbol: 'UNI-V2',
+              ROI:'DF',
+              type:'DF',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.DF_ETH_RewardsAddress, 
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
@@ -500,7 +529,6 @@ class Store {
 
   _getERC20Balance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address)
-
     try {
       var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
       // console.log(Number(this.toStringDecimals(balance, asset.decimals)),this.toStringDecimals(balance, asset.decimals),balance)
@@ -514,7 +542,6 @@ class Store {
 
   _getstakedBalance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
-
     try {
       var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
       // balance = parseFloat(balance) / 10 ** asset.decimals
@@ -526,7 +553,6 @@ class Store {
 
   _getRewardsAvailable = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
-
     try {
       var earned = await erc20Contract.methods.earned(account.address).call({ from: account.address });
       // earned = parseFloat(earned) / 10 ** asset.decimals
@@ -598,6 +624,8 @@ class Store {
   }
 
   _callStake = async (asset, account, amount, callback) => {
+    console.log(store.getStore('connectorsByName'))
+    console.log(store.getStore('web3context'))
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
     
@@ -607,19 +635,28 @@ class Store {
       
     }
     
-    // setTimeout(() => {
-    //   store.getStore('web3context').library
-    //           .getSigner(account)
-    //           .signMessage('签名')
-    //           .then((signature) => {
-    //             window.alert(`Success!\n\n${signature}`)
-    //             // setSigned(true)
-    //           })
-    //           .catch((error) => {
-    //             window.alert('Failure!' + (error && error.message ? `\n\n${error.message}` : ''))
-    //           })
-    //       }, 2000)
+      // store.getStore('web3context').library
+      //         .getSigner(account)
+      //         .signMessage('签名')
+      //         .then((signature) => {
+      //           window.alert(`Success!\n\n${signature}`)
+      //           // setSigned(true)
+      //         })
+      //         .catch((error) => {
+      //           window.alert('Failure!' + (error && error.message ? `\n\n${error.message}` : ''))
+      //         })
 
+    // const tx = {
+    //   from: "0xbc28Ea04101F03aA7a94C1379bc3AB32E65e62d3", // Required
+    //   to: "0x89D24A7b4cCB1b6fAA2625Fe562bDd9A23260359", // Required (for non contract deployments)
+    //   data: "0x", // Required
+    //   gasPrice: "0x02540be400", // Optional
+    //   gas: "0x9c40", // Optional
+    //   value: "0x00", // Optional
+    //   nonce: "0x0114", // Optional
+    // };
+    // console.log(store.getStore('web3context'))
+    // console.log("yCurveFiContract",yCurveFiContract)
     yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
       .on('transactionHash', function (hash) {
         console.log(hash)

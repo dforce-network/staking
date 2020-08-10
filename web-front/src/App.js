@@ -51,9 +51,6 @@ class App extends Component {
                 <Route path="/dapp">
                   <Stake cur_language={this.state.cur_language} setLanguage={this.setLanguage} />
                 </Route>
-                {/* <Redirect exact from="/dapp" to="/dapp/dUSDT">
-
-                </Redirect> */}
                 <Route path="/404">
                   <Page404 />
                 </Route>

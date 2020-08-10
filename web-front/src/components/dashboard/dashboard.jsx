@@ -31,6 +31,7 @@ class DashBoard extends Component {
       dUSDC: dUSDC_logo,
       dDAI: DAI_logo,
       "DF/USDx": DF_logo,
+      "DF/ETH": DF_logo,
       "GOLDx/USDx": GOLDx_logo,
     };
     const dashboardData = rewardPools.map((rp) => ({
@@ -127,8 +128,6 @@ class DashBoard extends Component {
 
   connectionConnected = async () => {
     const { dashboardData,account } = this.state;
-    
-    console.log(store.getStore("web3context"));
     this.setState({ account: store.getStore("account") });
     this.setState(() => ({
       modalOpen: false,

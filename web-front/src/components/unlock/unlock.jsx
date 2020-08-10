@@ -201,7 +201,7 @@ function MyComponent(props) {
     error
   } = context;
   var connectorsByName = store.getStore('connectorsByName')
-
+  
   const { closeModal, t } = props
 
   const [activatingConnector, setActivatingConnector] = React.useState();

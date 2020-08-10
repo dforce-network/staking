@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component,Fragment} from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -194,6 +194,25 @@ const styles = theme => ({
     height:'12px',
     marginTop:'3px'
   },
+  DFpoolDiv:{
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    '& a':{
+      color:'rgba(67,73,118,1)',
+      // display:'block',
+      //   width:'10px',
+      //   height:'10px',
+      //   margin:'0 0 12px 14px',
+      //   backgroundImage:'url('+require('../../assets/pool-link-icon.svg')+')',
+      //   backgroundSize:'auto',
+      //   backgroundRepeat:'no-repeat',
+        '&:hover':{
+          color:'#BA59FF'
+          // backgroundImage:'url('+require('../../assets/pool-linked-icon.svg')+')',
+        }
+    },
+  },
   poolName: {
     height: '25px',
     fontSize: '22px',
@@ -305,6 +324,11 @@ const styles = theme => ({
       marginTop:'-80px',
     }
   },
+  poolWebsiteH5:{
+    height: '25px',
+    lineHeight: '19px',
+    marginBottom:'8px',
+  },
   poolWebsite: {
     height: '16px',
     fontSize: '16px',
@@ -348,7 +372,7 @@ const styles = theme => ({
         paddingLeft:'24px'
       },
       '& td:last-child':{
-        color:'#FF4242',
+        color:'#0DA88B',
         paddingRight:'24px',
       }
     },
@@ -404,21 +428,23 @@ class RewardPools extends Component {
 
     const account = store.getStore('account')
     const rewardPools = store.getStore('rewardPools')
-
+    console.log(rewardPools)
     this.state = {
       rewardPools: rewardPools,
       loading: !(account && rewardPools),
       account: account,
       ROI:{
-        "DF": 0,
-        "Glodx": 0,
+        'DF/ETH':0,
+        "DF/USDx":0,
+        "GOLDx/USDx":0,
         "dDAI": 0,
         "dUSDC": 0,
         "dUSDT": 0,
         },
       APY:{
-        "DF": 0,
-        "Glodx": 0,
+        'DF/ETH':0,
+        "DF/USDx":0,
+        "GOLDx/USDx":0,
         "dDAI": 0,
         "dUSDC": 0,
         "dUSDT": 0,
@@ -432,14 +458,14 @@ class RewardPools extends Component {
     this.setState({ loading: false })
   }
   componentDidMount(){
-    // ROI
-    this.state.rewardPools && fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+    // ROI http://192.168.1.26:5000/api/getRoi/   https://testapi.dforce.network/api/getRoi/
+    this.state.rewardPools && fetch(`https://api.dforce.network/api/getRoi/`).then(response => response.json())
     .then(data => {
       this.setState(() => ({
         ROI: data,
       }),()=>{
         setInterval(()=>{
-          fetch(`https://testapi.dforce.network/api/getRoi/`).then(response => response.json())
+          fetch(`https://api.dforce.network/api/getRoi/`).then(response => response.json())
           .then(data=>{
             this.setState(() => ({
               ROI: data,
@@ -477,8 +503,9 @@ class RewardPools extends Component {
       rewardPools,
       modalOpen,
     } = this.state
-    const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].dToken)
-    const DFPools = rewardPools.filter(rp=>!rp.tokens[0].dToken)
+    const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].type === 'dToken')
+    const GOLDxPools = rewardPools.filter(rp=>rp.tokens[0].type === 'GOLDx')
+    const DFPools = rewardPools.filter(rp=>rp.tokens[0].type === 'DF')
     return (
       <div className={classes.root}>
         {/* <Typography variant={'h5'} className={classes.disaclaimer}>This project is in beta. Use at your own risk.</Typography>
@@ -517,21 +544,33 @@ class RewardPools extends Component {
               dTokenPools.map(rp => (
                 // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
                 <tr key={rp.id}>
-                  <td align="left">{rp.tokens[0].ROI}</td>
-                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
-                  <td align="right">{APY[rp.tokens[0].ROI] ? APY[rp.tokens[0].ROI]["now_apy"]+'%' : '...'}</td>
-                  <td align="right">{ROI[rp.tokens[0].ROI] && APY[rp.tokens[0].ROI] ? this.formatAPYNumber(this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100) +  parseFloat(APY[rp.tokens[0].ROI]["now_apy"])) +'%': '...'}</td>
+                  <td align="left">{rp.id}</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                  <td align="right">{APY[rp.id] ? APY[rp.id]["now_apy"]+'%' : '...'}</td>
+                  <td align="right">{ROI[rp.id] && APY[rp.id] ? this.formatAPYNumber(this.formatAPYNumber(ROI[rp.id]*100) +  parseFloat(APY[rp.id]["now_apy"])) +'%': '...'}</td>
                 </tr>
               ))
             }
             {
-              DFPools.map(rp => (
+              GOLDxPools.map(rp => (
                 // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
                 <tr className={classes.DFrow} key={rp.id}>
-                  <td align="left">{rp.tokens[0].ROI === 'Glodx'?<FormattedMessage id='GOLDx_APY'/>:<FormattedMessage id='DF_APY'/>}</td>
-                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
-                  <td align="right">0.00%</td>
-                  <td align="right">{ROI[rp.tokens[0].ROI] ? this.formatAPYNumber(ROI[rp.tokens[0].ROI]*100)+'%' : '...'}</td>
+                  <td align="left"><FormattedMessage id='GOLDx_APY'/></td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                  <td align="right">...</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                </tr>
+              ))
+            }
+            <tr className={classes.subHead}><td colSpan="4"><FormattedMessage id='DF_APY'/></td></tr>
+            {
+              DFPools.map(rp => (
+                // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
+                <tr key={rp.id}>
+                  <td align="left">{rp.id}</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                  <td align="right">...</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                 </tr>
               ))
             }
@@ -545,9 +584,17 @@ class RewardPools extends Component {
 
   renderRewards = () => {
     const { rewardPools } = this.state
-    const dtoken = rewardPools.filter((item) => item.tokens[0].dToken)
-    const LP = rewardPools.filter((item) => !item.tokens[0].dToken)
-    const renderRewardPools = [ dtoken,...LP]
+
+    // const dtoken = rewardPools.filter((item) => item.tokens[0].dToken)
+    // const LP = rewardPools.filter((item) => !item.tokens[0].dToken)
+    // const renderRewardPools = [ dtoken,...LP]
+
+    const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].type === 'dToken')
+    const GOLDxPools = rewardPools.filter(rp=>rp.tokens[0].type === 'GOLDx')
+    const DFPools = rewardPools.filter(rp=>rp.tokens[0].type === 'DF')
+
+    const renderRewardPools = [ dTokenPools,...GOLDxPools,DFPools]
+
     return renderRewardPools.map((rewardPool) => {
       return this.renderRewardPool(rewardPool)
     })
@@ -556,22 +603,23 @@ class RewardPools extends Component {
   renderRewardPool = (rewardPool) => {
     const {ROI} = this.state
     const { classes } = this.props
+    let poolType
     if (Array.isArray(rewardPool)) {
+      // dToken and DF
+      rewardPool.map(item=>(
+        poolType = item.tokens[0].type
+      ))
       let tokensList = rewardPool.map(item => (
         item.tokens.map((rp) => { return rp.symbol }).join(', ')
       )).join('/')
-      return (<div className={classes.rewardPoolContainer} key={"dToken"} >
-        {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
+      
+      // dToekn JSX
+      return poolType === 'dToken' ? (<div className={classes.rewardPoolContainer} key={"dToken"} >
         <Typography variant='h3' className={classes.poolName}>{tokensList}</Typography>
-        <Typography variant='h5'><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} rel="noopener noreferrer" target="_blank">{"https://markets.dforce.network/"}</a></Typography>
+        <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} rel="noopener noreferrer" target="_blank">{"https://markets.dforce.network/"}</a></Typography>
         <div className={classes.svgCenter}><img src={dTokenPool} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
-          {/* <FormattedMessage id='tips_stake' /> */}
           <b className={classes.B}><FormattedMessage id='dToken'/></b>
-          {/* <FormattedMessage id='tips_earn' /> */}
-          {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
-          {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
-        {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
         </Typography>
         {/* {
           <div className={classes.dTokenDataBox}>
@@ -597,6 +645,31 @@ class RewardPools extends Component {
         }
 
       </div>)
+      //DF JSX
+      :(<div className={classes.rewardPoolContainer} key={"DF"} >
+        {
+          rewardPool.map(rp=>(
+            <div className={classes.DFpoolDiv} key={rp.id}>
+              <Typography variant='h3' className={classes.poolName}><a href={rp.link} rel="noopener noreferrer" target="_blank">Uniswap&nbsp;{rp.id}</a></Typography>
+              {/* <a className={classes.linkA} href={rp.link} rel="noopener noreferrer" target="_blank"></a> */}
+            </div>
+          ))
+        }
+        <div className={classes.svgCenter}><img src={rewardPool[0].logo} alt="" /></div>
+        <Typography varian='h4' className={classes.tokensList} align='center'>
+          <b className={classes.B}><FormattedMessage id='DF_DF'/></b>
+        </Typography>
+        {
+          <div className={classes.dTokenBtnBox}>
+            {
+              rewardPool.map(rp => (
+                <div className={classes.dTokenBtn} key={rp.id} onClick={() => { if (rp.tokens.length > 0) { this.navigateStake(rp) } }}><b>{rp.id}</b><b className={classes.open}><FormattedMessage id='open' /></b></div>
+              ))
+            }
+          </div>
+        }
+
+      </div>)
     } else {
       let tokensList = rewardPool.tokens.map((rp) => { return rp.symbol }).join(', ')
       // if (tokensList.length > 2) {
@@ -606,7 +679,7 @@ class RewardPools extends Component {
       return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
         {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
         <Typography variant='h3' className={classes.poolName}>Uniswap&nbsp;{rewardPool.id}</Typography>
-        <Typography variant='h5'><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
+        <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
         <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
         <Typography varian='h4' className={classes.tokensList} align='center'>
           {/* <FormattedMessage id='tips_stake' /> */}
