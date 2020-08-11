@@ -68,7 +68,7 @@ class Store {
       web3: null,
       connectorsByName: {
         MetaMask: injected,
-        TrustWallet: injected,
+        MYKEY: injected,
         WalletConnect: walletconnect,
         WalletLink: walletlink,
         Ledger: ledger,

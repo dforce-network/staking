@@ -49,8 +49,7 @@ class DashBoard extends Component {
       loading: !account,
       account: account,
       modalOpen: false,
-      dashboardData,
-      timerId: null,
+      dashboardData
     };
   }
 
@@ -118,7 +117,6 @@ class DashBoard extends Component {
     }, 1000);
   }
   componentWillUnmount() {
-    clearInterval(this.state.timerId);
     emitter.removeListener(CONNECTION_CONNECTED, this.connectionConnected);
     emitter.removeListener(
       CONNECTION_DISCONNECTED,
@@ -202,7 +200,7 @@ class DashBoard extends Component {
         dashboardData: this.merge_data(dashboardData, poolData),
       }),
       () => {
-        const timerId = setInterval(async () => {
+        setInterval(async () => {
           const poolData = await Promise.all(
             poolsContract.map(async (pool, index) =>
               // await pool.methods.periodFinish().call()
@@ -253,13 +251,10 @@ class DashBoard extends Component {
           this.setState(() => ({
             dashboardData: this.merge_data(dashboardData, poolData),
           }));
-        }, 10000);
-        this.setState({
-          timerId,
-        });
+        },10000)
       }
-    );
-  };
+    )
+  }
 
   connectionDisconnected = () => {
     this.setState({ account: store.getStore("account") });

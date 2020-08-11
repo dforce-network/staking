@@ -40,7 +40,7 @@ const en_US = {
     Pool:'Pool',
     MiningAPY:'Mining APY',
     YieldingAPY:'Yielding APY',
-    CompoundAPY:'Compound APY',
+    CompoundAPY:'Combined APY',
     open: 'Open',
     Staking_title: 'dForce (DF) Liquidity Mining',
     Staking_subTitle: 'Participate in dForce liquidity mining by staking and earn DF rewards',

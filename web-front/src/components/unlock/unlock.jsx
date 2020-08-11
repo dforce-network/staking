@@ -247,8 +247,8 @@ function MyComponent(props) {
           url = require('../../assets/icn-metamask.svg')
         } else if (name === 'WalletConnect') {
           url = require('../../assets/walletConnectIcon.svg')
-        } else if (name === 'TrustWallet') {
-          url = require('../../assets/trustWallet.png')
+        } else if (name === 'MYKEY') {
+          url = require('../../assets/mykey.svg')
         } else if (name === 'Portis') {
           url = require('../../assets/portisIcon.png')
         } else if (name === 'Fortmatic') {
