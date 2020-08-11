@@ -428,7 +428,6 @@ class RewardPools extends Component {
 
     const account = store.getStore('account')
     const rewardPools = store.getStore('rewardPools')
-    console.log(rewardPools)
     this.state = {
       rewardPools: rewardPools,
       loading: !(account && rewardPools),
@@ -557,7 +556,7 @@ class RewardPools extends Component {
                 <tr className={classes.DFrow} key={rp.id}>
                   <td align="left"><FormattedMessage id='GOLDx_APY'/></td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
-                  <td align="right">...</td>
+                  <td align="right">0.00%</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                 </tr>
               ))
@@ -569,7 +568,7 @@ class RewardPools extends Component {
                 <tr key={rp.id}>
                   <td align="left">{rp.id}</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
-                  <td align="right">...</td>
+                  <td align="right">0.00%</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                 </tr>
               ))
