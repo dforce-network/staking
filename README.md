@@ -12,6 +12,10 @@
 		<td> 0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1 </td>
 	</tr>
 	<tr>
+		<td> ETH-DF Staking </td>
+		<td> 0x308777dDEC61F5000D8394626d55dbB0312fe874 </td>
+	</tr>
+	<tr>
 		<td> GOLDx-DF Staking </td>
 		<td> 0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc </td>
 	</tr>
