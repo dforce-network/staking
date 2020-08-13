@@ -49,6 +49,7 @@ import {
   torus,
   authereum
 } from "./connectors";
+import { SendTransaction } from "../utils";
 
 const rp = require('request-promise');
 const ethers = require('ethers');
@@ -113,7 +114,7 @@ class Store {
       rewardPools: [
         {
           id: 'dUSDT',
-          urlParam:'dUSDT',
+          urlParam: 'dUSDT',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network/',
@@ -127,8 +128,8 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dUSDT',
               dToken: true,
-              ROI:'dUSDT',
-              type:'dToken',
+              ROI: 'dUSDT',
+              type: 'dToken',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDT_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -143,7 +144,7 @@ class Store {
         },
         {
           id: 'dUSDC',
-          urlParam:'dUSDC',
+          urlParam: 'dUSDC',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network/',
@@ -156,8 +157,8 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dUSDC',
               dToken: true,
-              ROI:'dUSDC',
-              type:'dToken',
+              ROI: 'dUSDC',
+              type: 'dToken',
               abi: config.erc20ABI,
               decimals: 6,
               rewardsAddress: config.dUSDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -172,7 +173,7 @@ class Store {
         },
         {
           id: 'dDAI',
-          urlParam:'dDAI',
+          urlParam: 'dDAI',
           name: 'Balancer Pool', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'markets.dforce.network',
           link: 'https://markets.dforce.network',
@@ -185,8 +186,8 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dDAI',
               dToken: true,
-              ROI:'dDAI',
-              type:'dToken',
+              ROI: 'dDAI',
+              type: 'dToken',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.dDAI_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -201,7 +202,7 @@ class Store {
         },
         {
           id: 'GOLDx/USDx',
-          urlParam:'GOLDx-USDx',
+          urlParam: 'GOLDx-USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
           link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x355c665e101b9da58704a8fddb5feef210ef20c0',
@@ -213,8 +214,8 @@ class Store {
               address: config.UniswapGOLDx_LP_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
-              ROI:'Glodx',
-              type:'GOLDx',
+              ROI: 'Glodx',
+              type: 'GOLDx',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -229,7 +230,7 @@ class Store {
         },
         {
           id: 'DF/USDx',
-          urlParam:'DF-USDx',
+          urlParam: 'DF-USDx',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
           link: 'https://app.uniswap.org/#/add/0xeb269732ab75a6fd61ea60b06fe994cd32a83549/0x431ad2ff6a9c365805ebad47ee021148d6f7dbe0',
@@ -241,8 +242,8 @@ class Store {
               address: config.UniswapDF_USDx_Token,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
-              ROI:'DF',
-              type:'DF',
+              ROI: 'DF',
+              type: 'DF',
               abi: config.erc20ABI,
               decimals: 18,
               rewardsAddress: config.DF_USDx_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
@@ -257,7 +258,7 @@ class Store {
         },
         {
           id: 'DF/ETH',
-          urlParam:'DF-ETH',
+          urlParam: 'DF-ETH',
           name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
           website: 'Uniswap Exchange',
           link: 'https://app.uniswap.org/#/add/0x431ad2ff6a9C365805eBaD47Ee021148d6f7DBe0/ETH',
@@ -268,11 +269,11 @@ class Store {
               id: 'bpt',
               address: config.UniswapDF_ETH_Token,
               symbol: 'UNI-V2',
-              ROI:'DF',
-              type:'DF',
+              ROI: 'DF',
+              type: 'DF',
               abi: config.erc20ABI,
               decimals: 18,
-              rewardsAddress: config.DF_ETH_RewardsAddress, 
+              rewardsAddress: config.DF_ETH_RewardsAddress,
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
@@ -507,25 +508,25 @@ class Store {
   }
 
   // toStringDecimals
-  toStringDecimals = (numStr, decimals, decimalPlace = decimals)=>{
-        numStr = numStr.toLocaleString().replace(/,/g, '');
-        decimals = decimals.toString();
-    
-        var str = Number(`1e+${decimals}`).toLocaleString().replace(/,/g, '').slice(1);
-    
-        var res = (numStr.length > decimals ?
-            numStr.slice(0, numStr.length - decimals) + '.' + numStr.slice(numStr.length - decimals) :
-            '0.' + str.slice(0, str.length - numStr.length) + numStr).replace(/(0+)$/g, "");
-    
-        // res = res.slice(-1) == '.' ? res + '00' : res;
-    
-        if (decimalPlace == 0)
-            return res.slice(0, res.indexOf('.'));
-    
-        var length = res.indexOf('.') + 1 + decimalPlace;
-        res = res.slice(0, length >= res.length ? res.length : length).replace(/(0+)$/g, "");
-        return res.slice(-1) == '.' ? res + '00' : res;
-    }
+  toStringDecimals = (numStr, decimals, decimalPlace = decimals) => {
+    numStr = numStr.toLocaleString().replace(/,/g, '');
+    decimals = decimals.toString();
+
+    var str = Number(`1e+${decimals}`).toLocaleString().replace(/,/g, '').slice(1);
+
+    var res = (numStr.length > decimals ?
+      numStr.slice(0, numStr.length - decimals) + '.' + numStr.slice(numStr.length - decimals) :
+      '0.' + str.slice(0, str.length - numStr.length) + numStr).replace(/(0+)$/g, "");
+
+    // res = res.slice(-1) == '.' ? res + '00' : res;
+
+    if (decimalPlace == 0)
+      return res.slice(0, res.indexOf('.'));
+
+    var length = res.indexOf('.') + 1 + decimalPlace;
+    res = res.slice(0, length >= res.length ? res.length : length).replace(/(0+)$/g, "");
+    return res.slice(-1) == '.' ? res + '00' : res;
+  }
 
   _getERC20Balance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address)
@@ -534,7 +535,7 @@ class Store {
       // console.log(Number(this.toStringDecimals(balance, asset.decimals)),this.toStringDecimals(balance, asset.decimals),balance)
       // balance = parseFloat(balance) / 10 ** asset.decimals
       callback(null, this.toStringDecimals(balance, asset.decimals))
-      
+
     } catch (ex) {
       return callback(ex)
     }
@@ -624,41 +625,30 @@ class Store {
   }
 
   _callStake = async (asset, account, amount, callback) => {
-    debugger
-    console.log(store.getStore('connectorsByName'))
-    console.log(store.getStore('web3context'))
+    // debugger
+    // console.log(store.getStore('connectorsByName'))
+    // console.log(store.getStore('web3context'))
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
-    
+
     var amountToSend = web3.utils.toWei(amount, "ether")
     if (asset.decimals != 18) {
       amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
-      
     }
 
-    // const tx = {
-    //   from: "0xbc28Ea04101F03aA7a94C1379bc3AB32E65e62d3", // Required
-    //   to: "0x89D24A7b4cCB1b6fAA2625Fe562bDd9A23260359", // Required (for non contract deployments)
-    //   data: "0x", // Required
-    //   gasPrice: "0x02540be400", // Optional
-    //   gas: "0x9c40", // Optional
-    //   value: "0x00", // Optional
-    //   nonce: "0x0114", // Optional
-    // };
-    // console.log(store.getStore('web3context'))
-    // console.log("yCurveFiContract",yCurveFiContract)
+    let data = yCurveFiContract.methods.stake(amountToSend).encodeABI();
+    let ChainId = await web3.eth.getChainId();
+    // console.log(web3)
+    // console.log(data)
+    // console.log(ChainId)
 
-    // web3.eth.signTransaction({
-    //   from: account.address,
-    //   gasPrice: '100000000000',
-    //   gas: "2100000",
-    //   to: asset.rewardsAddress,
-    //   value: "0",
-    //   data: '0xa694fc3a0000000000000000000000000000000000000000000000000de0b6b3a7640000'
-    // })
-    // .then(console.log)
-    // .catch(e=>{console.log(e)})
+    // SendTransaction(web3, data, from_address, to_address, chainId, bn);
+    SendTransaction(web3, data, account.address, asset.rewardsAddress, ChainId, amountToSend, callback)
 
+
+
+
+    return false;
     yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
       .on('transactionHash', function (hash) {
         console.log(hash)
