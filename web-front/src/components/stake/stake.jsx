@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import backHome from "../../assets/backhome.svg";
+import backHome from "../../assets/backhome.png";
 import moment from "moment";
 import { FormattedMessage } from "react-intl";
 import Web3 from "web3";
