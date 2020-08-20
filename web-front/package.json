@@ -39,7 +39,7 @@
     "react-i18next": "^9.0.10",
     "react-intl": "^4.6.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^3.4.1",
     "request-promise": "^4.2.6",
     "sass-loader": "^9.0.2",
     "typeface-roboto": "0.0.54",
@@ -50,7 +50,7 @@
     "start:test": "cross-env REACT_APP_ENV=test react-scripts start",
     "build": "react-scripts build",
     "build:test": "cross-env REACT_APP_ENV=test react-scripts build",
-    "buildnomap": "set GENERATE_SOURCEMAP=false&& react-scripts build",
+    "buildnomap": "set GENERATE_SOURCEMAP=false&& npm run build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

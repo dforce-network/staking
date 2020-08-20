@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import backHome from "../../assets/backhome.png";
+import backHome from "../../assets/backhome.svg";
 import moment from "moment";
 import { FormattedMessage } from "react-intl";
 import Web3 from "web3";
@@ -387,11 +387,11 @@ const styles = (theme) => ({
     boxShadow: "0px 0px 35px 0px rgba(94,85,126,0.15)",
     borderRadius: "6px",
     margin: "19px auto 40px",
-    padding: "40px 0",
+    padding: "40px 0 0",
     position: "relative",
     [theme.breakpoints.down("md")]: {
       width: "calc(100vw - 24px)",
-      padding: "20px 0 0",
+      padding: "25px 0 0",
       margin: "12px auto 15px",
     },
   },
@@ -402,7 +402,7 @@ const styles = (theme) => ({
     fontSize: "16px",
     position: "relative",
     [theme.breakpoints.down("md")]: {
-      margin: "0 auto 40px",
+      margin: "0 auto 20px",
       fontSize: "13px",
       height: "44px",
       lineHeight: "44px",
@@ -414,9 +414,9 @@ const styles = (theme) => ({
     lineHeight: "54px",
     fontSize: "16px",
     position: "relative",
-    marginBottom: "0",
+    marginBottom: "40px",
     [theme.breakpoints.down("md")]: {
-      margin: "0 auto 20px",
+      margin: "0 auto 24px",
       fontSize: "13px",
       height: "44px",
       lineHeight: "44px",
@@ -484,7 +484,7 @@ const styles = (theme) => ({
     lineHeight: "54px",
     fontSize: "16px",
     position: "relative",
-    marginBottom: "0",
+    marginBottom: "40px",
     [theme.breakpoints.down("md")]: {
       margin: "0 auto 20px",
       fontSize: "13px",
@@ -494,21 +494,21 @@ const styles = (theme) => ({
   },
   unstakeLockTop: {
     width: "570px",
-    margin: "0 auto",
-    height: "40px",
+    margin: "-40px auto 0",
+    // height: "40px",
     lineHeight: "40px",
     fontSize: "16px",
-    position: "absolute",
-    left: "50%",
-    top: "0",
-    transform: "translateX(-50%)",
+    // position: "relative",
+    // left: "50%",
+    // top: "0",
+    // transform: "translateX(-50%)",
     textAlign: "left",
     [theme.breakpoints.down("md")]: {
       width: "305px",
-      margin: "0 auto 4px",
+      margin: "-25px auto 0",
       fontSize: "12px",
-      lineHeight: "20px",
-      height: "20px",
+      lineHeight: "25px",
+      // height: "20px",
     },
   },
   lockRed: {
@@ -1214,7 +1214,7 @@ class Stake extends Component {
         }
         {unstakeLock ? (
           <div className={classes.unstake_lock}>
-            {mouseEnter ? (
+            {/* {mouseEnter ? (
               cur_language === "中文" ? (
                 <div className={classes.lockModal}>
                   <FormattedMessage id="unstake_lock_title1" />
@@ -1235,7 +1235,7 @@ class Stake extends Component {
                 )
             ) : (
                 ""
-              )}
+              )} */}
             <input
               className={classes.stakeInput_lock}
               placeholder="Amount"

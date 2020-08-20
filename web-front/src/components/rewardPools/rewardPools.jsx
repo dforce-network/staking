@@ -200,6 +200,7 @@ const styles = theme => ({
     alignItems:'center',
     '& a':{
       color:'rgba(67,73,118,1)',
+      textDecoration:'underline',
       // display:'block',
       //   width:'10px',
       //   height:'10px',
@@ -567,11 +568,9 @@ class RewardPools extends Component {
                 // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
                 <tr key={rp.id}>
                   <td align="left">{rp.id}</td>
-                  {/* <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td> */}
-                  <td align="right">{'...'}</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                   <td align="right">0.00%</td>
-                  {/* <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td> */}
-                  <td align="right">{'...'}</td>
+                  <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                 </tr>
               ))
             }

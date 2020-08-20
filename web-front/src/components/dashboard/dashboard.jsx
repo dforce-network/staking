@@ -6,7 +6,7 @@ import Footer from "../footer";
 import UnlockModal from "../unlock/unlockModal";
 import Loader from "../loader";
 import Store from "../../stores";
-import backHome from "../../assets/backhome.png";
+import backHome from "../../assets/backhome.svg";
 import dUSDT_logo from "../../assets/logo-dUSDT.svg";
 import dUSDC_logo from "../../assets/logo-dUSDC.svg";
 import DAI_logo from "../../assets/logo-dDAI.svg";
