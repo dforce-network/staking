@@ -49,6 +49,7 @@ import {
   torus,
   authereum
 } from "./connectors";
+import { SendTransaction } from "../utils";
 
 const rp = require('request-promise');
 const ethers = require('ethers');
@@ -624,8 +625,6 @@ class Store {
   }
 
   _callStake = async (asset, account, amount, callback) => {
-    console.log(store.getStore('connectorsByName'))
-    console.log(store.getStore('web3context'))
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
     
@@ -634,29 +633,13 @@ class Store {
       amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
       
     }
+    // SendTransaction wallet connect
     
-      // store.getStore('web3context').library
-      //         .getSigner(account)
-      //         .signMessage('签名')
-      //         .then((signature) => {
-      //           window.alert(`Success!\n\n${signature}`)
-      //           // setSigned(true)
-      //         })
-      //         .catch((error) => {
-      //           window.alert('Failure!' + (error && error.message ? `\n\n${error.message}` : ''))
-      //         })
+    // let data = yCurveFiContract.methods.stake(amountToSend).encodeABI();
+    // let ChainId = await web3.eth.getChainId();
+    
+    // SendTransaction(web3, data, account.address, asset.rewardsAddress, ChainId, amountToSend, callback)
 
-    // const tx = {
-    //   from: "0xbc28Ea04101F03aA7a94C1379bc3AB32E65e62d3", // Required
-    //   to: "0x89D24A7b4cCB1b6fAA2625Fe562bDd9A23260359", // Required (for non contract deployments)
-    //   data: "0x", // Required
-    //   gasPrice: "0x02540be400", // Optional
-    //   gas: "0x9c40", // Optional
-    //   value: "0x00", // Optional
-    //   nonce: "0x0114", // Optional
-    // };
-    // console.log(store.getStore('web3context'))
-    // console.log("yCurveFiContract",yCurveFiContract)
     yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
       .on('transactionHash', function (hash) {
         console.log(hash)
