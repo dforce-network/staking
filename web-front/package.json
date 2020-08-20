@@ -1,5 +1,5 @@
 {
-  "homepage": "./",
+  "homepage": "/",
   "name": "dforce-staking",
   "version": "0.0.1",
   "private": true,
@@ -49,6 +49,7 @@
     "start:test": "cross-env REACT_APP_ENV=test react-scripts start",
     "build": "react-scripts build",
     "build:test": "cross-env REACT_APP_ENV=test react-scripts build",
+    "buildnomap": "set GENERATE_SOURCEMAP=false&& npm run build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

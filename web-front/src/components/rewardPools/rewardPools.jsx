@@ -200,6 +200,7 @@ const styles = theme => ({
     alignItems:'center',
     '& a':{
       color:'rgba(67,73,118,1)',
+      textDecoration:'underline',
       // display:'block',
       //   width:'10px',
       //   height:'10px',
