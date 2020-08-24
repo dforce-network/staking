@@ -437,6 +437,7 @@ class RewardPools extends Component {
         'DF/ETH':0,
         "DF/USDx":0,
         "GOLDx/USDx":0,
+        "USDx/USDC":0,
         "dDAI": 0,
         "dUSDC": 0,
         "dUSDT": 0,
@@ -445,6 +446,7 @@ class RewardPools extends Component {
         'DF/ETH':0,
         "DF/USDx":0,
         "GOLDx/USDx":0,
+        "USDx/USDC":0,
         "dDAI": 0,
         "dUSDC": 0,
         "dUSDT": 0,
@@ -458,7 +460,7 @@ class RewardPools extends Component {
     this.setState({ loading: false })
   }
   componentDidMount(){
-    // ROI http://192.168.1.26:5000/api/getRoi/   https://testapi.dforce.network/api/getRoi/
+    // ROI https://api.dforce.network/api/getRoi/   https://testapi.dforce.network/api/getRoi/
     this.state.rewardPools && fetch(`https://api.dforce.network/api/getRoi/`).then(response => response.json())
     .then(data => {
       this.setState(() => ({
@@ -504,7 +506,7 @@ class RewardPools extends Component {
       modalOpen,
     } = this.state
     const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].type === 'dToken')
-    const GOLDxPools = rewardPools.filter(rp=>rp.tokens[0].type === 'GOLDx')
+    const RushPools = rewardPools.filter(rp=>rp.tokens[0].type === 'Rush_Pool').reverse()
     const DFPools = rewardPools.filter(rp=>rp.tokens[0].type === 'DF')
     return (
       <div className={classes.root}>
@@ -552,10 +554,21 @@ class RewardPools extends Component {
               ))
             }
             {
-              GOLDxPools.map(rp => (
+              RushPools.map(rp => (
                 // this.formatAPYNumber(APY[rp.tokens[0].ROI['now_apy']])+'%'
+                rp.id === 'USDx/USDC'?
+                <>
+                  <tr className={classes.subHead}><td colSpan="4"><FormattedMessage id={`${rp.tokens[0].Rush_type}_APY`}/></td></tr>
+                  <tr key={rp.id}>
+                  <td align="left">{rp.id}</td>
+                    <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                    <td align="right">0.00%</td>
+                    <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
+                  </tr>
+                </>
+                :
                 <tr className={classes.DFrow} key={rp.id}>
-                  <td align="left"><FormattedMessage id='GOLDx_APY'/></td>
+                  <td align="left"><FormattedMessage id={`${rp.tokens[0].Rush_type}_APY`}/></td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                   <td align="right">0.00%</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
@@ -590,10 +603,10 @@ class RewardPools extends Component {
     // const renderRewardPools = [ dtoken,...LP]
 
     const dTokenPools = rewardPools.filter(rp=>rp.tokens[0].type === 'dToken')
-    const GOLDxPools = rewardPools.filter(rp=>rp.tokens[0].type === 'GOLDx')
+    const RushPools = rewardPools.filter(rp=>rp.tokens[0].type === 'Rush_Pool')
     const DFPools = rewardPools.filter(rp=>rp.tokens[0].type === 'DF')
 
-    const renderRewardPools = [ dTokenPools,...GOLDxPools,DFPools]
+    const renderRewardPools = [ dTokenPools,DFPools,...RushPools]
 
     return renderRewardPools.map((rewardPool) => {
       return this.renderRewardPool(rewardPool)
@@ -613,7 +626,7 @@ class RewardPools extends Component {
         item.tokens.map((rp) => { return rp.symbol }).join(', ')
       )).join('/')
       
-      // dToekn JSX
+      // dToken JSX
       return poolType === 'dToken' ? (<div className={classes.rewardPoolContainer} key={"dToken"} >
         <Typography variant='h3' className={classes.poolName}>{tokensList}</Typography>
         <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={"https://markets.dforce.network/"} rel="noopener noreferrer" target="_blank">{"https://markets.dforce.network/"}</a></Typography>
@@ -684,7 +697,7 @@ class RewardPools extends Component {
         <Typography varian='h4' className={classes.tokensList} align='center'>
           {/* <FormattedMessage id='tips_stake' /> */}
           {/* <b className={classes.B}><FormattedMessage id='dToken' /></b> */}
-          <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].type}`} /></b>
+          <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].Rush_type}`} /></b>
           {/* <FormattedMessage id='tips_earn' /> */}
           {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
           {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}

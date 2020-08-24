@@ -973,13 +973,25 @@ class Stake extends Component {
               <FormattedMessage id="Your_Balance" />
             </Typography>
             <Typography variant={"h2"} className={classes.overviewValue}>
-              {pool.tokens[0].balance
-                ? this.formatNumber(
-                  pool.tokens[0].balance,
-                  pool.tokens[0].decimals,
-                  4
-                )
-                : "0"}{" "}
+              {
+              pool.id === 'USDx/USDC'?
+                pool.tokens[0].balance
+                  ? this.formatNumber(
+                    pool.tokens[0].balance,
+                    pool.tokens[0].decimals,
+                    8
+                  )
+                  : "0"
+              :
+                pool.tokens[0].balance
+                  ? this.formatNumber(
+                    pool.tokens[0].balance,
+                    pool.tokens[0].decimals,
+                    4
+                  )
+                  : "0"
+              }
+              {" "}
               {pool.tokens[0].symbol}
             </Typography>
           </div>
@@ -989,13 +1001,25 @@ class Stake extends Component {
             </Typography>
             {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].stakedBalance ? pool.tokens[0].stakedBalance.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].symbol}</Typography> */}
             <Typography variant={"h2"} className={classes.overviewValue}>
-              {pool.tokens[0].stakedBalance
+              {
+                pool.id === 'USDx/USDC'?
+                  pool.tokens[0].stakedBalance
+                    ? this.formatNumber(
+                      pool.tokens[0].stakedBalance,
+                      pool.tokens[0].decimals,
+                      8
+                    )
+                    : "0"
+                :
+                pool.tokens[0].stakedBalance
                 ? this.formatNumber(
                   pool.tokens[0].stakedBalance,
                   pool.tokens[0].decimals,
                   4
                 )
-                : "0"}{" "}
+                : "0"
+              }
+              {" "}
               {pool.tokens[0].symbol}
             </Typography>
           </div>

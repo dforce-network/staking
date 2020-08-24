@@ -157,7 +157,7 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dUSDC',
               dToken: true,
-              ROI:'dUSDC',
+              // ROI:'dUSDC',
               type:'dToken',
               abi: config.erc20ABI,
               decimals: 6,
@@ -186,7 +186,7 @@ class Store {
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'dDAI',
               dToken: true,
-              ROI:'dDAI',
+              // ROI:'dDAI',
               type:'dToken',
               abi: config.erc20ABI,
               decimals: 18,
@@ -211,14 +211,44 @@ class Store {
           tokens: [
             {
               id: 'bpt',
-              address: config.UniswapGOLDx_LP_Token,
+              address: config.UniswapGOLDx_USDx,
               // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
               symbol: 'UNI-V2',
               ROI:'Glodx',
-              type:'GOLDx',
+              type:'Rush_Pool',
+              Rush_type:'GOLDx_USDx',
               abi: config.erc20ABI,
               decimals: 18,
-              rewardsAddress: config.GOLDx_LP_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsAddress: config.GOLDx_USDx_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: config.balancerRewardsABI,
+              rewardsSymbol: 'DF',
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              rewardsAvailable: 0
+            }
+          ]
+        },
+        {
+          id: 'USDx/USDC',
+          urlParam:'USDx-USDC',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'Uniswap Exchange',
+          link: 'https://app.uniswap.org/#/add/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/0xeb269732ab75a6fd61ea60b06fe994cd32a83549',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/logo2.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapUSDx_USDC,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'UNI-V2',
+              ROI:'USDx_USDC',
+              type:'Rush_Pool',
+              Rush_type:'USDx_USDC',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: config.USDx_USDC_RewardsAddress, // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
               rewardsABI: config.balancerRewardsABI,
               rewardsSymbol: 'DF',
               rewardsDecimal: 0,
