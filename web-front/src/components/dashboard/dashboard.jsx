@@ -12,6 +12,7 @@ import dUSDC_logo from "../../assets/logo-dUSDC.svg";
 import DAI_logo from "../../assets/logo-dDAI.svg";
 import DF_logo from "../../assets/logo-DF.svg";
 import GOLDx_logo from "../../assets/logo-DF.svg";
+import USDx_USDC_logo from "../../assets/logo-DF.svg";
 import "./dash.scss";
 import { CONNECTION_CONNECTED, CONNECTION_DISCONNECTED } from "../../constants";
 
@@ -33,6 +34,7 @@ class DashBoard extends Component {
       "DF/USDx": DF_logo,
       "DF/ETH": DF_logo,
       "GOLDx/USDx": GOLDx_logo,
+      "USDx/USDC":USDx_USDC_logo
     };
     const dashboardData = rewardPools.map((rp) => ({
       poolUrlParam: rp.id,
@@ -152,7 +154,15 @@ class DashBoard extends Component {
     );
     const poolData = await Promise.all(
       poolsContract.map(async (pool, index) =>
-        // await pool.methods.periodFinish().call()
+        // console.log(this.toStringDecimals(
+        //   bn(
+        //     await ERCpoolsContract[index].methods
+        //       .balanceOf(dashboardData[index].rp.tokens[0].rewardsAddress)
+        //       .call()
+        //   ),
+        //   dashboardData[index].rp.tokens[0].decimals,
+        //   6
+        // ))
         ({
           StakingSize: this.toStringDecimals(
             bn(
@@ -161,7 +171,8 @@ class DashBoard extends Component {
                 .call()
             ),
             dashboardData[index].rp.tokens[0].decimals,
-            2
+            //特殊处理 USDx/USDC 小数位 6位显示
+            6
           ),
           TotalDFDistribution: this.toStringDecimals(
             bn(await pool.methods.rewardRate().call()).mul(
@@ -214,7 +225,7 @@ class DashBoard extends Component {
                       .call()
                   ),
                   dashboardData[index].rp.tokens[0].decimals,
-                  2
+                  6
                 ),
                 TotalDFDistribution: this.toStringDecimals(
                   bn(await pool.methods.rewardRate().call()).mul(
@@ -338,9 +349,14 @@ class DashBoard extends Component {
                       <img src={pool.logo} alt="" />
                       <span>{pool.rp.id}</span>
                     </td>
-                    <td>{this.formatNumber(pool.StakingSize)}</td>
+                    <td>
+                      {
+                        pool.rp.id === 'USDx/USDC'?
+                        this.formatNumber(pool.StakingSize,6)
+                        :this.formatNumber(pool.StakingSize)
+                      }
+                    </td>
                     <td>{pool.TotalDFDistribution === '...'?'...':this.formatNumber(Math.ceil(pool.TotalDFDistribution).toFixed(2))}</td>
-                    {/* <td>{this.formatNumber(pool.TotalDFDistribution)==='...'?'...':Math.ceil(pool.TotalDFDistribution).toFixed(2)}</td> */}
                     <td>{this.formatNumber(pool.RemainingDF)}</td>
                     <td>{this.formatNumber(pool.rewardsAvailable)}</td>
                   </tr>
@@ -391,15 +407,25 @@ class DashBoard extends Component {
     return mergeArr;
   };
 
-  formatNumber = (amount) => {
+  formatNumber = (amount,decimalPlace=2) => {
     let index = amount.indexOf(".");
     if (index === -1) {
       amount = Number(amount).toFixed(2);
     }
     let roundAmount = amount.toString().replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     let rindex = roundAmount.indexOf(".");
-    return roundAmount.slice(0, rindex + 3);
+    return roundAmount.slice(0, (rindex + 1) + decimalPlace);
   };
+
+  // format6Number = (amount) => {
+  //   let index = amount.indexOf(".");
+  //   if (index === -1) {
+  //     amount = Number(amount).toFixed(2);
+  //   }
+  //   let roundAmount = amount.toString().replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  //   let rindex = roundAmount.indexOf(".");
+  //   return roundAmount.slice(0, rindex + 7);
+  // };
 
   navigateDapp = (rewardPool) => {
     store.setStore({ currentPool: rewardPool });
