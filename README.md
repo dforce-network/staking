@@ -1,11 +1,15 @@
 ## dForce (DF) Liquidity Mining
 
-### Mainnet Contract Address(2020-08-03)
+### Mainnet Contract Address(2020-08-24)
 
 <table>
 	<tr>
         <th>Contract Name</th>
     	<th>Contract Address</th>
+	</tr>
+	<tr>
+		<td> USDC-USDx Staking </td>
+		<td> 0xa94E2074BeB6D1Bf28014b81Ff2062eaB3600c48 </td>
 	</tr>
 	<tr>
 		<td> USDx-DF Staking </td>

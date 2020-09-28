@@ -83,6 +83,16 @@ export default class App extends React.Component {
                                     </a>
                                 </div>
                                 <div className={"menuItem"}>
+                                    <a target="_blank" rel="noopener noreferrer" href="https://usr.dforce.network/" className={'header__overlay_item'}>
+                                        <span>
+                                            <FormattedMessage id='Assets__usr' />
+                                        </span>
+                                        <label>
+                                            <FormattedMessage id='Assets__usr__content' />
+                                        </label>
+                                    </a>
+                                </div>
+                                <div className={"menuItem"}>
                                     <a target="_blank" rel="noopener noreferrer" href="https://markets.dforce.network/" className={'header__overlay_item'}>
                                         <span>
                                             <FormattedMessage id='Yield_Markets' />
@@ -115,7 +125,7 @@ export default class App extends React.Component {
                             <div className={'header__overlay'}>
                                 <div className={"menuItem"}>
                                     <a rel="noopener noreferrer" href="https://trade.dforce.network/" className={'header__overlay_item'}>
-                                        <span>dForce Trade</span>
+                                        <span>dForce Swap</span>
                                         <label>
                                             <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
                                         </label>
@@ -192,6 +202,16 @@ export default class App extends React.Component {
                             </span>
                         </div>
                         <div className='m-item'>
+                            <a href='https://usr.dforce.network/' target='_blank' rel="noopener noreferrer">
+                                <span className='title1'>
+                                    <FormattedMessage id='Assets__usr' />
+                                </span>
+                            </a>
+                            <span className='details'>
+                                <FormattedMessage id='Assets__usr__content' />
+                            </span>
+                        </div>
+                        <div className='m-item'>
                             <a href='https://markets.dforce.network/' target='_blank' rel="noopener noreferrer">
                                 <span className='title1'>
                                     <FormattedMessage id='Yield_Markets' />
@@ -223,7 +243,7 @@ export default class App extends React.Component {
                     <div className={this.state.meun3 ? 'meun1' : 'only1px'}>
                         <div className='m-item'>
                             <a href='https://trade.dforce.network/' rel="noopener noreferrer">
-                                <span className='title1'>dForce Trade</span>
+                                <span className='title1'>dForce Swap</span>
                             </a>
                             <span className='details'>
                                 <FormattedMessage id='Instant_Swap_of_Stable_Assets' />
