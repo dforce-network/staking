@@ -479,13 +479,13 @@ class RewardPools extends Component {
     })
     .catch(e => console.log("Oops, error", e))
     // APY
-    this.state.rewardPools && fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+    this.state.rewardPools && fetch(`https://markets.dforce.network/api/v2/getApy/`).then(response => response.json())
     .then(data => {
       this.setState(() => ({
         APY: data,
       }),()=>{
         setInterval(() => {
-          fetch(`https://markets.dforce.network/api/v1/getApy/?net=main`).then(response => response.json())
+          fetch(`https://markets.dforce.network/api/v2/getApy/`).then(response => response.json())
         .then(data => {
           this.setState(() => ({
             APY: data,
@@ -548,8 +548,8 @@ class RewardPools extends Component {
                 <tr key={rp.id}>
                   <td align="left">{rp.id}</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
-                  <td align="right">{APY[rp.id] ? APY[rp.id]["now_apy"]+'%' : '...'}</td>
-                  <td align="right">{ROI[rp.id] && APY[rp.id] ? this.formatAPYNumber(this.formatAPYNumber(ROI[rp.id]*100) +  parseFloat(APY[rp.id]["now_apy"])) +'%': '...'}</td>
+                  <td align="right">{APY[rp.id] ? parseFloat(APY[rp.id]["now_apy"]).toFixed(2)+'%' : '...'}</td>
+                  <td align="right">{ROI[rp.id] && APY[rp.id] ? this.formatAPYNumber(this.formatAPYNumber(ROI[rp.id]*100) +  parseFloat(parseFloat(APY[rp.id]["now_apy"]).toFixed(2))) +'%': '...'}</td>
                 </tr>
               ))
             }

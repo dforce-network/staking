@@ -1,4 +1,6 @@
 const en_US = {
+    Assets__usr__content: 'USDx saving rate',
+    Assets__usr: 'USR',
     goldx: 'GOLDx',
     goldx_detail: 'Token backed by physical gold',
     Yield_Markets: 'Yield Markets',
