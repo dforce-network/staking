@@ -12,7 +12,8 @@ const en_US = {
     history: 'Recent Transactions',
     swap: 'SWAP',
     connect: 'Connect',
-    slogon: 'Stable Assets Swap',
+    dForceTrade: 'dForce Trade',
+    slogon: 'DEX aggregator',
     no_history: 'No History',
     Contract_US: 'Contact',
     Community: 'Community',
@@ -36,6 +37,7 @@ const en_US = {
     dToken:'Champagne Tower Pool',
     DF_DF:'Singularity Pool',
     DF_USDx_USDC:'Champagne Tower Pool',
+    DF_dUSD:'Champagne Tower Pool',
     DF_GOLDx_USDx:'$GOLDx Rush Pool',
     dToken_APY:'Champagne Tower dToken',
     DF_APY:'Singularity',
@@ -48,6 +50,7 @@ const en_US = {
     open: 'Open',
     Staking_title: 'dForce (DF) Liquidity Mining',
     Staking_subTitle: 'Participate in dForce liquidity mining by staking and earn DF rewards',
+    Staking_dUSD_subTitle: 'Participate in dForce liquidity mining by staking and earn DF/SFG rewards',
     Your_Balance: 'Your Balance',
     Currently_Staked: 'Currently Staked',
     Available_to_Claim: 'Available to Claim',
@@ -58,6 +61,7 @@ const en_US = {
     STAKE: 'STAKE',
     UNSTAKE: 'UNSTAKE',
     Claim_DF: 'Claim DF',
+    Claim_SFG: 'Claim SFG',
     Exit_Claim_and_Unstake: 'Exit: Claim and Unstake',
     unstake_lock_title1: 'Lock-up period for pledged assets will end by:'
 }

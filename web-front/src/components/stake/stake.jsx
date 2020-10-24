@@ -211,10 +211,30 @@ const styles = (theme) => ({
     //   marginBottom:'0'
     // }
   },
+  lastdUSDField:{
+    display: "flex",
+    alignItems: "center",
+    flex: "1",
+    flexDirection: "column",
+    borderRight: "0",
+    paddingTop:"15px",
+    [theme.breakpoints.down("md")]: {
+      paddingTop:"10px",
+    }
+  },
+  overviewTitledUSD: {
+    color: "#A4A7BE",
+    fontSize: "14px",
+    marginBottom: "7px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "12px",
+      marginBottom: "4px",
+    },
+  },
   overviewTitle: {
     color: "#A4A7BE",
     fontSize: "14px",
-    marginBottom: "13px",
+    marginBottom: "17px",
     [theme.breakpoints.down("md")]: {
       fontSize: "12px",
       marginBottom: "8px",
@@ -750,36 +770,39 @@ class Stake extends Component {
     //   })
     // })
     // .catch(e => console.log("Oops, error", e))
-    setTimeout(async () => {
-      const { account } = this.state;
-      if (
-        !Object.getOwnPropertyNames(account).length ||
-        account.address === undefined
-      ) {
-        this.setState(() => ({
-          modalOpen: true,
-        }));
-      }
-      if (store.getStore("web3context") !== null) {
-        const asset = this.state.pool;
-        const web3 = new Web3(store.getStore("web3context").library.provider);
-        const LockContract = new web3.eth.Contract(
-          asset.tokens[0].rewardsABI,
-          asset.tokens[0].rewardsAddress
-        );
-        // return;
-        const Locked = await LockContract.methods.lockedDetails().call();
-
-        if (Locked[0]) {
-          this.setState({
-            unstakeLock: true,
-            timeStamp: Locked[1],
-          });
-        } else {
-          console.log(Locked);
+    const asset = this.state.pool;
+    if(asset.id !== 'dUSD'){
+      setTimeout(async () => {
+        const { account } = this.state;
+        if (
+          !Object.getOwnPropertyNames(account).length ||
+          account.address === undefined
+        ) {
+          this.setState(() => ({
+            modalOpen: true,
+          }));
         }
-      }
-    }, 1000);
+        if (store.getStore("web3context") !== null) {
+          // const asset = this.state.pool;
+          const web3 = new Web3(store.getStore("web3context").library.provider);
+          const LockContract = new web3.eth.Contract(
+            asset.tokens[0].rewardsABI,
+            asset.tokens[0].rewardsAddress
+          );
+          // return;
+          const Locked = await LockContract.methods.lockedDetails().call();
+  
+          if (Locked[0]) {
+            this.setState({
+              unstakeLock: true,
+              timeStamp: Locked[1],
+            });
+          } else {
+            console.log(Locked);
+          }
+        }
+      }, 1000);
+    }
   }
   componentWillUnmount() {
     emitter.removeListener(CONNECTION_CONNECTED, this.connectionConnected);
@@ -965,7 +988,12 @@ class Stake extends Component {
           <FormattedMessage id="Staking_title" />
         </h1>
         <h2 className={classes.subTitle}>
-          <FormattedMessage id="Staking_subTitle" />
+          {
+            (pool.id !== 'dUSD')?
+            <FormattedMessage id="Staking_subTitle" />
+            :
+            <FormattedMessage id="Staking_dUSD_subTitle" />
+          }
         </h2>
         <div className={classes.overview}>
           <div className={classes.overviewField}>
@@ -1023,29 +1051,56 @@ class Stake extends Component {
               {pool.tokens[0].symbol}
             </Typography>
           </div>
-          <div className={[classes.lastField]}>
-            <Typography variant={"h3"} className={classes.overviewTitle}>
+          <div className={(pool.id === 'dUSD')?classes.lastdUSDField:classes.lastField}>
+            <Typography variant={"h3"} className={(pool.id === 'dUSD')?classes.overviewTitledUSD:classes.overviewTitle}>
               <FormattedMessage id="Available_to_Claim" />
             </Typography>
-            {/* <Typography variant={'h2'} className={classes.overviewValue}>{pool.tokens[0].rewardsSymbol == '$' ? pool.tokens[0].rewardsSymbol : ''} {pool.tokens[0].rewardsAvailable ? pool.tokens[0].rewardsAvailable.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') : "0"} {pool.tokens[0].rewardsSymbol != '$' ? pool.tokens[0].rewardsSymbol : ''}</Typography> */}
-            <Typography variant={"h2"} className={classes.overviewValue}>
-              {pool.tokens[0].rewardsSymbol == "$"
-                ? pool.tokens[0].rewardsSymbol
-                : ""}
-              {pool.tokens[0].rewardsAvailable
-                ?
-                // (
-                //     pool.tokens[0].rewardsAvailable /
-                //     10 ** pool.tokens[0].rewardsDecimal
-                //   )
-                //     .toFixed(2)
-                //     .replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
-                this.formatNumber(pool.tokens[0].rewardsAvailable, pool.tokens[0].decimals, 4)
-                : "0"}&nbsp;
-              {pool.tokens[0].rewardsSymbol != "$"
-                ? pool.tokens[0].rewardsSymbol
-                : ""}
-            </Typography>
+              {
+                // dUSD-SFG/DF
+
+                (pool.id === 'dUSD')?
+                <>
+                <Typography variant={"h2"} className={classes.overviewValue}>
+                  {pool.tokens[0].rewardsSymbol[0] == "$"
+                    ? pool.tokens[0].rewardsSymbol[0]
+                    : ""}
+                  {pool.tokens[0].rewardsAvailable[0]
+                    ?
+                    this.formatNumber(pool.tokens[0].rewardsAvailable[0], pool.tokens[0].decimals, 4)
+                    : "0"}&nbsp;
+                  {pool.tokens[0].rewardsSymbol[0] != "$"
+                    ? pool.tokens[0].rewardsSymbol[0]
+                    : ""}
+                </Typography>
+                <Typography variant={"h2"} className={classes.overviewValue}>
+                  {pool.tokens[0].rewardsSymbol[1] == "$"
+                    ? pool.tokens[0].rewardsSymbol[1]
+                    : ""}
+                  {pool.tokens[0].rewardsAvailable[1]
+                    ?
+                    this.formatNumber(pool.tokens[0].rewardsAvailable[1], pool.tokens[0].decimals, 4)
+                    : "0"}&nbsp;
+                  {pool.tokens[0].rewardsSymbol[1] != "$"
+                    ? pool.tokens[0].rewardsSymbol[1]
+                    : ""}
+                </Typography>
+                </>
+
+                // dUSD-SFG/DF
+                :
+                <Typography variant={"h2"} className={classes.overviewValue}>
+                {pool.tokens[0].rewardsSymbol == "$"
+                  ? pool.tokens[0].rewardsSymbol
+                  : ""}
+                {pool.tokens[0].rewardsAvailable
+                  ?
+                  this.formatNumber(pool.tokens[0].rewardsAvailable, pool.tokens[0].decimals, 4)
+                  : "0"}&nbsp;
+                {pool.tokens[0].rewardsSymbol != "$"
+                  ? pool.tokens[0].rewardsSymbol
+                  : ""}
+              </Typography>
+              }
           </div>
           {/* <div className={[classes.lastField]}>
             <Typography variant={"h3"} className={classes.overviewTitle}>
@@ -1092,47 +1147,92 @@ class Stake extends Component {
       voteLock,
       unstakeLock,
     } = this.state;
-
     return (
       <div className={classes.actions}>
-        <div className={classes.actionContainer}>
-          <Button
-            fullWidth
-            className={
-              !loading ? classes.actionButton : classes.disabledActionButton
-            }
-            variant="outlined"
-            color="primary"
-            // disabled={loading}
-            onClick={() => {
-              this.onClaim();
-            }}
-          >
-            <div className={classes.buttonText}>
-              <FormattedMessage id="Claim_DF" />
+        {
+          // 判断是 dUSD-SFG/DF claim SFG 逻辑Str
+          Array.isArray(pool.tokens[0].rewardsSymbol)?
+          <>
+            <div className={classes.actionContainer}>
+              <Button
+                fullWidth
+                className={
+                  !loading ? classes.actionButton : classes.disabledActionButton
+                }
+                variant="outlined"
+                color="primary"
+                // disabled={loading}
+                onClick={() => {
+                  this.onClaim('SFG');
+                }}
+              >
+                <div className={classes.buttonText}>
+                  <FormattedMessage id="Claim_SFG" />
+                </div>
+              </Button>
             </div>
-          </Button>
-        </div>
-        <div className={classes.actionContainer}>
-          <Button
-            fullWidth
-            className={
-              !(!loading && !unstakeLock)
-                ? classes.disabledActionButton
-                : classes.actionButton
-            }
-            variant="outlined"
-            color="primary"
-            // disabled={loading}
-            onClick={() => {
-              this.onExit();
-            }}
-          >
-            <div className={classes.buttonText}>
-              <FormattedMessage id="Exit_Claim_and_Unstake" />
+            <div className={classes.actionContainer}>
+              <Button
+                fullWidth
+                className={
+                  !loading ? classes.actionButton : classes.disabledActionButton
+                }
+                variant="outlined"
+                color="primary"
+                // disabled={loading}
+                onClick={() => {
+                  this.onClaim('DF');
+                }}
+              >
+                <div className={classes.buttonText}>
+                  <FormattedMessage id="Claim_DF" />
+                </div>
+              </Button>
             </div>
-          </Button>
-        </div>
+          </>
+          // 判断是 dUSD-SFG/DF claim SFG 逻辑End
+          :
+          <>
+            <div className={classes.actionContainer}>
+              <Button
+                fullWidth
+                className={
+                  !loading ? classes.actionButton : classes.disabledActionButton
+                }
+                variant="outlined"
+                color="primary"
+                // disabled={loading}
+                onClick={() => {
+                  this.onClaim();
+                }}
+              >
+                <div className={classes.buttonText}>
+                  <FormattedMessage id="Claim_DF" />
+                </div>
+              </Button>
+            </div>
+            <div className={classes.actionContainer}>
+              <Button
+                fullWidth
+                className={
+                  !(!loading && !unstakeLock)
+                    ? classes.disabledActionButton
+                    : classes.actionButton
+                }
+                variant="outlined"
+                color="primary"
+                // disabled={loading}
+                onClick={() => {
+                  this.onExit();
+                }}
+              >
+                <div className={classes.buttonText}>
+                  <FormattedMessage id="Exit_Claim_and_Unstake" />
+                </div>
+              </Button>
+            </div>
+          </>
+        }
         {pool.id === "Governance" && voteLockValid && (
           <Typography variant={"h4"} className={classes.voteLockMessage}>
             Unstaking tokens only allowed once all your pending votes have
@@ -1337,7 +1437,7 @@ class Stake extends Component {
     }
   };
 
-  onClaim = () => {
+  onClaim = (RewardsSymbol) => {
     const { pool } = this.state;
     const tokens = pool.tokens;
     const selectedToken = tokens[0];
@@ -1345,7 +1445,7 @@ class Stake extends Component {
     this.setState({ loading: true });
     dispatcher.dispatch({
       type: GET_REWARDS,
-      content: { asset: selectedToken },
+      content: { asset: selectedToken,RewardsSymbol },
     });
   };
 
