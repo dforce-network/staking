@@ -81,23 +81,23 @@ describe("Bounty", function () {
         user1CurrentRewards = await bounty.rewards(user1.address);
         console.log("after 50 blocks, user1 current rewards: ", user1CurrentRewards.toString());
 
-        console.log("user1 is going to stake 100 tokens again!");
+        // console.log("user1 is going to stake 100 tokens again!");
 
-        await bounty.connect(user1).stake("100");
-        user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("user1 current rewards: ", user1CurrentRewards.toString());
+        // await bounty.connect(user1).stake("100");
+        // user1CurrentRewards = await bounty.rewards(user1.address);
+        // console.log("user1 current rewards: ", user1CurrentRewards.toString());
 
-        for (let i = 0; i < 5; i++) {
-            await increaseBlock();
-        }
-        await increaseTime(5);
+        // for (let i = 0; i < 5; i++) {
+        //     await increaseBlock();
+        // }
+        // await increaseTime(5);
 
-        user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("after 5 blocks, user1 current rewards: ", user1CurrentRewards.toString());
+        // user1CurrentRewards = await bounty.rewards(user1.address);
+        // console.log("after 5 blocks, user1 current rewards: ", user1CurrentRewards.toString());
 
         // console.log("user2 is going to stake!")
 
-        // // user1 starts to stake with 500 token.
+        // // user2 starts to stake with 500 token.
         // await bounty.connect(user2).stake("500");
         // let user2CurrentRewards = await bounty.rewards(user2.address);
         // console.log("user2 current rewards: ", user2CurrentRewards.toString());
@@ -105,9 +105,12 @@ describe("Bounty", function () {
         // user1CurrentRewards = await bounty.rewards(user1.address);
         // console.log("after user2 staking, user1 current rewards: ", user1CurrentRewards.toString());
 
-        // // user1 unstakes
-        // await bounty.connect(user1).unstake();
-        // console.log("after unstake, user1 balance", (await token.balanceOf(user1.address)).toString());
+        // user1 unstakes
+        await bounty.connect(user1).exit();
+        console.log("after exit, user1 balance", (await token.balanceOf(user1.address)).toString());
+
+        user1CurrentRewards = await bounty.rewards(user1.address);
+        console.log("after user1 exit, user1 current rewards: ", user1CurrentRewards.toString());
 
         // // user2 unstakes
         // await bounty.connect(user2).unstake();
