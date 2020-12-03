@@ -325,8 +325,13 @@ contract Bounty {
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].sub(_amount);
         userStakeStage[msg.sender][block.number] = userStakeAmounts[msg.sender];
         
-        IERC20(rewardToken).transfer(msg.sender, _amount);
+        IERC20(stakeToken).transfer(msg.sender, _amount);
         _subStake(_amount);
+
+        if (userStakeAmounts[msg.sender] == 0) {
+            userStakeBlock[msg.sender] = 0;
+            userWithdrawed[msg.sender] = 0;
+        }
     }
 
     function exit() public {
@@ -390,7 +395,7 @@ contract Bounty {
         uint totalWithdrawal = 0;
         uint stakeAmount = userStakeStage[_user][startBlock];
 
-        if (startBlock ==0 || block.number == startBlock ) {
+        if (startBlock ==0 || block.number == startBlock) {
             return 0;
         } else {
             for (uint i = 0; i < updateBlocks.length; i++) {
