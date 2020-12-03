@@ -286,6 +286,7 @@ contract Bounty {
 
     mapping (address => uint) public userStakeAmounts;
     mapping (address => uint) public userStakeBlock;
+    mapping (address => mapping(uint => uint)) public userStakeStage;
     mapping (address => uint) public userWithdrawed;
     mapping (uint => uint) public updateStakeAmounts;
     
@@ -308,8 +309,12 @@ contract Bounty {
     function stake(uint _amount) public {
         require(IERC20(stakeToken).transferFrom(msg.sender, address(this), _amount), "Error");
 
-        userStakeBlock[msg.sender] = block.number;
+        if (userStakeBlock[msg.sender] == 0) {
+            userStakeBlock[msg.sender] = block.number;
+        }
+        
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].add(_amount);
+        userStakeStage[msg.sender][block.number] = userStakeAmounts[msg.sender];
 
         _addStake(_amount);
     }
@@ -318,8 +323,9 @@ contract Bounty {
         require(_amount > 0 && _amount <= userStakeAmounts[msg.sender], "Error");
 
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].sub(_amount);
+        userStakeStage[msg.sender][block.number] = userStakeAmounts[msg.sender];
+        
         IERC20(rewardToken).transfer(msg.sender, _amount);
-
         _subStake(_amount);
     }
 
@@ -381,17 +387,20 @@ contract Bounty {
 
     function rewards(address _user) public view returns(uint) {
         uint startBlock = userStakeBlock[_user];
-        uint amount = userStakeAmounts[_user];
         uint totalWithdrawal = 0;
+        uint stakeAmount = userStakeStage[_user][startBlock];
 
-        if (amount == 0 || startBlock ==0 || block.number == startBlock ) {
+        if (startBlock ==0 || block.number == startBlock ) {
             return 0;
         } else {
             for (uint i = 0; i < updateBlocks.length; i++) {
                 if (updateBlocks[i] >= startBlock && updateBlocks[i] < rewardStopBlock) {
                     uint start = updateBlocks[i];
                     uint end = i < updateBlocks.length - 1 ? updateBlocks[i+1] : block.number;
-                    uint withdrawal = _getWithdrawl(start, end, amount);
+                    if (userStakeStage[_user][start] > 0) {
+                        stakeAmount = userStakeStage[_user][start];
+                    }
+                    uint withdrawal = _getWithdrawl(start, end, stakeAmount);
                     totalWithdrawal = totalWithdrawal.add(withdrawal);
                 }
             }
