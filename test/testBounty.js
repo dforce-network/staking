@@ -46,8 +46,8 @@ describe("Bounty", function () {
             token.address,
             token.address,
             10000,
-            3,
-            103
+            10,
+            100
         );
         await bounty.deployed();
 
@@ -68,15 +68,24 @@ describe("Bounty", function () {
         let currentBlock = await getBlock();
         console.log("current block is: ", parseInt(currentBlock.toString()));
 
-        // user1 starts to stake with 500 token.
-        await bounty.connect(user1).stake("500");
+        console.log("stake start block number is:", (await bounty.rewardStartBlock()).toString());
+
+        // user1 starts to stake with 100 token.
+        console.log("user1 is going to stake 100 token before start");
+        await bounty.connect(user1).stake("100");
         let user1CurrentRewards = await bounty.rewards(user1.address);
         console.log("user1 current rewards: ", user1CurrentRewards.toString());
 
-        for (let i = 0; i < 50; i++) {
-            await increaseBlock();
-        }
-        await increaseTime(50);
+        // user1 starts to stake another 400 token.
+        console.log("user1 is going to stake another 400 token before start");
+        await bounty.connect(user1).stake("400");
+        user1CurrentRewards = await bounty.rewards(user1.address);
+        console.log("user1 current rewards: ", user1CurrentRewards.toString());
+
+        // for (let i = 0; i < 50; i++) {
+        //     await increaseBlock();
+        // }
+        // await increaseTime(50);
 
         user1CurrentRewards = await bounty.rewards(user1.address);
         console.log("after 50 blocks, user1 current rewards: ", user1CurrentRewards.toString());
