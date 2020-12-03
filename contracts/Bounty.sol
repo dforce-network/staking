@@ -234,36 +234,42 @@ library SafeMath {
     }
 }
 
-// File: contracts/Bounty.sol
-
+// File: @openzeppelin/contracts/math/Math.sol
 
 /**
-The solution is an arithmetic sequence model:
-An = A1+(n-1)d
-Sn = (A1+An)*n/2
+ * @dev Standard math utilities missing in the Solidity language.
+ */
+library Math {
+    /**
+     * @dev Returns the largest of two numbers.
+     */
+    function max(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a >= b ? a : b;
+    }
 
-An is the reward in n'th seconds (An is the sn in issue)
-Sn is the total reward
-A1 is the first second reward
-d is the increment per second
-n is the total seconds
+    /**
+     * @dev Returns the smallest of two numbers.
+     */
+    function min(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a < b ? a : b;
+    }
 
-you should specify: 
-- Sn: total reward amount
-- n: startRewardBlock - stopRewardBlock
-- times: the times the last number more than the first number (An/A1)
+    /**
+     * @dev Returns the average of two numbers. The result is rounded towards
+     * zero.
+     */
+    function average(uint256 a, uint256 b) internal pure returns (uint256) {
+        // (a + b) / 2 can overflow, so we distribute
+        return (a / 2) + (b / 2) + ((a % 2 + b % 2) / 2);
+    }
+}
 
-we can calculate A1 and d from above
-An is the reward amount per second, A1 < A2 < A3 ... < An | A1 + A2 + ... + An = Sn
-*/  
-
-
+// File: contracts/Bounty.sol
 
 contract Bounty {
 
     using SafeMath for uint;
 
-    address public owner;
     address public rewardToken;
     address public stakeToken;
 
@@ -273,13 +279,15 @@ contract Bounty {
 
     uint public firstNumber;
     uint public incrementPerSecond;
-    uint public timesLastNumber = 3;
-    uint public secondsPerBlock = 13;
 
-    uint public stakeAmount;
+    uint public timesLastNumber = 3;
+
+    uint[] public updateBlocks;
 
     mapping (address => uint) public userStakeAmounts;
+    mapping (address => uint) public userStakeBlock;
     mapping (address => uint) public userWithdrawed;
+    mapping (uint => uint) public updateStakeAmounts;
     
     constructor(address _rewardToken, address _stakeToken, uint _rewardAmount, uint _rewardStartBlock, uint _rewardStopBlock) public {
         rewardToken = _rewardToken;
@@ -291,7 +299,7 @@ contract Bounty {
     }
 
     function cal(uint _rewardAmount, uint _rewardStartBlock, uint _rewardStopBlock) internal returns (uint) {
-        uint n = _rewardStopBlock.sub(_rewardStartBlock).mul(secondsPerBlock);
+        uint n = _rewardStopBlock.sub(_rewardStartBlock);
         uint doubleMidienNumber =  _rewardAmount.mul(2).div(n);
         firstNumber = doubleMidienNumber.div(timesLastNumber.add(1));
         incrementPerSecond = firstNumber.mul(timesLastNumber.sub(1)).div(n.sub(1));
@@ -300,45 +308,109 @@ contract Bounty {
     function stake(uint _amount) public {
         require(IERC20(stakeToken).transferFrom(msg.sender, address(this), _amount), "Error");
 
-        stakeAmount = stakeAmount.add(_amount);
+        userStakeBlock[msg.sender] = block.number;
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].add(_amount);
 
-    }
-
-    function unstake() public {
-        uint amount = userStakeAmounts[msg.sender];
-        require(amount > 0, "");
-
-        uint withdrawal = balanceOf(msg.sender);
-        withdraw(withdrawal);
-
-        userStakeAmounts[msg.sender] = 0;
-        IERC20(rewardToken).transfer(msg.sender, amount);
-    }
-
-    function balanceOf(address _user) public view returns(uint) {
-        uint amount = userStakeAmounts[_user];
-        uint totalWithdrawal = 0;
-
-        if (amount == 0 || block.number <= rewardStartBlock) {
-            return 0;
-        } else if (block.number >= rewardStopBlock) {
-            totalWithdrawal = rewardAmount;
-        } else {
-            uint totalSeconds = block.number.sub(rewardStartBlock).mul(secondsPerBlock);
-            totalWithdrawal = firstNumber.mul(totalSeconds).add(totalSeconds.mul(totalSeconds.sub(1)).mul(incrementPerSecond).div(2));
-            totalWithdrawal = totalWithdrawal <= rewardAmount ? totalWithdrawal : rewardAmount;
-        }
-
-        uint userWithdrawal = totalWithdrawal.mul(amount).div(stakeAmount);
-        return userWithdrawal.sub(userWithdrawed[_user]);
+        _addStake(_amount);
     }
 
     function withdraw(uint _amount) public {
-        uint userWithdrawal = balanceOf(msg.sender);
-        require(_amount <= userWithdrawal, "Error");
+        require(_amount > 0 && _amount <= userStakeAmounts[msg.sender], "Error");
 
-        userWithdrawed[msg.sender] = userWithdrawed[msg.sender].add(_amount);
+        userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].sub(_amount);
         IERC20(rewardToken).transfer(msg.sender, _amount);
+
+        _subStake(_amount);
+    }
+
+    function exit() public {
+        getReward();
+
+        uint balance = userStakeAmounts[msg.sender];
+        withdraw(balance);
+    }
+
+    function getReward() public {
+        uint userWithdrawal = rewards(msg.sender);
+        if (userWithdrawal > 0) {
+            userWithdrawed[msg.sender] = userWithdrawed[msg.sender].add(userWithdrawal);
+            IERC20(rewardToken).transfer(msg.sender, userWithdrawal);
+        }
+    }
+
+    function _addStake(uint _amount) internal {
+        uint blockNumber = block.number <= rewardStartBlock ? rewardStartBlock : block.number;
+        
+        bool isPush = true;
+        uint len = updateBlocks.length;
+        if (len == 0) {
+            updateStakeAmounts[blockNumber] = _amount;
+        } else {
+            uint lastBlockNumber = updateBlocks[len.sub(1)];
+            updateStakeAmounts[blockNumber] = updateStakeAmounts[lastBlockNumber].add(_amount);
+            if (blockNumber == updateBlocks[len.sub(1)]) {
+                isPush = false;
+            }
+        } 
+
+        if (isPush) {
+            updateBlocks.push(blockNumber);
+        }
+
+    }
+
+    function _subStake(uint _amount) internal {
+        uint blockNumber = block.number >= rewardStartBlock ? rewardStopBlock : block.number;
+        
+        bool isPush = true;
+        uint len = updateBlocks.length;
+        if (len == 0) {
+            return;
+        } else {
+            uint lastBlockNumber = updateBlocks[len.sub(1)];
+            updateStakeAmounts[block.number] = updateStakeAmounts[lastBlockNumber].sub(_amount);
+            if (blockNumber == updateBlocks[len.sub(1)]) {
+                isPush = false;
+            }
+        }
+
+        if (isPush) {
+            updateBlocks.push(blockNumber);
+        }
+    }
+
+    function rewards(address _user) public view returns(uint) {
+        uint startBlock = userStakeBlock[_user];
+        uint amount = userStakeAmounts[_user];
+        uint totalWithdrawal = 0;
+
+        if (amount == 0 || startBlock ==0 || block.number == startBlock ) {
+            return 0;
+        } else {
+            for (uint i = 0; i < updateBlocks.length; i++) {
+                if (updateBlocks[i] >= startBlock && updateBlocks[i] < rewardStopBlock) {
+                    uint start = updateBlocks[i];
+                    uint end = i < updateBlocks.length - 1 ? updateBlocks[i+1] : block.number;
+                    uint withdrawal = _getWithdrawl(start, end, amount);
+                    totalWithdrawal = totalWithdrawal.add(withdrawal);
+                }
+            }
+        }
+
+        return totalWithdrawal.sub(userWithdrawed[_user]);
+    }
+
+    function _getWithdrawl(uint _start, uint _end, uint _amount) internal view returns (uint) {
+        _end = _end <= rewardStopBlock ? _end : rewardStopBlock;
+
+        uint maddn = _end.add(_start).sub(rewardStartBlock.mul(2));
+        uint nsubm = _end.sub(_start);
+        uint sum  = firstNumber.mul(2).add(maddn.sub(1).mul(incrementPerSecond)).mul(nsubm).div(2);
+        sum  = sum <= rewardAmount ? sum : rewardAmount;
+        
+        uint total = updateStakeAmounts[_start];
+        uint withdrawal = sum.mul(_amount).div(total);
+
+        return withdrawal;
     }
 }
