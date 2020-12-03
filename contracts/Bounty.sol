@@ -309,12 +309,14 @@ contract Bounty {
     function stake(uint _amount) public {
         require(IERC20(stakeToken).transferFrom(msg.sender, address(this), _amount), "Error");
 
+        uint blockNumner = block.number <= rewardStartBlock ? rewardStartBlock : block.number;
+        
         if (userStakeBlock[msg.sender] == 0) {
-            userStakeBlock[msg.sender] = block.number;
+            userStakeBlock[msg.sender] = blockNumner;
         }
         
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].add(_amount);
-        userStakeStage[msg.sender][block.number] = userStakeAmounts[msg.sender];
+        userStakeStage[msg.sender][blockNumner] = userStakeAmounts[msg.sender];
 
         _addStake(_amount);
     }
@@ -395,7 +397,7 @@ contract Bounty {
         uint totalWithdrawal = 0;
         uint stakeAmount = userStakeStage[_user][startBlock];
 
-        if (startBlock ==0 || block.number == startBlock) {
+        if (startBlock ==0 || block.number <= startBlock) {
             return 0;
         } else {
             for (uint i = 0; i < updateBlocks.length; i++) {
