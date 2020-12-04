@@ -46,7 +46,7 @@ describe("Bounty", function () {
             token.address,
             token.address,
             10000,
-            10,
+            1,
             100
         );
         await bounty.deployed();
@@ -70,25 +70,24 @@ describe("Bounty", function () {
 
         console.log("stake start block number is:", (await bounty.rewardStartBlock()).toString());
 
-        // user1 starts to stake with 100 token.
-        console.log("user1 is going to stake 100 token before start");
-        await bounty.connect(user1).stake("100");
-        let user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("user1 current rewards: ", user1CurrentRewards.toString());
+        console.log("user1 is going to stake 500 token!");
+        await bounty.connect(user1).stake("500");
 
-        // user1 starts to stake another 400 token.
-        console.log("user1 is going to stake another 400 token before start");
-        await bounty.connect(user1).stake("400");
-        user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("user1 current rewards: ", user1CurrentRewards.toString());
+        console.log("pass 50 blocks")
 
-        // for (let i = 0; i < 50; i++) {
-        //     await increaseBlock();
-        // }
-        // await increaseTime(50);
+        for (let i = 0; i < 50; i++) {
+            await increaseBlock();
+        }
+        await increaseTime(50);
 
-        user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("after 50 blocks, user1 current rewards: ", user1CurrentRewards.toString());
+        const stakedAmount = await bounty.userStakeAmounts(user1.address);
+        console.log("user1 is going to withdraw all staked amount: ", stakedAmount.toString());
+
+        console.log("user1 is going to exit");
+        await bounty.connect(user1).exit();
+
+        // user1CurrentRewards = await bounty.rewards(user1.address);
+        // console.log("after 150 blocks, user1 current rewards: ", user1CurrentRewards.toString());
 
         // console.log("user1 is going to stake 100 tokens again!");
 
