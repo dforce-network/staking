@@ -307,7 +307,7 @@ contract Bounty {
     }
 
     function stake(uint _amount) public {
-        require(IERC20(stakeToken).transferFrom(msg.sender, address(this), _amount), "Error");
+        require(IERC20(stakeToken).transferFrom(msg.sender, address(this), _amount), "Error: stake amount is zero");
 
         uint blockNumner = block.number <= rewardStartBlock ? rewardStartBlock : block.number;
         
@@ -322,7 +322,7 @@ contract Bounty {
     }
 
     function withdraw(uint _amount) public {
-        require(_amount > 0 && _amount <= userStakeAmounts[msg.sender], "Error");
+        require(_amount > 0 && _amount <= userStakeAmounts[msg.sender], "Error: withdraw amount is zero");
 
         userStakeAmounts[msg.sender] = userStakeAmounts[msg.sender].sub(_amount);
         userStakeStage[msg.sender][block.number] = userStakeAmounts[msg.sender];
@@ -338,9 +338,11 @@ contract Bounty {
 
     function exit() public {
         getReward();
-
+        
         uint balance = userStakeAmounts[msg.sender];
-        withdraw(balance);
+        if (balance > 0) {
+            withdraw(balance);
+        }
     }
 
     function getReward() public {
