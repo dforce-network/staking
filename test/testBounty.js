@@ -1,127 +1,201 @@
 // A simple test case for the bounty!!!
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { createFixtureLoader } = waffle;
 
+const loadFixture = createFixtureLoader([], ethers.provider);
+
+async function fixtureSetup([wallet, other], provider) {
+  [owner, ...users] = await ethers.getSigners();
+  user1 = users[0];
+  user2 = users[1];
+
+  // Mock an ERC20 contract.
+  const ERC20 = await ethers.getContractFactory("MockERC20");
+  const stakingToken = await ERC20.deploy(); //"Test Token", "TT"
+  await stakingToken.deployed();
+
+  const rewardToken = await ERC20.deploy(); //"Test Token", "TT"
+  await rewardToken.deployed();
+
+  const Bounty = await ethers.getContractFactory("Bounty");
+
+  const bounty = await Bounty.deploy(
+    rewardToken.address,
+    stakingToken.address,
+    10000,
+    1,
+    100
+  );
+  await bounty.deployed();
+
+  // Mint some token to user1.
+  await stakingToken.mint(user1.address, "10000");
+  console.log(
+    "user1 balance",
+    (await stakingToken.balanceOf(user1.address)).toString()
+  );
+  stakingToken.connect(user1).approve(bounty.address, "999999");
+
+  // Mint some token to user2.
+  await stakingToken.mint(user2.address, "10000");
+  console.log(
+    "user2 balance",
+    (await stakingToken.balanceOf(user2.address)).toString()
+  );
+  stakingToken.connect(user2).approve(bounty.address, "999999");
+
+  // Mint some token to bounty contract.
+  await rewardToken.mint(bounty.address, "10000");
+  console.log(
+    "bounty contract has token: ",
+    (await rewardToken.balanceOf(bounty.address)).toString()
+  );
+
+  let currentBlock = await getBlock();
+  console.log("current block is: ", parseInt(currentBlock.toString()));
+
+  console.log(
+    "stake start block number is:",
+    (await bounty.rewardStartBlock()).toString()
+  );
+
+  return { stakingToken, rewardToken, bounty, users };
+}
 
 async function increaseBlock(blockNumber) {
+  for (let i = 0; i < blockNumber; i++) {
     await hre.network.provider.request({
-        method: "evm_mine",
-        params: []
-    })
+      method: "evm_mine",
+      params: [],
+    });
+  }
 }
 
 async function increaseTime(time) {
-    await hre.network.provider.request({
-        method: "evm_increaseTime",
-        params: [time]
-    })
+  await hre.network.provider.request({
+    method: "evm_increaseTime",
+    params: [time],
+  });
+}
+
+async function increaseBlockAndTime(time) {
+  let before = await getBlock();
+  await increaseBlock(time);
+  await increaseTime(time);
+  let after = await getBlock();
+  console.log(after - before, " blocks has passed at block ", parseInt(after));
 }
 
 async function getBlock() {
-    return  hre.network.provider.request({
-        method: "eth_blockNumber",
-        params: []
-    })
+  return hre.network.provider.request({
+    method: "eth_blockNumber",
+    params: [],
+  });
 }
 
 describe("Bounty", function () {
-    it("Two users stake with the same amount but at different time", async function () {
-        // test!
-        let owner, users, user1, user2;
+  // test!
+  let owner, users, user1, user2;
+  let stakingToken, rewardToken, bounty;
 
-        [owner, ...users] = await ethers.getSigners();
-        user1 = users[0];
-        user2 = users[1];
+  beforeEach(async function () {
+    ({ stakingToken, rewardToken, bounty, users } = await loadFixture(
+      fixtureSetup
+    ));
+    [user1, user2] = users;
+  });
 
-        // Mock an ERC20 contract.
-        const ERC20 = await ethers.getContractFactory("MockERC20");
-        const token = await ERC20.deploy(); //"Test Token", "TT"
-        token.deployed();
+  it("One users stakes and exits", async function () {
+    console.log("user1 is going to stake 500 token!");
+    await bounty.connect(user1).stake("500");
 
-        const Bounty = await ethers.getContractFactory(
-            "Bounty"
-        );
+    await increaseBlockAndTime(50, 50);
 
-        const bounty = await Bounty.deploy(
-            token.address,
-            token.address,
-            10000,
-            1,
-            100
-        );
-        await bounty.deployed();
+    const stakedAmount = await bounty.userStakeAmounts(user1.address);
+    console.log(
+      "user1 is going to withdraw all staked amount: ",
+      stakedAmount.toString()
+    );
 
-        // Mint some tokento user1.
-        await token.mint(user1.address, "10000");
-        console.log("user1 balance", (await token.balanceOf(user1.address)).toString());
-        token.connect(user1).approve(bounty.address, "999999");
+    console.log("user1 is going to exit");
+    await bounty.connect(user1).exit();
 
-        // Mint some token to user2.
-        await token.mint(user2.address, "10000");
-        console.log("user2 balance", (await token.balanceOf(user2.address)).toString());
-        token.connect(user2).approve(bounty.address, "999999");
+    // user1 unstakes
+    await bounty.connect(user1).exit();
+    console.log(
+      "after exit, user1 balance",
+      (await rewardToken.balanceOf(user1.address)).toString()
+    );
 
-        // Mint some token to bounty contract.
-        await token.mint(bounty.address, "10000");
-        console.log("bounty contract has token: ", (await token.balanceOf(bounty.address)).toString());
+    user1CurrentRewards = await bounty.rewards(user1.address);
+    console.log(
+      "after user1 exit, user1 current rewards: ",
+      user1CurrentRewards.toString()
+    );
+  });
 
-        let currentBlock = await getBlock();
-        console.log("current block is: ", parseInt(currentBlock.toString()));
+  it("Two users stake with the same amount and duration but at different time", async function () {
+    ({ stakingToken, rewardToken, bounty, users } = await loadFixture(
+      fixtureSetup
+    ));
+    [user1, user2] = users;
 
-        console.log("stake start block number is:", (await bounty.rewardStartBlock()).toString());
+    console.log("user1 is going to stake 500 token!");
+    await bounty.connect(user1).stake("500");
 
-        console.log("user1 is going to stake 500 token!");
-        await bounty.connect(user1).stake("500");
+    await increaseBlockAndTime(20);
 
-        console.log("pass 50 blocks")
+    // user1 unstakes
+    await bounty.connect(user1).exit();
+    let rewardUser1 = await rewardToken.balanceOf(user1.address);
+    console.log("after exit, user1 balance", rewardUser1.toString());
 
-        for (let i = 0; i < 50; i++) {
-            await increaseBlock();
-        }
-        await increaseTime(50);
+    // user2 waited another 20 blocks to start stake
+    await increaseBlockAndTime(20);
 
-        const stakedAmount = await bounty.userStakeAmounts(user1.address);
-        console.log("user1 is going to withdraw all staked amount: ", stakedAmount.toString());
+    console.log("user2 is going to stake!");
 
-        console.log("user1 is going to exit");
-        await bounty.connect(user1).exit();
+    // user2 starts to stake with 500 token.
+    await bounty.connect(user2).stake("500");
 
-        // user1CurrentRewards = await bounty.rewards(user1.address);
-        // console.log("after 150 blocks, user1 current rewards: ", user1CurrentRewards.toString());
+    await increaseBlockAndTime(20);
 
-        // console.log("user1 is going to stake 100 tokens again!");
+    // user2 unstakes
+    await bounty.connect(user2).exit();
+    let rewardUser2 = await rewardToken.balanceOf(user2.address);
+    console.log("after exit, user2 balance", rewardUser2.toString());
 
-        // await bounty.connect(user1).stake("100");
-        // user1CurrentRewards = await bounty.rewards(user1.address);
-        // console.log("user1 current rewards: ", user1CurrentRewards.toString());
+    expect(rewardUser1).to.equal(rewardUser2);
+  });
 
-        // for (let i = 0; i < 5; i++) {
-        //     await increaseBlock();
-        // }
-        // await increaseTime(5);
+  it("Two users stake with the same amount but different duration", async function () {
+    ({ stakingToken, rewardToken, bounty, users } = await loadFixture(
+      fixtureSetup
+    ));
+    [user1, user2] = users;
 
-        // user1CurrentRewards = await bounty.rewards(user1.address);
-        // console.log("after 5 blocks, user1 current rewards: ", user1CurrentRewards.toString());
+    console.log("user1 is going to stake 500 token!");
+    await bounty.connect(user1).stake("500");
 
-        // console.log("user2 is going to stake!")
+    console.log("user2 is going to stake 500 token!");
+    await bounty.connect(user2).stake("500");
 
-        // // user2 starts to stake with 500 token.
-        // await bounty.connect(user2).stake("500");
-        // let user2CurrentRewards = await bounty.rewards(user2.address);
-        // console.log("user2 current rewards: ", user2CurrentRewards.toString());
+    console.log("pass 50 blocks");
+    await increaseBlockAndTime(50);
 
-        // user1CurrentRewards = await bounty.rewards(user1.address);
-        // console.log("after user2 staking, user1 current rewards: ", user1CurrentRewards.toString());
+    // user1 unstakes
+    await bounty.connect(user1).exit();
+    let rewardUser1 = await rewardToken.balanceOf(user1.address);
+    console.log("after exit, user1 balance", rewardUser1.toString());
 
-        // user1 unstakes
-        await bounty.connect(user1).exit();
-        console.log("after exit, user1 balance", (await token.balanceOf(user1.address)).toString());
+    // user2 stake for anther 2 blocks
+    console.log("pass 2 blocks");
+    await increaseBlockAndTime(2);
 
-        user1CurrentRewards = await bounty.rewards(user1.address);
-        console.log("after user1 exit, user1 current rewards: ", user1CurrentRewards.toString());
-
-        // // user2 unstakes
-        // await bounty.connect(user2).unstake();
-        // console.log("after unstake, user2 balance", (await token.balanceOf(user2.address)).toString());
-    });
+    // user2 unstakes
+    await bounty.connect(user2).exit();
+    let rewardUser2 = await rewardToken.balanceOf(user2.address);
+    console.log("after exit, user2 balance", rewardUser2.toString());
+  });
 });
