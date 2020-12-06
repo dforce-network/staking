@@ -95,7 +95,6 @@ async function getBlock() {
 }
 
 describe("Bounty", function () {
-  // test!
   let owner, users, user1, user2;
   let stakingToken, rewardToken, bounty;
 
@@ -107,10 +106,11 @@ describe("Bounty", function () {
   });
 
   it("One users stakes and exits", async function () {
+    // user1 starts to stake with 500 token.
     console.log("user1 is going to stake 500 token!");
     await bounty.connect(user1).stake("500");
 
-    await increaseBlockAndTime(50, 50);
+    await increaseBlockAndTime(50);
 
     const stakedAmount = await bounty.userStakeAmounts(user1.address);
     console.log(
@@ -118,11 +118,10 @@ describe("Bounty", function () {
       stakedAmount.toString()
     );
 
+    // user1 unstakes
     console.log("user1 is going to exit");
     await bounty.connect(user1).exit();
 
-    // user1 unstakes
-    await bounty.connect(user1).exit();
     console.log(
       "after exit, user1 balance",
       (await rewardToken.balanceOf(user1.address)).toString()
@@ -136,11 +135,7 @@ describe("Bounty", function () {
   });
 
   it("Two users stake with the same amount and duration but at different time", async function () {
-    ({ stakingToken, rewardToken, bounty, users } = await loadFixture(
-      fixtureSetup
-    ));
-    [user1, user2] = users;
-
+    // user1 starts to stake with 500 token.
     console.log("user1 is going to stake 500 token!");
     await bounty.connect(user1).stake("500");
 
@@ -154,9 +149,8 @@ describe("Bounty", function () {
     // user2 waited another 20 blocks to start stake
     await increaseBlockAndTime(20);
 
-    console.log("user2 is going to stake!");
-
     // user2 starts to stake with 500 token.
+    console.log("user2 is going to stake!");
     await bounty.connect(user2).stake("500");
 
     await increaseBlockAndTime(20);
@@ -170,18 +164,14 @@ describe("Bounty", function () {
   });
 
   it("Two users stake with the same amount but different duration", async function () {
-    ({ stakingToken, rewardToken, bounty, users } = await loadFixture(
-      fixtureSetup
-    ));
-    [user1, user2] = users;
-
+    // user1 starts to stake with 500 token.
     console.log("user1 is going to stake 500 token!");
     await bounty.connect(user1).stake("500");
 
+    // user2 starts to stake with 500 token.
     console.log("user2 is going to stake 500 token!");
     await bounty.connect(user2).stake("500");
 
-    console.log("pass 50 blocks");
     await increaseBlockAndTime(50);
 
     // user1 unstakes
@@ -190,7 +180,6 @@ describe("Bounty", function () {
     console.log("after exit, user1 balance", rewardUser1.toString());
 
     // user2 stake for anther 2 blocks
-    console.log("pass 2 blocks");
     await increaseBlockAndTime(2);
 
     // user2 unstakes
