@@ -343,6 +343,7 @@ contract Bounty {
         if (balance > 0) {
             withdraw(balance);
         }
+
     }
 
     function getReward() public {
@@ -375,7 +376,7 @@ contract Bounty {
     }
 
     function _subStake(uint _amount) internal {
-        uint blockNumber = block.number >= rewardStartBlock ? rewardStopBlock : block.number;
+        uint blockNumber = block.number >= rewardStopBlock ? rewardStopBlock : block.number;
         
         bool isPush = true;
         uint len = updateBlocks.length;
@@ -383,7 +384,7 @@ contract Bounty {
             return;
         } else {
             uint lastBlockNumber = updateBlocks[len.sub(1)];
-            updateStakeAmounts[block.number] = updateStakeAmounts[lastBlockNumber].sub(_amount);
+            updateStakeAmounts[blockNumber] = updateStakeAmounts[lastBlockNumber].sub(_amount);
             if (blockNumber == updateBlocks[len.sub(1)]) {
                 isPush = false;
             }
