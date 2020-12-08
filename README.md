@@ -20,7 +20,7 @@
 		<td> 0x308777dDEC61F5000D8394626d55dbB0312fe874 </td>
 	</tr>
 	<tr>
-		<td> GOLDx-DF Staking </td>
+		<td> GOLDx-USDx Staking </td>
 		<td> 0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc </td>
 	</tr>
 	<tr>
@@ -34,5 +34,9 @@
 	<tr>
 		<td> dUSDT Staking </td>
 		<td> 0x324EebDAa45829c6A8eE903aFBc7B61AF48538df </td>
+	</tr>
+	<tr>
+		<td> dUSD Staking </td>
+		<td> 0xD26033b5CEEDce6d8cdDF532c6Cd1eBc2f0ccadf </td>
 	</tr>
 </table>

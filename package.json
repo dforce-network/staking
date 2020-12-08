@@ -1,5 +1,5 @@
 {
-  "name": "dForce Staking",
+  "name": "dForce-staking",
   "version": "1.0.0",
   "description": "dForce (DF) Liquidity Mining",
   "main": "index.js",
@@ -10,5 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^2.4.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.2.0",
+    "ethers": "^5.0.23",
+    "hardhat": "^2.0.4"
   }
 }

@@ -36,7 +36,9 @@ class DashBoard extends Component {
       "GOLDx/USDx": GOLDx_logo,
       "USDx/USDC":USDx_USDC_logo
     };
-    const dashboardData = rewardPools.map((rp) => ({
+    let dashboardData = rewardPools.map((rp) => 
+    // 判断是 dUSD-SFG/DF 逻辑 则不展示 数据
+    (rp.id !== 'dUSD') && ({
       poolUrlParam: rp.id,
       rp,
       logo: svgLogo[rp.id],
@@ -46,6 +48,8 @@ class DashBoard extends Component {
       AvailableToClaim: "...",
       rewardsAvailable: "...",
     }));
+    dashboardData = dashboardData.filter(item=> item !==false)
+    // 判断是 dUSD-SFG/DF 逻辑 则不展示 数据
     this.state = {
       rewardPools,
       loading: !account,
@@ -132,6 +136,7 @@ class DashBoard extends Component {
     this.setState(() => ({
       modalOpen: false,
     }));
+    console.log(dashboardData)
     const web3 = new Web3(store.getStore("web3context").library.provider);
     let bn = web3.utils.toBN;
     const poolsContract = await Promise.all(
