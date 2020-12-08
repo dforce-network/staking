@@ -160,7 +160,7 @@ describe("Bounty", function () {
     let rewardUser2 = await rewardToken.balanceOf(user2.address);
     console.log("after exit, user2 balance", rewardUser2.toString());
 
-    expect(rewardUser1).to.equal(rewardUser2);
+    expect(rewardUser1.toNumber()).to.lessThan(rewardUser2.toNumber());
   });
 
   it("Two users stake with the same amount but different duration", async function () {
