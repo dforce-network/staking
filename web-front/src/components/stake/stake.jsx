@@ -1313,6 +1313,7 @@ class Stake extends Component {
             (
               <div className={classes.stake}>
                 <input
+                  disabled
                   className={classes.stakeInput}
                   placeholder="Amount"
                   value={amount}
@@ -1321,14 +1322,15 @@ class Stake extends Component {
                 />
                 <p
                   className={classes.max}
-                  onClick={() => this.onMaxChange(asset.id, "stake")}
+                  // onClick={() => this.onMaxChange(asset.id, "stake")}
                 >
                   <FormattedMessage id="MAX" />
                 </p>
                 <span
                   className={classes.stakeSpan}
+                  style={{background:'#dedede'}}
                   onClick={() => {
-                    this.onStake();
+                    // this.onStake();
                   }}
                 >
                   <FormattedMessage id="STAKE" />
