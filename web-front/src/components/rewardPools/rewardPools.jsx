@@ -198,21 +198,21 @@ const styles = theme => ({
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
-    '& a':{
-      color:'rgba(67,73,118,1)',
-      textDecoration:'underline',
-      // display:'block',
-      //   width:'10px',
-      //   height:'10px',
-      //   margin:'0 0 12px 14px',
-      //   backgroundImage:'url('+require('../../assets/pool-link-icon.svg')+')',
-      //   backgroundSize:'auto',
-      //   backgroundRepeat:'no-repeat',
-        '&:hover':{
-          color:'#BA59FF'
-          // backgroundImage:'url('+require('../../assets/pool-linked-icon.svg')+')',
-        }
-    },
+    // '& a':{
+    //   color:'rgba(67,73,118,1)',
+    //   textDecoration:'underline',
+    //   // display:'block',
+    //   //   width:'10px',
+    //   //   height:'10px',
+    //   //   margin:'0 0 12px 14px',
+    //   //   backgroundImage:'url('+require('../../assets/pool-link-icon.svg')+')',
+    //   //   backgroundSize:'auto',
+    //   //   backgroundRepeat:'no-repeat',
+    //     '&:hover':{
+    //       color:'#BA59FF'
+    //       // backgroundImage:'url('+require('../../assets/pool-linked-icon.svg')+')',
+    //     }
+    // },
   },
   poolName: {
     height: '25px',
@@ -221,6 +221,13 @@ const styles = theme => ({
     color: 'rgba(67,73,118,1)',
     lineHeight: '19px',
     marginBottom: '8px'
+  },
+  underLine:{
+    color:'rgba(67,73,118,1)',
+      textDecoration:'underline',
+        '&:hover':{
+          color:'#BA59FF'
+        }
   },
   tokensList: {
     color: '#A4A7BE',
@@ -347,6 +354,14 @@ const styles = theme => ({
     margin: '20px auto 20px',
     [theme.breakpoints.down('md')]: {
       margin: '20px auto 15px'
+    }
+  },
+  svgCenterdUSD: {
+    width: '80px',
+    height: '80px',
+    margin: '20px auto 20px',
+    [theme.breakpoints.down('md')]: {
+      margin: '20px auto 20px'
     }
   },
   // poolAPY
@@ -567,12 +582,14 @@ class RewardPools extends Component {
                   </tr>
                 </>
                 :
+                rp.id !== 'dUSD'?
                 <tr className={classes.DFrow} key={rp.id}>
                   <td align="left"><FormattedMessage id={`${rp.tokens[0].Rush_type}_APY`}/></td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                   <td align="right">0.00%</td>
                   <td align="right">{ROI[rp.id] ? this.formatAPYNumber(ROI[rp.id]*100)+'%' : '...'}</td>
                 </tr>
+                :<></>
               ))
             }
             <tr className={classes.subHead}><td colSpan="4"><FormattedMessage id='DF_APY'/></td></tr>
@@ -663,7 +680,7 @@ class RewardPools extends Component {
         {
           rewardPool.map(rp=>(
             <div className={classes.DFpoolDiv} key={rp.id}>
-              <Typography variant='h3' className={classes.poolName}><a href={rp.link} rel="noopener noreferrer" target="_blank">Uniswap&nbsp;{rp.id}</a></Typography>
+              <Typography variant='h3' className={classes.poolName}><a className={classes.underLine} href={rp.link} rel="noopener noreferrer" target="_blank">Uniswap&nbsp;{rp.id}</a></Typography>
               {/* <a className={classes.linkA} href={rp.link} rel="noopener noreferrer" target="_blank"></a> */}
             </div>
           ))
@@ -691,28 +708,44 @@ class RewardPools extends Component {
 
       return (<div className={classes.rewardPoolContainer} key={rewardPool.id} >
         {/* <div className={classes.svgTitle}><img src={rewardPool.icon} alt="" /></div> */}
-        <Typography variant='h3' className={classes.poolName}>Uniswap&nbsp;{rewardPool.id}</Typography>
-        <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
-        <div className={classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
-        <Typography varian='h4' className={classes.tokensList} align='center'>
-          {/* <FormattedMessage id='tips_stake' /> */}
-          {/* <b className={classes.B}><FormattedMessage id='dToken' /></b> */}
-          <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].Rush_type}`} /></b>
-          {/* <FormattedMessage id='tips_earn' /> */}
-          {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
-          {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
-        {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
-        </Typography>
-          {/* <div className={classes.dTokenDataBox}>
-            {
-              <div className={classes.dTokenData}>
-                <b>
-                {ROI[rewardPool.tokens[0].ROI] ? this.formatAPYNumber(ROI[rewardPool.tokens[0].ROI]*100)+'%' : '...'}
-                </b>
-              </div>
-            }
-          </div> */}
-        <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b></div>
+        {/* {
+          rewardPool.id === 'dUSD'?
+          <>
+             <Typography variant='h3' className={classes.poolName}><a className={classes.underLine} href={rewardPool.link} rel="noopener noreferrer" target="_blank">{rewardPool.id}</a></Typography>
+             <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
+             <div className={classes.svgCenterdUSD}><img src={rewardPool.logo} alt="" /></div>
+              <Typography varian='h4' className={classes.tokensList} align='center'>
+                <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].Rush_type}`} /></b>
+              </Typography>
+              <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b>
+            </div>
+          </>
+          :
+          <> */}
+            <Typography variant='h3' className={classes.poolName}>{rewardPool.id}</Typography>
+            <Typography variant='h5' className={classes.poolWebsiteH5}><a className={classes.poolWebsite} href={rewardPool.link} target="_blank">{rewardPool.website}</a></Typography>
+            <div className={rewardPool.id==='dUSD'?classes.svgCenterdUSD:classes.svgCenter}><img src={rewardPool.logo} alt="" /></div>
+            <Typography varian='h4' className={classes.tokensList} align='center'>
+              {/* <FormattedMessage id='tips_stake' /> */}
+              {/* <b className={classes.B}><FormattedMessage id='dToken' /></b> */}
+              <b className={classes.B}><FormattedMessage id={`DF_${rewardPool.tokens[0].Rush_type}`} /></b>
+              {/* <FormattedMessage id='tips_earn' /> */}
+              {/* <b className={classes.B}><FormattedMessage id='tips_DF' /></b> */}
+              {/* {rewardPool.tokens.length > 0 && "Supported Tokens: " + tokensList}
+            {rewardPool.tokens.length == 0 && "No supported tokens currently"} */}
+            </Typography>
+              {/* <div className={classes.dTokenDataBox}>
+                {
+                  <div className={classes.dTokenData}>
+                    <b>
+                    {ROI[rewardPool.tokens[0].ROI] ? this.formatAPYNumber(ROI[rewardPool.tokens[0].ROI]*100)+'%' : '...'}
+                    </b>
+                  </div>
+                }
+              </div> */}
+            <div className={classes.Btn} onClick={() => { if (rewardPool.tokens.length > 0) { this.navigateStake(rewardPool) } }}><b><FormattedMessage id='open' /></b></div>
+          {/* </>
+        } */}
       </div>)
     }
   }

@@ -258,6 +258,38 @@ class Store {
             }
           ]
         },
+        // dUSD-SFG/DF
+        {
+          id: 'dUSD',
+          urlParam:'dUSD',
+          name: 'Uniswap Exchange', // USDx: 0x33284741d62914C97E7DEF7B4B21550138Bc7d5c USDC: 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede
+          website: 'S.finance',
+          link: 'https://s.finance/liquidity/dusd',
+          // icon: require('../assets/img2.svg'),
+          logo: require('../assets/dUSD.svg'),
+          tokens: [
+            {
+              id: 'bpt',
+              address: config.UniswapdUSD_SFG,
+              // address: '0x7a71d2789Cf6b13aE25CA19DFD36c4925E7BD582',
+              symbol: 'dUSD',
+              // ROI:'dUSD_SFG',
+              type:'Rush_Pool',
+              Rush_type:'dUSD',
+              abi: config.erc20ABI,
+              decimals: 18,
+              rewardsAddress: [config.SMinter_RewardsAddress,config.DForceGauge_RewardsAddress], // 0x2C196aF9540420E9F0716BfD8c9bF5fC9C3E227d
+              rewardsABI: [config.SMinter,config.DForceGauge],
+              rewardsSymbol: ['SFG','DF'],
+              rewardsDecimal: 0,
+              balance: 0,
+              stakedBalance: 0,
+              // 可claim 的 token balance
+              rewardsAvailable: [0,0]
+            }
+          ]
+        },
+        // dUSD-SFG/DF
         {
           id: 'DF/USDx',
           urlParam:'DF-USDx',
@@ -572,9 +604,18 @@ class Store {
   }
 
   _getstakedBalance = async (web3, asset, account, callback) => {
-    let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
     try {
-      var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
+      // 判断是 dUSD-SFG/DF 逻辑Str
+      if(Array.isArray(asset.rewardsSymbol)){
+        let erc20Contract_dUSD = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
+        var balance = await erc20Contract_dUSD.methods.balanceOf(account.address).call({ from: account.address });
+
+      // 判断是 dUSD-SFG/DF 逻辑End
+      }else{
+        let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+        var balance = await erc20Contract.methods.balanceOf(account.address).call({ from: account.address });
+      }
+      
       // balance = parseFloat(balance) / 10 ** asset.decimals
       callback(null, this.toStringDecimals(balance, asset.decimals))
     } catch (ex) {
@@ -583,12 +624,35 @@ class Store {
   }
 
   _getRewardsAvailable = async (web3, asset, account, callback) => {
-    let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
     try {
-      var earned = await erc20Contract.methods.earned(account.address).call({ from: account.address });
-      // earned = parseFloat(earned) / 10 ** asset.decimals
-      // callback(null, parseFloat(earned))
-      callback(null, this.toStringDecimals(earned, 18))
+      // 判断是 dUSD-SFG/DF 逻辑Str
+      if(Array.isArray(asset.rewardsSymbol)){
+        // debugger
+        let SMinter = new web3.eth.Contract(asset.rewardsABI[0], asset.rewardsAddress[0])
+        let erc20Contract_SFG = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
+        let erc20Contract_DF = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
+
+        const rewardsBanlnce = await SMinter.methods.quotas(asset.rewardsAddress[1]).call()
+        if(rewardsBanlnce !== 0){
+          var earnedSFG = await erc20Contract_SFG.methods.claimable_tokens(account.address).call({ from: account.address });
+          var earnedDF = await erc20Contract_DF.methods.claimable_reward(account.address).call({ from: account.address });
+          // earned = parseFloat(earned) / 10 ** asset.decimals
+          // callback(null, parseFloat(earned))
+          callback(null, [this.toStringDecimals(earnedSFG, 18),this.toStringDecimals(earnedDF, 18)])
+        }else{
+          // 解决 SFG rewards 收益为 0 时 合约数据溢出bug
+          var earnedDF = await erc20Contract_DF.methods.claimable_reward(account.address).call({ from: account.address });
+          callback(null, [this.toStringDecimals('0', 18),this.toStringDecimals(earnedDF, 18)])
+        }
+
+      // 判断是 dUSD-SFG/DF 逻辑End
+      }else{
+        let erc20Contract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+        var earned = await erc20Contract.methods.earned(account.address).call({ from: account.address });
+        // earned = parseFloat(earned) / 10 ** asset.decimals
+        // callback(null, parseFloat(earned))
+        callback(null, this.toStringDecimals(earned, 18))
+      }
     } catch (ex) {
       return callback(ex)
     }
@@ -640,65 +704,130 @@ class Store {
   stake = (payload) => {
     const account = store.getStore('account')
     const { asset, amount } = payload.content
-    this._checkApproval(asset, account, amount, asset.rewardsAddress, (err) => {
-      if (err) {
-        return emitter.emit(ERROR, err);
-      }
-      this._callStake(asset, account, amount, (err, res) => {
+    // 判断是 dUSD-SFG/DF 逻辑Str
+    if(Array.isArray(asset.rewardsSymbol)){
+      this._checkApproval(asset, account, amount, asset.rewardsAddress[1], (err) => {
         if (err) {
           return emitter.emit(ERROR, err);
         }
-
-        return emitter.emit(STAKE_RETURNED, res)
+        this._callStake(asset, account, amount, (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+  
+          return emitter.emit(STAKE_RETURNED, res)
+        })
       })
-    })
+    // 判断是 dUSD-SFG/DF 逻辑Str
+    }else{
+      this._checkApproval(asset, account, amount, asset.rewardsAddress, (err) => {
+        if (err) {
+          return emitter.emit(ERROR, err);
+        }
+        this._callStake(asset, account, amount, (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+  
+          return emitter.emit(STAKE_RETURNED, res)
+        })
+      })
+    }
   }
 
   _callStake = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
-    const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+    // 判断是 dUSD-SFG/DF 逻辑Str
+    if(Array.isArray(asset.rewardsSymbol)){
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
     
-    var amountToSend = web3.utils.toWei(amount, "ether")
-    if (asset.decimals != 18) {
-      amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
+      var amountToSend = web3.utils.toWei(amount, "ether")
+      if (asset.decimals != 18) {
+        amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
+        
+      }
+      // SendTransaction wallet connect
       
-    }
-    // SendTransaction wallet connect
-    
-    // let data = yCurveFiContract.methods.stake(amountToSend).encodeABI();
-    // let ChainId = await web3.eth.getChainId();
-    
-    // SendTransaction(web3, data, account.address, asset.rewardsAddress, ChainId, amountToSend, callback)
+      // let data = yCurveFiContract.methods.stake(amountToSend).encodeABI();
+      // let ChainId = await web3.eth.getChainId();
+      
+      // SendTransaction(web3, data, account.address, asset.rewardsAddress, ChainId, amountToSend, callback)
 
-    yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
-      .on('transactionHash', function (hash) {
-        console.log(hash)
-        callback(null, hash)
-      })
-      .on('confirmation', function (confirmationNumber, receipt) {
-        if (confirmationNumber == 2) {
-          dispatcher.dispatch({ type: GET_BALANCES, content: {} })
-        }
-      })
-      .on('receipt', function (receipt) {
-        console.log(receipt);
-      })
-      .on('error', function (error) {
-        if (!error.toString().includes("-32601")) {
-          if (error.message) {
-            return callback(error.message)
+      yCurveFiContract.methods.deposit(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+        .on('transactionHash', function (hash) {
+          console.log(hash)
+          callback(null, hash)
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          if (confirmationNumber == 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} })
           }
-          callback(error)
-        }
-      })
-      .catch((error) => {
-        if (!error.toString().includes("-32601")) {
-          if (error.message) {
-            return callback(error.message)
+        })
+        .on('receipt', function (receipt) {
+          console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
           }
-          callback(error)
-        }
-      })
+        })
+        .catch((error) => {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+    // 判断是 dUSD-SFG/DF 逻辑End
+    }else{
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+    
+      var amountToSend = web3.utils.toWei(amount, "ether")
+      if (asset.decimals != 18) {
+        amountToSend = (amount * Number(`1e+${asset.decimals}`)).toFixed(0);
+        
+      }
+      // SendTransaction wallet connect
+      
+      // let data = yCurveFiContract.methods.stake(amountToSend).encodeABI();
+      // let ChainId = await web3.eth.getChainId();
+      
+      // SendTransaction(web3, data, account.address, asset.rewardsAddress, ChainId, amountToSend, callback)
+
+      yCurveFiContract.methods.stake(amountToSend).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+        .on('transactionHash', function (hash) {
+          console.log(hash)
+          callback(null, hash)
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          if (confirmationNumber == 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} })
+          }
+        })
+        .on('receipt', function (receipt) {
+          console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+        .catch((error) => {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+      }
   }
 
   withdraw = (payload) => {
@@ -716,8 +845,47 @@ class Store {
 
   _callWithdraw = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
+    // 判断是 dUSD-SFG/DF 逻辑Str
+    if(Array.isArray(asset.rewardsSymbol)){
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
 
-    const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+      var amountToSend = web3.utils.toWei(amount, "ether")
+      if (asset.decimals != 18) {
+        amountToSend = (amount * 10 ** asset.decimals).toFixed(0);
+      }
+
+      yCurveFiContract.methods.withdraw(amountToSend,false).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+        .on('transactionHash', function (hash) {
+          console.log(hash)
+          callback(null, hash)
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          if (confirmationNumber == 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} })
+          }
+        })
+        .on('receipt', function (receipt) {
+          console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+        .catch((error) => {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+    // 判断是 dUSD-SFG/DF 逻辑End
+    }else{
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
 
     var amountToSend = web3.utils.toWei(amount, "ether")
     if (asset.decimals != 18) {
@@ -753,13 +921,14 @@ class Store {
           callback(error)
         }
       })
+    }
   }
 
   getReward = (payload) => {
     const account = store.getStore('account')
-    const { asset } = payload.content
+    const { asset,RewardsSymbol } = payload.content
 
-    this._callGetReward(asset, account, (err, res) => {
+    this._callGetReward(asset, RewardsSymbol, account, (err, res) => {
       if (err) {
         return emitter.emit(ERROR, err);
       }
@@ -768,12 +937,48 @@ class Store {
     })
   }
 
-  _callGetReward = async (asset, account, callback) => {
+  _callGetReward = async (asset, RewardsSymbol, account, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
+    // 判断是 dUSD-SFG/DF claim SFG 逻辑Str
+    if(RewardsSymbol === 'SFG'){
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI[0], asset.rewardsAddress[0])
 
-    const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+      yCurveFiContract.methods.mint(asset.rewardsAddress[1]).send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+        .on('transactionHash', function (hash) {
+          console.log(hash)
+          callback(null, hash)
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          if (confirmationNumber == 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} })
+          }
+        })
+        .on('receipt', function (receipt) {
+          console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+        .catch((error) => {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+    }
+    // 判断是 dUSD-SFG/DF claim SFG 逻辑Str
+    else if(RewardsSymbol === 'DF'){
+    // 判断是 dUSD-SFG/DF claim DF 逻辑Str
+    const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI[1], asset.rewardsAddress[1])
 
-    yCurveFiContract.methods.getReward().send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+    yCurveFiContract.methods.claim_rewards().send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
       .on('transactionHash', function (hash) {
         console.log(hash)
         callback(null, hash)
@@ -802,6 +1007,40 @@ class Store {
           callback(error)
         }
       })
+    // 判断是 dUSD-SFG/DF claim DF 逻辑Str
+    }else{
+      const yCurveFiContract = new web3.eth.Contract(asset.rewardsABI, asset.rewardsAddress)
+
+      yCurveFiContract.methods.getReward().send({ from: account.address, gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei') })
+        .on('transactionHash', function (hash) {
+          console.log(hash)
+          callback(null, hash)
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          if (confirmationNumber == 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} })
+          }
+        })
+        .on('receipt', function (receipt) {
+          console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+        .catch((error) => {
+          if (!error.toString().includes("-32601")) {
+            if (error.message) {
+              return callback(error.message)
+            }
+            callback(error)
+          }
+        })
+    }
   }
 
   exit = (payload) => {
