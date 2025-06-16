@@ -1,25 +1,13 @@
-$totalwidth: 94vw;
-$margin_top: 30vh;
-
 .clear {
   clear: both;
 }
 
-// > 768
+
 @media screen and (min-width: 768px) {
 
   .ant-modal {
-    // width: 100%;
-    // height: 100%;
-    // position: fixed;
-    // top: 0;
-    // z-index: 99999;
-    // background: rgba(0, 0, 0, 0.5);
-    // background-color: red;
-
     .popup-is-open {
       margin: auto;
-      // margin-top: $margin_top;
       width: 400px;
       text-align: center;
       padding: 30px 0 20px;
@@ -48,9 +36,7 @@ $margin_top: 30vh;
   }
 
   .App {
-    // width: 710px;
     margin: 0 auto;
-    // background-color: red;
   }
 
   .other-tokens-wrap {
@@ -69,21 +55,16 @@ $margin_top: 30vh;
     .token-balance-left {
       position: absolute;
       width: 100%;
-      // background-color: green;
       top: -26px;
       font-size: 16px;
       color: #252152;
 
       .my-balance {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
       }
 
       .my-balance-title {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
         font-size: 14px;
@@ -107,7 +88,6 @@ $margin_top: 30vh;
         right: 0;
         top: 14px;
         background-color: #CDCEDC;
-        // background-color: red;
       }
 
       button {
@@ -130,7 +110,6 @@ $margin_top: 30vh;
           font-size: 16px;
           font-weight: 500;
           color: rgba(75, 82, 125, 1);
-          // background-color: green;
           display: block;
           float: left;
           padding-top: 7px;
@@ -169,7 +148,6 @@ $margin_top: 30vh;
           box-shadow: 0px 8px 30px 0px rgba(7, 2, 55, 0.08);
           border-radius: 4px;
           max-height: 325px;
-          // background-color: #f00;
 
           .more-tokens-token {
             position: relative;
@@ -262,7 +240,6 @@ $margin_top: 30vh;
 
     .text-right {
       text-align: right;
-      // background-color: red;
       width: 100%;
 
       .Liquidity-tips {
@@ -299,7 +276,6 @@ $margin_top: 30vh;
     .show-tips {
       position: absolute;
       top: 104px;
-      // background: red;
       width: 300px;
       left: -112px;
       text-align: center;
@@ -361,7 +337,6 @@ $margin_top: 30vh;
   }
 
   .token-balance {
-    // background-color: red;
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: 500;
@@ -374,15 +349,11 @@ $margin_top: 30vh;
       width: 316px;
 
       .my-balance {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
       }
 
       .my-balance-title {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
         font-size: 12px;
@@ -395,19 +366,16 @@ $margin_top: 30vh;
   }
 
 
-  // foot
   .foot {
     border-top: 1px solid rgba(229, 230, 242, 0.7);
     padding-top: 26px;
     width: 874px;
-    // background-color: red;
     margin: 50px auto 0;
     padding-bottom: 4px;
 
     .foot-item {
       float: left;
       width: 200px;
-      // background-color: palegoldenrod;
 
       .foot-item-title {
         height: 30px;
@@ -417,22 +385,17 @@ $margin_top: 30vh;
       }
 
       .foot-item-content {
-        // width: 380px;
         height: 22px;
         font-size: 13px;
         font-weight: 400;
         color: rgba(134, 133, 147, 1);
-        // background-color: red;
 
         a {
-          // display: inline-block;
           text-decoration: none;
           transition: 0.3s;
-          // height: 40px;
           font-size: 13px;
           font-weight: 400;
           color: rgba(134, 133, 147, 1);
-          // color: red;
 
           &:hover {
             color:#BA59FF
@@ -474,7 +437,6 @@ $margin_top: 30vh;
         padding-top: 12px;
         position: relative;
         cursor: pointer;
-        // background-color: red;
         width: 80px;
         font-size: 14px;
 
@@ -536,7 +498,6 @@ $margin_top: 30vh;
 
     .foot-item:nth-child(2n) {
       width: 309px;
-      // background-color: red;
     }
 
     .icom-a {
@@ -552,23 +513,16 @@ $margin_top: 30vh;
 }
 
 
-// 
+
 @media screen and (max-width: 767px) {
   .header {
     display: none !important;
   }
 
   .ant-modal {
-    // background-color: red;
-    // width: 100%;
-    // height: 100%;
-    // position: fixed;
-    // z-index: 99999;
-    // background: rgba(0, 0, 0, 0.5);
 
     .popup-is-open {
       margin: auto;
-      // margin-top: $margin_top;
       width: 305px;
       text-align: center;
       padding: 30px 0 20px;
@@ -622,26 +576,18 @@ $margin_top: 30vh;
     .only1px {
       height: 1px;
       overflow: hidden;
-      // transition: 0.3s;
     }
 
     .meun1 {
-      // transition: 0.3s;
       height: auto;
-      // background-color: red;
       width: 300px;
-
-      // height:1px;
-      // overflow: hidden;
       .m-item {
-        // background-color: red;
 
         a {
           text-decoration: none;
           display: block;
           font-size: 14px;
           color: rgba(7, 2, 55, 1);
-          // line-height: 34px;
           padding-left: 20px;
           padding-right: 20px;
           margin-top: 15px;
@@ -669,7 +615,6 @@ $margin_top: 30vh;
   }
 
   .wrap-mob {
-    // background-color: red;
     width: 94%;
     margin: 0 auto 10px;
 
@@ -685,30 +630,24 @@ $margin_top: 30vh;
     .only-right {
       float: right;
       padding: 16px 5px 10px 10px;
-      // background-color: red;
 
       img {
         width: 16px;
-        // margin-right: -10px;
       }
     }
   }
 
   .App {
     width: 100%;
-    // margin: 0 auto;
-    // background-color: red;
   }
 
   .other-tokens {
     height: 54px;
     width: 94%;
-    // width: 355px;
     background-color: #fff;
     position: relative;
     border: 1px solid rgba(229, 230, 242, 1);
     border-radius: 5px;
-    // background-color: #f00;
     margin: 0 auto;
     margin-left: 3%;
     display: flex;
@@ -716,21 +655,16 @@ $margin_top: 30vh;
     .token-balance-left {
       position: absolute;
       width: 100%;
-      // background-color: green;
       top: -20px;
       font-size: 14px;
       color: #252152;
 
       .my-balance {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
       }
 
       .my-balance-title {
-        // width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
         font-size: 12px;
@@ -777,7 +711,6 @@ $margin_top: 30vh;
           font-size: 14px;
           font-weight: 500;
           color: rgba(75, 82, 125, 1);
-          // background-color: green;
           display: block;
           float: left;
           padding-top: 7px;
@@ -808,8 +741,7 @@ $margin_top: 30vh;
           position: absolute;
           top: 60px;
           width: 316px;
-          width: $totalwidth;
-          // width: 100%;
+          width: 94vw;
           background-color: #fff;
           overflow: auto;
           z-index: 9999;
@@ -818,7 +750,6 @@ $margin_top: 30vh;
           box-shadow: 0px 8px 30px 0px rgba(7, 2, 55, 0.08);
           border-radius: 4px;
           max-height: 217px;
-          // background-color: red;
 
           .more-tokens-token {
             position: relative;
@@ -866,7 +797,6 @@ $margin_top: 30vh;
 
     .other-tokens-right {
       float: right;
-      // width: 207px;
       flex: 1;
       border-radius: 6px;
       overflow: hidden;
@@ -911,8 +841,6 @@ $margin_top: 30vh;
     }
 
     .text-right {
-      // text-align: right;
-      // background-color: red;
       width: 100%;
 
       .Liquidity-tips {
@@ -936,7 +864,6 @@ $margin_top: 30vh;
     clear: both;
     display: block;
     position: relative;
-    // background-color: red;
     padding-top: 40px;
     margin-bottom: 30px;
     text-align: center;
@@ -953,7 +880,6 @@ $margin_top: 30vh;
     .show-tips {
       position: absolute;
       top: 173px;
-      // background: red;
       width: 100%;
       text-align: center;
 
@@ -1016,7 +942,6 @@ $margin_top: 30vh;
   }
 
   .token-balance {
-    // background-color: red;
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: 500;
@@ -1030,29 +955,18 @@ $margin_top: 30vh;
 
       .my-balance {
         width: 200px;
-        // background-color: green;
         float: right;
         text-align: right;
       }
     }
   }
-
-
-  // foot
   .foot {
-    // padding-top: 50px;
-    // width: 1200px;
-    // background-color: red;
     width: 94%;
     margin: 35px auto 0;
     padding-bottom: 4px;
     border-top: 1px solid rgba(229, 230, 242, 0.7);
-    // border-top: 1px solid rgba(229, 0, 0, 1);
 
     .foot-item {
-      // float: left;
-      // width: 270px;
-      // background-color: palegoldenrod;
       width: 100%;
       float: left;
 
@@ -1115,7 +1029,6 @@ $margin_top: 30vh;
 
     .foot-item:nth-child(3n) {
       width: 100%;
-      // background-color: red;
     }
 
     .icom-a {

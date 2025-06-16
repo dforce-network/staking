@@ -13,7 +13,7 @@ import DAI_logo from "../../assets/logo-dDAI.svg";
 import DF_logo from "../../assets/logo-DF.svg";
 import GOLDx_logo from "../../assets/logo-DF.svg";
 import USDx_USDC_logo from "../../assets/logo-DF.svg";
-import "./dash.scss";
+import "./dash.css";
 import { CONNECTION_CONNECTED, CONNECTION_DISCONNECTED } from "../../constants";
 
 import { injected } from "../../stores/connectors";

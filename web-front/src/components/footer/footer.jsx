@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import '../../App.scss';
-import '../header/header.scss';
+import '../../App.css';
+import '../header/header.css';
 import 'antd/dist/antd.css';
 // add i18n.
 import { IntlProvider, FormattedMessage } from 'react-intl';

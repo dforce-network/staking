@@ -1,6 +1,6 @@
 import React from 'react';
-import '../../App.scss';
-import './header.scss';
+import '../../App.css';
+import './header.css';
 import 'antd/dist/antd.css';
 import logo_xswap from '../../assets/header/logo-dforce.svg';
 import close from '../../assets/header/close.svg';

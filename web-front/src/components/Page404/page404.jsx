@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
-import './404.scss'
+import './404.css'
 class page404 extends Component {
     constructor(props){
         super(props)
