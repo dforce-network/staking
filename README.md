@@ -15,3 +15,15 @@ dForce Staking is a decentralized liquidity mining protocol built on Ethereum. U
 - 🌐 User-friendly web interface
 - ⚡ Gas-efficient contract design
 
+## Mainnet Contract Addresses (2020-08-24)
+
+| Contract Name | Contract Address |
+|--------------|------------------|
+| USDC-USDx Staking | `0xa94E2074BeB6D1Bf28014b81Ff2062eaB3600c48` |
+| USDx-DF Staking | `0x5e84fC41D3aDd07A34616F781DCF1e49e8DC41C1` |
+| ETH-DF Staking | `0x308777dDEC61F5000D8394626d55dbB0312fe874` |
+| GOLDx-DF Staking | `0xdC7A844a45Ef936497FB916f1c2Ddb80F59a8aDc` |
+| dDAI Staking | `0xD2fA07cD6Cd4A5A96aa86BacfA6E50bB3aaDBA8B` |
+| dUSDC Staking | `0xB71dEFDd6240c45746EC58314a01dd6D833fD3b5` |
+| dUSDT Staking | `0x324EebDAa45829c6A8eE903aFBc7B61AF48538df` |
+
