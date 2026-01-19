@@ -70,3 +70,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 If you discover a security vulnerability, please report it via our official channels rather than creating a public issue.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
