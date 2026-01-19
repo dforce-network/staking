@@ -106,7 +106,7 @@ const styles = (theme) => ({
       width: "450",
     },
   },
-  disaclaimer: {
+  disclaimer: {
     padding: "12px",
     border: "1px solid rgb(174, 174, 174)",
     borderRadius: "0.75rem",
@@ -947,7 +947,7 @@ class Stake extends Component {
           linkTo={"/"}
         />
         {modalOpen && this.renderModal()}
-        {/* <Typography variant={'h5'} className={classes.disaclaimer}>This project is in beta. Use at your own risk.</Typography> */}
+        {/* <Typography variant={'h5'} className={classes.disclaimer}>This project is in beta. Use at your own risk.</Typography> */}
         {/* <div className={classes.intro}>
           <Card className={classes.addressContainer} onClick={this.overlayClicked}>
             <Typography variant={'h3'} className={classes.walletTitle} noWrap>Wallet</Typography>
