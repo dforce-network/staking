@@ -27,3 +27,30 @@ dForce Staking is a decentralized liquidity mining protocol built on Ethereum. U
 | dUSDC Staking | `0xB71dEFDd6240c45746EC58314a01dd6D833fD3b5` |
 | dUSDT Staking | `0x324EebDAa45829c6A8eE903aFBc7B61AF48538df` |
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14+)
+- npm or yarn
+- MetaMask or compatible Web3 wallet
+
+### Installation
+
+1. Clone the repository:
+   \`\`\`bash
+   git clone https://github.com/dforce-network/staking.git
+   cd staking
+   \`\`\`
+
+2. Install dependencies:
+   \`\`\`bash
+   cd web-front
+   npm install
+   \`\`\`
+
+3. Start the development server:
+   \`\`\`bash
+   npm start
+   \`\`\`
+
