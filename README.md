@@ -64,3 +64,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (\`git push origin feature/AmazingFeature\`)
 5. Open a Pull Request
 
+## Security
+
+⚠️ **Important**: This project is in beta. Use at your own risk.
+
+If you discover a security vulnerability, please report it via our official channels rather than creating a public issue.
+
